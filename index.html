@@ -269,6 +269,12 @@ aside{
 }
 .path-tag{font-size:.6rem;color:var(--muted);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}
+.user-tag{
+  font-size:.6rem;color:var(--acc2);font-weight:500;
+  background:var(--acc2-s);border:1px solid rgba(122,171,140,.3);
+  border-radius:100px;padding:.08rem .44rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px;
+}
 
 /* ─── MODAL ─────────────────────────────────────── */
 .backdrop{
@@ -389,6 +395,11 @@ aside{
       <div class="hstat"><div class="hstat-n" id="hTotal">—</div><div class="hstat-l">Solutions</div></div>
       <div class="hstat"><div class="hstat-n" id="hContests">—</div><div class="hstat-l">Contests</div></div>
       <div class="hstat"><div class="hstat-n" id="hLangs">—</div><div class="hstat-l">Languages</div></div>
+      <!-- Users stat: shown only when user folders exist -->
+      <div class="hstat" id="hUsersStat" style="display:none">
+        <div class="hstat-n" id="hUsers">—</div>
+        <div class="hstat-l">Users</div>
+      </div>
     </div>
   </div>
 
@@ -436,6 +447,11 @@ aside{
       <div class="fg" id="langFilters">
         <button class="fb on" data-lang="all"><span class="ldot" style="background:var(--muted)"></span>All</button>
       </div>
+    </div>
+    <!-- User filter: shown only when user folders exist -->
+    <div class="sec" id="userSection" style="display:none">
+      <div class="sec-lbl">User</div>
+      <div class="fg" id="userFilters"></div>
     </div>
     <div class="sec">
       <div class="sec-lbl">Contest</div>
@@ -509,38 +525,19 @@ const SRC_EXTS=new Set(Object.keys(LANGS));
 const getLang=e=>LANGS[e]||{label:e.toUpperCase(),color:'#a8998e',bg:'#f0ece4',hljs:e};
 
 /* ════════════════════════════════════════════════════
-   DIRECTORY SCANNER  (Python http.server の HTML一覧をパース)
-════════════════════════════════════════════════════ */
-async function scanDir(url){
-  const r=await fetch(url);
-  if(!r.ok) throw new Error(`HTTP ${r.status}: ${url}`);
-  const html=await r.text();
-  const doc=new DOMParser().parseFromString(html,'text/html');
-  const hrefs=[...doc.querySelectorAll('a[href]')]
-    .map(a=>a.getAttribute('href'))
-    .filter(h=>h&&!h.startsWith('?')&&!h.startsWith('/')&&h!=='../');
-  const files=[];
-  for(const h of hrefs){
-    const abs=url.endsWith('/')?url+h:url+'/'+h;
-    if(h.endsWith('/')){
-      try{ files.push(...await scanDir(abs)) }catch(_){}
-    } else {
-      const ext=h.split('.').pop().toLowerCase();
-      if(SRC_EXTS.has(ext)) files.push(abs);
-    }
-  }
-  return files;
-}
+   PARSE FILE PATH
+   archive/username/abc001-a.py  →  {user,contest,problem,lang,…}
+   archive/username/cpp/abc003-c.cpp → {user:'username',folder:'cpp',…}
+   archive/abc001-a.py (ルート直下) → {user:'',folder:'',…}
 
-/* ════════════════════════════════════════════════════
-   PARSE FILE URL
-   archive/py/abc001-a.py  →  {contest,problem,lang,…}
+   - archive/ 直下の最初のフォルダ = ユーザー
+   - その先のフォルダ = サブフォルダ（言語フォルダなど）
 ════════════════════════════════════════════════════ */
 function parseURL(fullUrl){
-  // relative path from archive/
   const archIdx=fullUrl.indexOf('archive/');
   const rel=archIdx>=0?fullUrl.slice(archIdx+8):fullUrl.split('/').pop();
-  const filename=rel.split('/').pop();           // abc001-a.py
+  const parts=rel.split('/');
+  const filename=parts[parts.length-1];
   const dot=filename.lastIndexOf('.');
   if(dot<0) return null;
   const base=filename.slice(0,dot);
@@ -550,14 +547,14 @@ function parseURL(fullUrl){
   const sep=base.search(/[_\-]/);
   const contest=sep>=0?base.slice(0,sep):base;
   const problem=sep>=0?base.slice(sep+1):'';
-  // folder path (everything before last /)
-  const parts=rel.split('/');
-  const folder=parts.length>1?parts.slice(0,-1).join('/'):'';
-  return{fullUrl,rel,filename,base,ext,contest,problem,folder,lang:getLang(ext)};
+  // archive/ 直下の最初のフォルダ = ユーザー
+  const user=parts.length>1?parts[0]:'';
+  // ユーザーフォルダとファイル名の間のフォルダ群 = サブフォルダ
+  const folder=parts.length>2?parts.slice(1,-1).join('/'):'';
+  return{fullUrl,rel,filename,base,ext,contest,problem,user,folder,lang:getLang(ext)};
 }
 
-/* contest → sort key (numeric suffix extraction)
-   abc001 → [0,1]   arc001 → [1,1]   agc001 → [2,1]  other → [99,str] */
+/* contest → sort key */
 function contestKey(c){
   const m=c.match(/^(abc|arc|agc|ahc|apc|abl)0*(\d+)$/i);
   if(!m) return [99,c];
@@ -573,16 +570,41 @@ function cmpContest(a,b){
    STATE
 ════════════════════════════════════════════════════ */
 let all=[];
-let fLang='all', fContest='all', query='', sortKey='contest-asc';
+let fLang='all', fUser='all', fContest='all', query='', sortKey='contest-asc';
 
 /* ════════════════════════════════════════════════════
-   BOOT
+   BOOT  ―  GitHub Pages 対応
+   Python http.server の HTML一覧ではなく
+   archive/files.json を読み込む方式に変更。
+
+   files.json の形式（archive/ からの相対パスの配列）:
+   ["username/abc001-a.py", "username/abc002-b.cpp"]
+
+   生成スクリプト例（archive/ フォルダ内で実行）:
+   find . -type f ! -name "*.json" ! -name "space.txt" \
+     | sed 's|^./||' \
+     | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().splitlines()))" \
+     > files.json
 ════════════════════════════════════════════════════ */
 async function init(){
-  setStatus('loading','Scanning…');
+  setStatus('loading','Loading…');
   try{
-    const urls=await scanDir('archive/');
-    all=urls.map(parseURL).filter(Boolean);
+    const resp=await fetch('archive/files.json');
+    if(!resp.ok) throw new Error(`archive/files.json が見つかりません (HTTP ${resp.status})`);
+    const list=await resp.json();
+    if(!Array.isArray(list)) throw new Error('archive/files.json の形式が不正です（配列が必要）');
+    all=list
+      .filter(p=>{
+        if(typeof p!=='string') return false;
+        // archive/space.txt（ファイル名が space.txt のもの）を除外
+        const fname=p.split('/').pop();
+        return fname!=='space.txt';
+      })
+      .map(p=>{
+        const fullUrl=new URL('archive/'+p,document.baseURI).href;
+        return parseURL(fullUrl);
+      })
+      .filter(Boolean);
     if(!all.length) throw new Error('archive/ にソースコードが見つかりませんでした。');
   }catch(e){
     setStatus('err','Error');
@@ -627,6 +649,13 @@ function buildHome(){
   document.getElementById('hTotal').textContent   =all.length;
   document.getElementById('hContests').textContent=new Set(all.map(f=>f.contest)).size;
   document.getElementById('hLangs').textContent   =new Set(all.map(f=>f.ext)).size;
+
+  // Users stat（ユーザーフォルダが存在する場合のみ表示）
+  const usersSet=new Set(all.map(f=>f.user).filter(Boolean));
+  if(usersSet.size>0){
+    document.getElementById('hUsersStat').style.display='';
+    document.getElementById('hUsers').textContent=usersSet.size;
+  }
 
   // Language bars
   const byCnt={};
@@ -703,6 +732,25 @@ function buildSidebar(){
     b.classList.add('on');renderCards();
   });
 
+  // User（archive/ 直下のフォルダ = ユーザー）
+  const users=[...new Set(all.map(f=>f.user).filter(Boolean))].sort();
+  if(users.length>0){
+    document.getElementById('userSection').style.display='';
+    const uf=document.getElementById('userFilters');
+    uf.innerHTML=`<button class="fb on" data-user="all">All</button>`;
+    users.forEach(u=>{
+      const cnt=all.filter(f=>f.user===u).length;
+      uf.insertAdjacentHTML('beforeend',
+        `<button class="fb" data-user="${u}">👤 ${u}<span class="cc">${cnt}</span></button>`);
+    });
+    uf.addEventListener('click',e=>{
+      const b=e.target.closest('[data-user]');if(!b)return;
+      fUser=b.dataset.user;
+      uf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');renderCards();
+    });
+  }
+
   // Contest
   const contests=[...new Set(all.map(f=>f.contest))].sort((a,b)=>cmpContest(a,b));
   const cf=document.getElementById('contestFilters');
@@ -734,6 +782,7 @@ document.addEventListener('click',e=>{
 function filtered(){
   return all.filter(f=>{
     if(fLang!=='all'&&f.ext!==fLang)return false;
+    if(fUser!=='all'&&f.user!==fUser)return false;
     if(fContest!=='all'&&f.contest!==fContest)return false;
     if(query&&!f.filename.toLowerCase().includes(query)&&!f.rel.toLowerCase().includes(query))return false;
     return true;
@@ -779,6 +828,7 @@ function renderCards(){
       </div>
       <div class="card-foot">
         <span class="ctag">${f.contest}</span>
+        ${f.user?`<span class="user-tag">👤 ${f.user}</span>`:''}
         ${f.folder?`<span class="path-tag">📂 ${f.folder}</span>`:''}
         <span style="margin-left:auto;font-size:.62rem;color:var(--muted)">→</span>
       </div>`;
@@ -800,7 +850,7 @@ let _code='';
 async function openModal(f){
   document.getElementById('mFname').textContent=f.filename;
   document.getElementById('mMeta').textContent=
-    `${f.lang.label}  ·  ${f.contest}${f.problem?' · problem '+f.problem:''}${f.folder?' · '+f.folder:''}`;
+    `${f.lang.label}  ·  ${f.contest}${f.problem?' · problem '+f.problem:''}${f.user?' · '+f.user:''}${f.folder?' / '+f.folder:''}`;
   document.getElementById('modalBody').innerHTML=`<div class="sbox-s"><div class="spin"></div></div>`;
   document.getElementById('backdrop').classList.add('open');
   try{_code=await fetch(f.fullUrl).then(r=>r.text())}
@@ -857,12 +907,13 @@ function showErr(msg){
   const ec=document.getElementById('errCard');
   ec.style.display='block';
   ec.innerHTML=`⚠ ${msg}<br><br>
-    <strong>起動方法</strong><br>
-    archive/ フォルダにコードを入れ、以下でサーバーを起動してください：
-    <code>python -m http.server 8000</code>
-    ブラウザで <code>http://localhost:8000</code> を開いてください。<br><br>
+    <strong>GitHub Pages での使い方</strong><br>
+    <code>archive/files.json</code> にファイルパスの配列を用意してください（archive/ からの相対パス）：
+    <code>["username/abc001-a.py", "username/cpp/abc003-c.cpp"]</code>
+    <strong>生成スクリプト例</strong>（archive/ フォルダ内で実行）：
+    <code>find . -type f ! -name "*.json" ! -name "space.txt" | sed 's|^./||' | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().splitlines()))" > files.json</code>
     <strong>対応フォルダ構造（例）</strong>
-    <code>archive/abc001-a.py<br>archive/py/abc002-b.py<br>archive/cpp/abc003-c.cpp</code>`;
+    <code>archive/files.json<br>archive/username/abc001-a.py<br>archive/username/cpp/abc003-c.cpp</code>`;
   document.getElementById('cardsWrap').className='';
   document.getElementById('cardsWrap').innerHTML='';
   showView('archive');
