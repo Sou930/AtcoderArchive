@@ -7,6 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link id="hljsTheme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/one-light.min.css">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AtCoder Archive">
+<meta name="theme-color" id="themeColorMeta" content="#c47f5e">
+<link rel="manifest" id="pwaManifest">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
@@ -182,7 +188,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 
 /* line numbers */
 .code-with-lines{display:flex}
-.line-nums{flex-shrink:0;user-select:none;padding:1.3rem .7rem 1.3rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.8;color:var(--muted);text-align:right;background:var(--panel);border-right:1px solid var(--border);min-width:2.8rem}
+.line-nums{flex-shrink:0;user-select:none;padding:1.3rem .7rem 1.3rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.8;color:var(--muted);text-align:right;background:var(--panel);border-right:1px solid var(--border);min-width:2.8rem;white-space:pre}
 .hljs-code-wrap{flex:1;overflow-x:auto}
 .modal-body code.hljs{font-family:'JetBrains Mono',monospace!important;font-size:.79rem!important;line-height:1.8!important;padding:1.3rem 1.5rem!important;background:var(--modal-bg)!important}
 .bf-view{font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.9;padding:1.3rem 1.5rem;white-space:pre-wrap;word-break:break-all;background:var(--modal-bg)}
@@ -246,11 +252,33 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 [data-theme="dark"] .pg-hi{color:#dff5eb}
 .pg-legend{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.68rem;color:var(--muted)}
 .pg-swatch{width:14px;height:14px;border-radius:3px}
+
+/* ════════ PWA BANNER ═══════════════════════════════ */
+#pwaBanner{display:none;position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 8px 32px var(--sh-m);padding:.85rem 1.1rem;align-items:center;gap:.8rem;max-width:360px;width:calc(100% - 2rem);animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
+.pwa-icon{font-size:1.6rem;flex-shrink:0}
+.pwa-text{flex:1;min-width:0}
+.pwa-text strong{font-size:.84rem;font-weight:700;color:var(--text);display:block}
+.pwa-text span{font-size:.7rem;color:var(--muted)}
+.pwa-install{background:var(--acc);color:#fff;border:none;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;padding:.42rem 1rem;border-radius:100px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.pwa-install:hover{background:#b36e4d}
+.pwa-close{background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:.2rem;line-height:1;flex-shrink:0}
+.pwa-close:hover{color:var(--text)}
 </style>
 </head>
 <body>
 
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- PWA INSTALL BANNER -->
+<div id="pwaBanner">
+  <div class="pwa-icon">🏆</div>
+  <div class="pwa-text">
+    <strong>AtCoder Archive</strong>
+    <span>ホーム画面に追加してアプリとして使う</span>
+  </div>
+  <button class="pwa-install" onclick="installPWA()">追加</button>
+  <button class="pwa-close" onclick="closePWABanner()">✕</button>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -535,6 +563,8 @@ function showView(name){
     av.style.display='grid';av.classList.add('active','fadein');
     setTimeout(()=>av.classList.remove('fadein'),400);
   }
+  // ホーム以外ではメニューボタン表示
+  document.querySelector('.menu-btn').style.display=name==='archive'?'':'none';
   closeDrawer();
 }
 document.querySelectorAll('.nav-tab').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
@@ -863,6 +893,43 @@ function showErr(msg){
   document.getElementById('cardsWrap').innerHTML='';
   showView('archive');
 }
+
+/* ════ PWA ══════════════════════════════════════════ */
+(()=>{
+  // Manifest をインラインで生成
+  const manifest={
+    name:'AtCoder Archive',
+    short_name:'AtCoder',
+    description:'競プロで解いたコードのアーカイブ',
+    start_url:location.pathname,
+    display:'standalone',
+    background_color:'#f6f3ee',
+    theme_color:'#c47f5e',
+    icons:[
+      {src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23c47f5e"/><text y=".9em" font-size="80" x="10">🏆</text></svg>',sizes:'any',type:'image/svg+xml'}
+    ]
+  };
+  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  document.getElementById('pwaManifest').href=URL.createObjectURL(blob);
+  // インストールバナー
+  let deferredPrompt=null;
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();deferredPrompt=e;
+    const banner=document.getElementById('pwaBanner');
+    if(banner)banner.style.display='flex';
+  });
+  window.addEventListener('appinstalled',()=>{
+    const banner=document.getElementById('pwaBanner');
+    if(banner)banner.style.display='none';
+    deferredPrompt=null;
+  });
+  window.installPWA=()=>{
+    if(!deferredPrompt)return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;const b=document.getElementById('pwaBanner');if(b)b.style.display='none'});
+  };
+  window.closePWABanner=()=>{const b=document.getElementById('pwaBanner');if(b)b.style.display='none'};
+})();
 
 init();
 </script>
