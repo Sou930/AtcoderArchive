@@ -6,7 +6,7 @@
 <title>AtCoder Archive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/one-light.min.css">
+<link id="hljsTheme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/one-light.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
@@ -16,723 +16,577 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ruby.min.js"></script>
 <style>
-:root {
-  --bg:       #f6f3ee;
-  --surface:  #ffffff;
-  --panel:    #f0ece4;
-  --border:   #e2dbd0;
-  --border-s: #cfc7ba;
-  --acc:      #c47f5e;
-  --acc-s:    #f5ede7;
-  --acc2:     #7aab8c;
-  --acc2-s:   #e9f4ee;
-  --text:     #36302a;
-  --text2:    #6a5f54;
-  --muted:    #a8998e;
-  --sh:       rgba(80,60,40,.07);
-  --sh-m:     rgba(80,60,40,.13);
+/* ─── THEME ──────────────────────────────────────── */
+:root{
+  --bg:#f6f3ee;--surface:#ffffff;--panel:#f0ece4;
+  --border:#e2dbd0;--border-s:#cfc7ba;
+  --acc:#c47f5e;--acc-s:#f5ede7;
+  --acc2:#7aab8c;--acc2-s:#e9f4ee;
+  --text:#36302a;--text2:#6a5f54;--muted:#a8998e;
+  --sh:rgba(80,60,40,.07);--sh-m:rgba(80,60,40,.13);
+  --modal-bg:#faf9f7;
+}
+[data-theme="dark"]{
+  --bg:#1c1917;--surface:#242220;--panel:#2c2926;
+  --border:#3d3830;--border-s:#504840;
+  --acc:#d4956e;--acc-s:#2d1f16;
+  --acc2:#7aab8c;--acc2-s:#162218;
+  --text:#e8e0d8;--text2:#a89880;--muted:#6a5f54;
+  --sh:rgba(0,0,0,.4);--sh-m:rgba(0,0,0,.6);
+  --modal-bg:#1e1c1a;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;
-  background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);
-  background-size:26px 26px;opacity:.45;pointer-events:none;z-index:0}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .2s,color .2s}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:26px 26px;opacity:.45;pointer-events:none;z-index:0}
 
-/* ─── NAV BAR ─────────────────────────────────────── */
-nav{
-  position:sticky;top:0;z-index:100;
-  background:var(--surface);border-bottom:1.5px solid var(--border);
-  box-shadow:0 2px 12px var(--sh);
-  display:flex;align-items:center;padding:0 2rem;gap:0;
-}
-.nav-brand{
-  font-size:1.05rem;font-weight:700;color:var(--text);
-  display:flex;align-items:center;gap:.5rem;padding:.9rem 0;
-  margin-right:1.5rem;cursor:pointer;flex-shrink:0;
-}
-.nav-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--acc);
-  box-shadow:0 0 0 3px var(--acc-s)}
-.nav-tabs{display:flex;gap:0;height:100%;flex:1}
-.nav-tab{
-  background:none;border:none;border-bottom:2.5px solid transparent;
-  font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:500;
-  color:var(--muted);padding:.85rem 1.1rem;cursor:pointer;
-  transition:all .16s;white-space:nowrap;
-}
+/* ─── NAV ────────────────────────────────────────── */
+nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1.5px solid var(--border);box-shadow:0 2px 12px var(--sh);display:flex;align-items:center;padding:0 1rem;gap:0}
+.nav-brand{font-size:1.05rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.5rem;padding:.9rem 0;margin-right:1rem;cursor:pointer;flex-shrink:0}
+.nav-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 3px var(--acc-s)}
+.nav-tabs{display:flex;gap:0;height:100%;flex:1;overflow-x:auto;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{background:none;border:none;border-bottom:2.5px solid transparent;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:500;color:var(--muted);padding:.85rem 1rem;cursor:pointer;transition:all .16s;white-space:nowrap}
 .nav-tab:hover{color:var(--text)}
 .nav-tab.active{color:var(--acc);border-bottom-color:var(--acc)}
-.nav-status{
-  margin-left:auto;font-size:.72rem;color:var(--muted);
-  display:flex;align-items:center;gap:.5rem;flex-shrink:0;
-}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.nav-status{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
 .status-dot.ok{background:var(--acc2)}
 .status-dot.loading{background:var(--acc);animation:pulse .9s ease infinite}
+.status-dot.err{background:#c96b6b}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.icon-btn{background:none;border:1.5px solid var(--border);border-radius:9px;color:var(--text2);font-size:.82rem;padding:.28rem .55rem;cursor:pointer;transition:all .14s;line-height:1}
+.icon-btn:hover{background:var(--panel);color:var(--text)}
+.menu-btn{display:none}
+@media(max-width:720px){.menu-btn{display:flex}}
 
-/* ─── VIEW SYSTEM ─────────────────────────────────── */
+/* ─── VIEWS ──────────────────────────────────────── */
 .view{display:none;position:relative;z-index:1}
 .view.active{display:block}
 .view.fadein{animation:vfade .28s ease}
 @keyframes vfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* ════════════════════════════════════════════════════
-   HOME VIEW
-════════════════════════════════════════════════════ */
+/* ════════ HOME ════════════════════════════════════ */
 #homeView{padding:2.5rem 2.5rem 3rem;max-width:1100px;margin:0 auto}
-
-.home-hero{
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:20px;padding:2.5rem 2.8rem;
-  box-shadow:0 4px 20px var(--sh);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:2rem;flex-wrap:wrap;margin-bottom:1.8rem;
-  background-image:radial-gradient(ellipse at 80% 50%,var(--acc-s) 0%,transparent 65%);
-}
-.hero-text h2{
-  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
-  letter-spacing:-.03em;color:var(--text);line-height:1.15;
-}
+@media(max-width:720px){#homeView{padding:1.2rem}}
+.home-hero{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:2.5rem 2.8rem;box-shadow:0 4px 20px var(--sh);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:1.8rem;background-image:radial-gradient(ellipse at 80% 50%,var(--acc-s) 0%,transparent 65%)}
+.hero-text h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;color:var(--text);line-height:1.15}
 .hero-text h2 em{font-style:normal;color:var(--acc)}
 .hero-text p{font-size:.88rem;color:var(--text2);margin-top:.5rem;line-height:1.55}
-.hero-cta{
-  background:var(--acc);color:#fff;border:none;
-  font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;
-  padding:.7rem 1.6rem;border-radius:100px;cursor:pointer;
-  transition:all .16s;white-space:nowrap;
-  box-shadow:0 4px 14px rgba(196,127,94,.35);
-}
-.hero-cta:hover{background:#b36e4d;transform:translateY(-1px);box-shadow:0 6px 20px rgba(196,127,94,.4)}
-
-.hero-stats{
-  display:flex;gap:1.2rem;flex-wrap:wrap;flex-shrink:0;
-}
-.hstat{
-  background:var(--panel);border:1.5px solid var(--border);
-  border-radius:14px;padding:.9rem 1.3rem;text-align:center;min-width:80px;
-}
+.hero-cta{background:var(--acc);color:#fff;border:none;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;padding:.7rem 1.6rem;border-radius:100px;cursor:pointer;transition:all .16s;white-space:nowrap;box-shadow:0 4px 14px rgba(196,127,94,.35)}
+.hero-cta:hover{background:#b36e4d;transform:translateY(-1px)}
+.hero-stats{display:flex;gap:1.2rem;flex-wrap:wrap;flex-shrink:0}
+.hstat{background:var(--panel);border:1.5px solid var(--border);border-radius:14px;padding:.9rem 1.3rem;text-align:center;min-width:80px}
 .hstat-n{font-size:2rem;font-weight:800;color:var(--acc);line-height:1}
 .hstat-l{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.25rem}
-
-/* home grid sections */
 .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
 @media(max-width:720px){.home-grid{grid-template-columns:1fr}}
-
-.home-card{
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:16px;padding:1.4rem;box-shadow:0 2px 10px var(--sh);
-}
-.home-card-title{
-  font-size:.62rem;font-weight:600;text-transform:uppercase;
-  letter-spacing:.12em;color:var(--muted);margin-bottom:1rem;
-}
-
-/* language bars */
+.home-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.4rem;box-shadow:0 2px 10px var(--sh)}
+.home-card-title{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:1rem}
 .lang-bar-row{display:flex;flex-direction:column;gap:.55rem}
 .lb-item{display:flex;align-items:center;gap:.7rem;font-size:.8rem}
 .lb-name{width:70px;flex-shrink:0;font-weight:500;color:var(--text2)}
 .lb-track{flex:1;height:7px;background:var(--panel);border-radius:100px;overflow:hidden}
 .lb-fill{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.22,1,.36,1)}
 .lb-cnt{flex-shrink:0;font-size:.7rem;color:var(--muted);width:26px;text-align:right}
-
-/* contest list (home) */
 .contest-scroll{max-height:220px;overflow-y:auto}
-.contest-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.42rem .5rem;border-radius:8px;cursor:pointer;
-  font-size:.82rem;transition:background .14s;
-}
+.contest-row{display:flex;align-items:center;justify-content:space-between;padding:.42rem .5rem;border-radius:8px;cursor:pointer;font-size:.82rem;transition:background .14s}
 .contest-row:hover{background:var(--panel)}
 .contest-row-name{font-weight:500;color:var(--text)}
 .contest-row-meta{font-size:.7rem;color:var(--muted);display:flex;gap:.5rem;align-items:center}
-
-/* recent list */
 .recent-list{display:flex;flex-direction:column;gap:.4rem}
-.recent-item{
-  display:flex;align-items:center;gap:.65rem;padding:.42rem .5rem;
-  border-radius:8px;cursor:pointer;transition:background .14s;
-}
+.recent-item{display:flex;align-items:center;gap:.65rem;padding:.42rem .5rem;border-radius:8px;cursor:pointer;transition:background .14s}
 .recent-item:hover{background:var(--panel)}
-.recent-fname{font-size:.82rem;font-weight:500;color:var(--text);flex:1;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.recent-chip{
-  flex-shrink:0;font-size:.58rem;font-weight:600;letter-spacing:.04em;
-  padding:.13rem .48rem;border-radius:100px;
-}
+.recent-fname{font-size:.82rem;font-weight:500;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-chip{flex-shrink:0;font-size:.58rem;font-weight:600;letter-spacing:.04em;padding:.13rem .48rem;border-radius:100px}
 
-/* ════════════════════════════════════════════════════
-   ARCHIVE VIEW
-════════════════════════════════════════════════════ */
+/* ════════ ARCHIVE ══════════════════════════════════ */
 #archiveView{display:none}
-#archiveView.active{
-  display:grid;
-  grid-template-columns:224px 1fr;
-  gap:1.4rem;padding:1.6rem 1.8rem;
-  max-width:1280px;margin:0 auto;
-  align-items:start;
-}
+#archiveView.active{display:grid;grid-template-columns:224px 1fr;gap:1.4rem;padding:1.6rem 1.8rem;max-width:1280px;margin:0 auto;align-items:start}
+@media(max-width:720px){#archiveView.active{grid-template-columns:1fr;padding:1rem}}
 
-/* SIDEBAR */
-aside{
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:16px;padding:1.2rem;box-shadow:0 2px 10px var(--sh);
-  position:sticky;top:calc(44px + 1.4rem);
-  max-height:calc(100vh - 44px - 3rem);overflow-y:auto;
+/* drawer overlay */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:140}
+.drawer-overlay.open{display:block}
+
+aside{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;box-shadow:0 2px 10px var(--sh);position:sticky;top:calc(44px + 1.4rem);max-height:calc(100vh - 44px - 3rem);overflow-y:auto}
+@media(max-width:720px){
+  aside{position:fixed;top:0;left:0;bottom:0;width:260px;border-radius:0 16px 16px 0;z-index:150;transform:translateX(-110%);transition:transform .25s ease;max-height:100vh}
+  aside.open{transform:translateX(0);box-shadow:4px 0 32px rgba(0,0,0,.25)}
 }
 .sec{margin-bottom:1.1rem}
 .sec:last-child{margin-bottom:0}
-.sec-lbl{
-  font-size:.6rem;font-weight:600;text-transform:uppercase;
-  letter-spacing:.13em;color:var(--muted);margin-bottom:.5rem;padding-left:.25rem;
-}
+.sec-lbl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-bottom:.5rem;padding-left:.25rem}
 .search-wrap{position:relative}
-.search-wrap::before{
-  content:'⌕';position:absolute;left:.7rem;top:50%;transform:translateY(-50%);
-  color:var(--muted);font-size:1rem;pointer-events:none;
-}
-.sbox{
-  width:100%;background:var(--panel);border:1.5px solid var(--border);color:var(--text);
-  font-family:'Outfit',sans-serif;font-size:.8rem;
-  padding:.46rem .7rem .46rem 2rem;border-radius:10px;outline:none;
-  transition:border-color .18s,box-shadow .18s;
-}
+.search-wrap::before{content:'⌕';position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none}
+.sbox{width:100%;background:var(--panel);border:1.5px solid var(--border);color:var(--text);font-family:'Outfit',sans-serif;font-size:.8rem;padding:.46rem .7rem .46rem 2rem;border-radius:10px;outline:none;transition:border-color .18s,box-shadow .18s}
 .sbox:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-s)}
 .sbox::placeholder{color:var(--muted)}
 .fg{display:flex;flex-direction:column;gap:.18rem}
-.fb{
-  background:none;border:1.5px solid transparent;color:var(--text2);
-  font-family:'Outfit',sans-serif;font-size:.79rem;padding:.34rem .6rem;
-  text-align:left;border-radius:9px;cursor:pointer;
-  display:flex;align-items:center;gap:.5rem;transition:all .14s;
-  white-space:nowrap;overflow:hidden;
-}
+.fb{background:none;border:1.5px solid transparent;color:var(--text2);font-family:'Outfit',sans-serif;font-size:.79rem;padding:.34rem .6rem;text-align:left;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:all .14s;white-space:nowrap;overflow:hidden}
 .fb:hover{background:var(--panel);color:var(--text)}
 .fb.on{background:var(--acc-s);border-color:rgba(196,127,94,.38);color:var(--acc);font-weight:500}
+.fav-fb.on{background:rgba(255,200,50,.12);border-color:rgba(200,160,0,.3);color:#b08a00}
+[data-theme="dark"] .fav-fb.on{color:#d4b040}
 .ldot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.cc{margin-left:auto;font-size:.6rem;background:var(--panel);
-  border:1px solid var(--border);border-radius:100px;padding:.04rem .38rem;color:var(--muted)}
-
-/* SORT BAR */
+.cc{margin-left:auto;font-size:.6rem;background:var(--panel);border:1px solid var(--border);border-radius:100px;padding:.04rem .38rem;color:var(--muted)}
 .sort-bar{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem;flex-wrap:wrap}
 .rinfo{font-size:.75rem;color:var(--muted)}
 .rinfo strong{color:var(--text);font-weight:600}
-.sort-group{
-  margin-left:auto;display:flex;
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:10px;overflow:hidden;
-}
-.sb{
-  background:none;border:none;border-right:1px solid var(--border);
-  color:var(--muted);font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:500;
-  padding:.34rem .78rem;cursor:pointer;transition:all .14s;white-space:nowrap;
-}
+.sort-group{margin-left:auto;display:flex;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+.sb{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:500;padding:.34rem .78rem;cursor:pointer;transition:all .14s;white-space:nowrap}
 .sb:last-child{border-right:none}
 .sb:hover{background:var(--panel);color:var(--text)}
 .sb.on{background:var(--acc);color:#fff}
 
-/* CARDS */
+/* cards */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:.9rem}
-.card{
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:14px;overflow:hidden;cursor:pointer;
-  transition:border-color .18s,transform .16s,box-shadow .18s;
-  animation:rise .3s ease both;
-}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .18s,transform .16s,box-shadow .18s;animation:rise .3s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .card:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:0 8px 28px var(--sh-m)}
 .card-top{padding:.82rem .95rem .6rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
 .card-name{font-size:.84rem;font-weight:600;color:var(--text);word-break:break-all;line-height:1.3}
 .card-sub{font-size:.67rem;color:var(--muted);margin-top:.1rem}
 .chip{flex-shrink:0;font-size:.59rem;font-weight:600;letter-spacing:.04em;padding:.15rem .5rem;border-radius:100px}
-.card-prev{
-  margin:0 .7rem;background:var(--panel);border-radius:8px;
-  padding:.52rem .68rem;font-family:'JetBrains Mono',monospace;
-  font-size:.63rem;line-height:1.5;color:var(--text2);
-  max-height:64px;overflow:hidden;white-space:pre;
-  mask-image:linear-gradient(180deg,#000 35%,transparent);
-}
-.ws-prev{
-  display:flex;align-items:center;justify-content:center;
-  height:54px;color:var(--muted);font-family:'Outfit',sans-serif;
-  font-size:.7rem;font-style:italic;white-space:normal;
-  mask-image:none;border:1.5px dashed var(--border);
-}
+.card-prev{margin:0 .7rem;background:var(--panel);border-radius:8px;padding:.52rem .68rem;font-family:'JetBrains Mono',monospace;font-size:.63rem;line-height:1.5;color:var(--text2);max-height:64px;overflow:hidden;white-space:pre;mask-image:linear-gradient(180deg,#000 35%,transparent)}
+.ws-prev{display:flex;align-items:center;justify-content:center;height:54px;color:var(--muted);font-family:'Outfit',sans-serif;font-size:.7rem;font-style:italic;white-space:normal;mask-image:none;border:1.5px dashed var(--border)}
 .bf-prev{color:#8c7ab5}
-.card-foot{
-  padding:.52rem .95rem .68rem;
-  display:flex;align-items:center;gap:.4rem;font-size:.65rem;color:var(--muted);
-}
-.ctag{
-  background:var(--panel);border:1px solid var(--border);border-radius:100px;
-  padding:.08rem .44rem;font-size:.62rem;font-weight:500;color:var(--text2);
-}
-.path-tag{font-size:.6rem;color:var(--muted);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}
-.user-tag{
-  font-size:.6rem;color:var(--acc2);font-weight:500;
-  background:var(--acc2-s);border:1px solid rgba(122,171,140,.3);
-  border-radius:100px;padding:.08rem .44rem;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px;
-}
+.card-foot{padding:.52rem .95rem .68rem;display:flex;align-items:center;gap:.4rem;font-size:.65rem;color:var(--muted);flex-wrap:wrap}
+.ctag{background:var(--panel);border:1px solid var(--border);border-radius:100px;padding:.08rem .44rem;font-size:.62rem;font-weight:500;color:var(--text2)}
+.path-tag{font-size:.6rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px}
+.user-tag{font-size:.6rem;color:var(--acc2);font-weight:500;background:var(--acc2-s);border:1px solid rgba(122,171,140,.3);border-radius:100px;padding:.08rem .44rem;white-space:nowrap}
+.match-badge{font-size:.58rem;color:var(--acc2);background:var(--acc2-s);border:1px solid rgba(122,171,140,.3);border-radius:100px;padding:.08rem .44rem;flex-shrink:0}
+.star-btn{margin-left:auto;background:none;border:none;font-size:.9rem;cursor:pointer;padding:.1rem .15rem;color:var(--border-s);transition:color .14s,transform .12s;line-height:1;flex-shrink:0}
+.star-btn:hover{color:#c9a030;transform:scale(1.2)}
+.star-btn.on{color:#c9a030}
 
-/* ─── MODAL ─────────────────────────────────────── */
-.backdrop{
-  display:none;position:fixed;inset:0;
-  background:rgba(50,38,28,.42);backdrop-filter:blur(6px);
-  z-index:200;align-items:center;justify-content:center;padding:1.5rem;
-}
+/* ─── MODAL ──────────────────────────────────────── */
+.backdrop{display:none;position:fixed;inset:0;background:rgba(50,38,28,.42);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;padding:1.5rem}
 .backdrop.open{display:flex}
-.modal{
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:18px;width:100%;max-width:840px;max-height:90vh;
-  display:flex;flex-direction:column;
-  box-shadow:0 24px 80px rgba(60,45,35,.22);
-  animation:popIn .22s cubic-bezier(.34,1.56,.64,1);overflow:hidden;
-}
+.modal{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(60,45,35,.22);animation:popIn .22s cubic-bezier(.34,1.56,.64,1);overflow:hidden}
 @keyframes popIn{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
-.modal-head{
-  padding:.95rem 1.25rem;border-bottom:1.5px solid var(--border);
-  display:flex;align-items:center;gap:.7rem;flex-shrink:0;background:var(--panel);
-}
+.modal-head{padding:.95rem 1.25rem;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:.7rem;flex-shrink:0;background:var(--panel)}
 .minfo{flex:1;min-width:0}
-.mfname{font-size:.92rem;font-weight:600;color:var(--text);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mfname{font-size:.92rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mmeta{font-size:.67rem;color:var(--muted);margin-top:.08rem}
-.macts{display:flex;gap:.45rem;flex-shrink:0}
-.abt{
-  background:var(--surface);border:1.5px solid var(--border);color:var(--text2);
-  font-family:'Outfit',sans-serif;font-size:.73rem;font-weight:500;
-  padding:.34rem .82rem;border-radius:9px;cursor:pointer;transition:all .14s;
-}
+.macts{display:flex;gap:.38rem;flex-shrink:0;flex-wrap:wrap}
+.abt{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);font-family:'Outfit',sans-serif;font-size:.73rem;font-weight:500;padding:.3rem .75rem;border-radius:9px;cursor:pointer;transition:all .14s}
 .abt:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-s)}
-.abt.x:hover{border-color:#c96b6b;color:#c96b6b;background:#fdf0f0}
-.modal-body{overflow-y:auto;flex:1;background:#faf9f7}
-.modal-body pre{margin:0;border-radius:0;background:#faf9f7!important}
-.modal-body code.hljs{
-  font-family:'JetBrains Mono',monospace!important;
-  font-size:.79rem!important;line-height:1.8!important;
-  padding:1.3rem 1.5rem!important;background:#faf9f7!important;
-}
-.bf-view{
-  font-family:'JetBrains Mono',monospace;font-size:.79rem;
-  line-height:1.9;padding:1.3rem 1.5rem;white-space:pre-wrap;
-  word-break:break-all;background:#faf9f7;
-}
-.ws-legend{
-  display:flex;gap:1rem;padding:.55rem 1.4rem;
-  border-bottom:1px solid var(--border);background:var(--panel);
-  font-size:.68rem;color:var(--muted);flex-wrap:wrap;align-items:center;
-}
+.abt.x:hover{border-color:#c96b6b;color:#c96b6b;background:rgba(201,107,107,.08)}
+.abt:disabled{opacity:.3;cursor:default}
+.abt:disabled:hover{border-color:var(--border);color:var(--text2);background:var(--surface)}
+.abt.fav-on{color:#b08a00;border-color:rgba(200,160,0,.4);background:rgba(255,200,50,.1)}
+.modal-body{overflow-y:auto;flex:1;background:var(--modal-bg)}
+.modal-body pre{margin:0;border-radius:0;background:var(--modal-bg)!important}
+
+/* line numbers */
+.code-with-lines{display:flex}
+.line-nums{flex-shrink:0;user-select:none;padding:1.3rem .7rem 1.3rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.8;color:var(--muted);text-align:right;background:var(--panel);border-right:1px solid var(--border);min-width:2.8rem}
+.hljs-code-wrap{flex:1;overflow-x:auto}
+.modal-body code.hljs{font-family:'JetBrains Mono',monospace!important;font-size:.79rem!important;line-height:1.8!important;padding:1.3rem 1.5rem!important;background:var(--modal-bg)!important}
+.bf-view{font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.9;padding:1.3rem 1.5rem;white-space:pre-wrap;word-break:break-all;background:var(--modal-bg)}
+.ws-legend{display:flex;gap:1rem;padding:.55rem 1.4rem;border-bottom:1px solid var(--border);background:var(--panel);font-size:.68rem;color:var(--muted);flex-wrap:wrap;align-items:center}
 .ws-legend span{display:flex;align-items:center;gap:.3rem}
-.ws-view{
-  font-family:'JetBrains Mono',monospace;font-size:.77rem;
-  line-height:2.05;padding:1.3rem 1.5rem;background:#faf9f7;
-}
+.ws-view{font-family:'JetBrains Mono',monospace;font-size:.77rem;line-height:2.05;padding:1.3rem 1.5rem;background:var(--modal-bg)}
 .S{background:#dff0e8;border-radius:3px;padding:1px 4px;color:#7aab8c}
 .T{background:#e8eef7;border-radius:3px;padding:1px 4px;color:#7a9dbf}
 .LF{color:var(--muted)}
-.OT{color:#d4ccc0;text-decoration:line-through}
+.OT{color:var(--border-s);text-decoration:line-through}
 
-/* ─── STATES ─────────────────────────────────────── */
-.sbox-s{
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:5rem 2rem;gap:1rem;
-  color:var(--muted);font-size:.82rem;text-align:center;
-}
-.spin{
-  width:26px;height:26px;border:2.5px solid var(--border);
-  border-top-color:var(--acc);border-radius:50%;
-  animation:spin .75s linear infinite;
-}
+/* states */
+.sbox-s{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;gap:1rem;color:var(--muted);font-size:.82rem;text-align:center}
+.spin{width:26px;height:26px;border:2.5px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .75s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.err-card{
-  background:#fff8f7;border:1.5px solid #f0d0c4;border-radius:14px;
-  padding:1.3rem 1.5rem;font-size:.79rem;color:#a0503a;
-  line-height:1.85;display:none;margin-bottom:1rem;
-}
-.err-card code{
-  font-family:'JetBrains Mono',monospace;background:var(--panel);
-  border-radius:6px;padding:.5rem .8rem;display:block;
-  margin:.3rem 0;color:var(--text);font-size:.73rem;
-}
-@media(max-width:720px){
-  #archiveView.active{grid-template-columns:1fr;padding:1rem}
-  aside{position:static;max-height:none}
-  #homeView{padding:1.2rem}
-  nav{padding:0 1rem}
-}
+.err-card{background:rgba(201,107,107,.07);border:1.5px solid rgba(201,107,107,.3);border-radius:14px;padding:1.3rem 1.5rem;font-size:.79rem;color:#a0503a;line-height:1.85;display:none;margin-bottom:1rem}
+.err-card code{font-family:'JetBrains Mono',monospace;background:var(--panel);border-radius:6px;padding:.5rem .8rem;display:block;margin:.3rem 0;color:var(--text);font-size:.73rem}
+
+/* ════════ RANKINGS ═════════════════════════════════ */
+#rankingsView{padding:2rem 2.5rem 3rem;max-width:900px;margin:0 auto}
+@media(max-width:720px){#rankingsView{padding:1.2rem}}
+.view-heading{font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:1.4rem;display:flex;align-items:center;gap:.6rem}
+.view-heading::before{content:'';display:inline-block;width:4px;height:1.1em;background:var(--acc);border-radius:2px;flex-shrink:0}
+.rank-table{width:100%;border-collapse:collapse;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--sh)}
+.rank-table th{background:var(--panel);font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:.65rem 1rem;text-align:left;border-bottom:1.5px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;transition:color .14s}
+.rank-table th:hover{color:var(--text)}
+.rank-table th.asc::after{content:' ↑';color:var(--acc)}
+.rank-table th.desc::after{content:' ↓';color:var(--acc)}
+.rank-table td{padding:.6rem 1rem;font-size:.83rem;color:var(--text2);border-bottom:1px solid var(--border)}
+.rank-table tr:last-child td{border-bottom:none}
+.rank-table tr:hover td{background:var(--panel)}
+.rank-num{font-size:.72rem;color:var(--muted);font-weight:600;text-align:center}
+.rank-num.gold{color:#c9a030}
+.rank-num.silver{color:#909090}
+.rank-num.bronze{color:#a06040}
+.rank-user{font-weight:600;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.rank-avatar{width:26px;height:26px;border-radius:50%;background:var(--acc-s);border:1.5px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:var(--acc);flex-shrink:0}
+.rank-bar{display:flex;align-items:center;gap:.5rem}
+.rank-bar-track{width:72px;height:6px;background:var(--panel);border-radius:100px;overflow:hidden;flex-shrink:0}
+.rank-bar-fill{height:100%;border-radius:100px;background:var(--acc)}
+.lang-chips{display:flex;gap:.3rem;flex-wrap:wrap}
+.lang-chip-sm{font-size:.56rem;font-weight:600;padding:.1rem .35rem;border-radius:100px}
+
+/* ════════ PROGRESS ═════════════════════════════════ */
+#progressView{padding:2rem 2.5rem 3rem;max-width:100%;margin:0 auto}
+@media(max-width:720px){#progressView{padding:1.2rem}}
+.pg-table-wrap{overflow-x:auto;border:1.5px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:0 2px 10px var(--sh)}
+.pg-table{border-collapse:collapse;min-width:max-content}
+.pg-table th{background:var(--panel);border-right:1px solid var(--border);border-bottom:1.5px solid var(--border);font-size:.6rem;font-weight:600;color:var(--muted);writing-mode:vertical-rl;padding:.5rem .3rem;position:sticky;top:0;z-index:1;min-height:60px;white-space:nowrap}
+.pg-table th.corner{background:var(--panel);border-right:1.5px solid var(--border);position:sticky;left:0;z-index:3;min-width:110px;writing-mode:horizontal-tb}
+.pg-table td{border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;font-size:.75rem;font-weight:600;min-width:44px;padding:.3rem;transition:background .1s}
+.pg-table td.user-col{font-size:.78rem;font-weight:600;color:var(--text);border-right:1.5px solid var(--border);white-space:nowrap;background:var(--surface);position:sticky;left:0;z-index:2;padding:.38rem .7rem;min-width:110px}
+.pg-0{background:var(--panel);color:transparent}
+.pg-1{background:rgba(122,171,140,.22);color:var(--acc2)}
+.pg-2{background:rgba(122,171,140,.42);color:#3a8060}
+.pg-3{background:rgba(122,171,140,.62);color:#1a6040}
+.pg-hi{background:rgba(122,171,140,.82);color:#0a4030}
+[data-theme="dark"] .pg-1{color:var(--acc2)}
+[data-theme="dark"] .pg-2{color:#9ad4b8}
+[data-theme="dark"] .pg-3{color:#bce8d0}
+[data-theme="dark"] .pg-hi{color:#dff5eb}
+.pg-legend{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.68rem;color:var(--muted)}
+.pg-swatch{width:14px;height:14px;border-radius:3px}
 </style>
 </head>
 <body>
 
-<!-- ─── NAV ──────────────────────────────────────── -->
-<nav id="appNav">
-  <div class="nav-brand" onclick="showView('home')">
-    <span class="dot"></span> AtCoder Archive
-  </div>
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="showView('home')"><span class="dot"></span> AtCoder Archive</div>
   <div class="nav-tabs">
     <button class="nav-tab active" data-view="home">🏠 Home</button>
     <button class="nav-tab" data-view="archive">📁 Archive</button>
+    <button class="nav-tab" data-view="rankings">🏆 Rankings</button>
+    <button class="nav-tab" data-view="progress">📊 Progress</button>
   </div>
-  <div class="nav-status">
-    <span class="status-dot loading" id="statusDot"></span>
-    <span id="statusText">Loading…</span>
+  <div class="nav-right">
+    <div class="nav-status"><span class="status-dot loading" id="statusDot"></span><span id="statusText">Loading…</span></div>
+    <button class="icon-btn" id="darkBtn" onclick="toggleDark()" title="ダークモード">🌙</button>
+    <button class="icon-btn menu-btn" onclick="openDrawer()" title="フィルター">☰</button>
   </div>
 </nav>
 
-<!-- ═══════════════ HOME VIEW ═══════════════════════ -->
+<!-- HOME -->
 <div class="view active fadein" id="homeView">
   <div class="home-hero">
     <div class="hero-text">
       <h2>My AtCoder<br><em>Solutions</em></h2>
       <p>競プロで解いたコードのアーカイブ</p>
-      <button class="hero-cta" style="margin-top:1.1rem" onclick="showView('archive')">
-        Browse Archive →
-      </button>
+      <button class="hero-cta" style="margin-top:1.1rem" onclick="showView('archive')">Browse Archive →</button>
     </div>
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-n" id="hTotal">—</div><div class="hstat-l">Solutions</div></div>
       <div class="hstat"><div class="hstat-n" id="hContests">—</div><div class="hstat-l">Contests</div></div>
       <div class="hstat"><div class="hstat-n" id="hLangs">—</div><div class="hstat-l">Languages</div></div>
-      <!-- Users stat: shown only when user folders exist -->
-      <div class="hstat" id="hUsersStat" style="display:none">
-        <div class="hstat-n" id="hUsers">—</div>
-        <div class="hstat-l">Users</div>
-      </div>
+      <div class="hstat" id="hUsersStat" style="display:none"><div class="hstat-n" id="hUsers">—</div><div class="hstat-l">Users</div></div>
     </div>
   </div>
-
   <div class="home-grid">
-    <!-- Language breakdown -->
-    <div class="home-card">
-      <div class="home-card-title">Language Breakdown</div>
-      <div class="lang-bar-row" id="langBars">
-        <div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div>
-      </div>
-    </div>
-
-    <!-- Recent solutions -->
-    <div class="home-card">
-      <div class="home-card-title">Recent Solutions</div>
-      <div class="recent-list" id="recentList">
-        <div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div>
-      </div>
-    </div>
-
-    <!-- Contest list -->
-    <div class="home-card" style="grid-column:1/-1">
-      <div class="home-card-title">Contests</div>
-      <div class="contest-scroll">
-        <div class="contest-rows" id="contestRows">
-          <div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div>
-        </div>
-      </div>
-    </div>
+    <div class="home-card"><div class="home-card-title">Language Breakdown</div><div class="lang-bar-row" id="langBars"><div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div></div></div>
+    <div class="home-card"><div class="home-card-title">Recent Solutions</div><div class="recent-list" id="recentList"><div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div></div></div>
+    <div class="home-card" style="grid-column:1/-1"><div class="home-card-title">Contests</div><div class="contest-scroll"><div id="contestRows"><div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div></div></div></div>
   </div>
 </div>
 
-<!-- ═══════════════ ARCHIVE VIEW ════════════════════ -->
+<!-- ARCHIVE -->
 <div class="view" id="archiveView">
-  <!-- sidebar -->
-  <aside>
+  <aside id="sidebar">
     <div class="sec">
       <div class="sec-lbl">Search</div>
-      <div class="search-wrap">
-        <input class="sbox" id="searchBox" type="text" placeholder="abc001, a, brainfuck…">
-      </div>
+      <div class="search-wrap"><input class="sbox" id="searchBox" type="text" placeholder="abc001, a, brainfuck…"></div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:.35rem;padding-left:.25rem" id="codeSearchStatus"></div>
     </div>
     <div class="sec">
-      <div class="sec-lbl">Language</div>
-      <div class="fg" id="langFilters">
-        <button class="fb on" data-lang="all"><span class="ldot" style="background:var(--muted)"></span>All</button>
-      </div>
+      <div class="sec-lbl">Quick filter</div>
+      <div class="fg"><button class="fb fav-fb" id="favFilterBtn" onclick="toggleFavFilter()">⭐ Favorites<span class="cc" id="favCount">0</span></button></div>
     </div>
-    <!-- User filter: shown only when user folders exist -->
-    <div class="sec" id="userSection" style="display:none">
-      <div class="sec-lbl">User</div>
-      <div class="fg" id="userFilters"></div>
-    </div>
-    <div class="sec">
-      <div class="sec-lbl">Contest</div>
-      <div class="fg" id="contestFilters"></div>
-    </div>
+    <div class="sec"><div class="sec-lbl">Language</div><div class="fg" id="langFilters"><button class="fb on" data-lang="all"><span class="ldot" style="background:var(--muted)"></span>All</button></div></div>
+    <div class="sec" id="userSection" style="display:none"><div class="sec-lbl">User</div><div class="fg" id="userFilters"></div></div>
+    <div class="sec"><div class="sec-lbl">Contest</div><div class="fg" id="contestFilters"></div></div>
   </aside>
-
-  <!-- main area -->
   <main>
     <div class="err-card" id="errCard"></div>
     <div class="sort-bar" id="sortBar" style="display:none">
       <span class="rinfo" id="rinfo"></span>
       <div class="sort-group">
-        <button class="sb on"  data-sort="contest-asc" title="コンテスト古い順">Contest ↑</button>
-        <button class="sb"     data-sort="contest-desc" title="コンテスト新しい順">Contest ↓</button>
-        <button class="sb"     data-sort="name-asc"    title="ファイル名順">Name</button>
-        <button class="sb"     data-sort="lang"        title="言語順">Lang</button>
+        <button class="sb on" data-sort="contest-asc">Contest ↑</button>
+        <button class="sb" data-sort="contest-desc">Contest ↓</button>
+        <button class="sb" data-sort="name-asc">Name</button>
+        <button class="sb" data-sort="lang">Lang</button>
       </div>
     </div>
-    <div id="cardsWrap" class="sbox-s">
-      <div class="spin"></div><span>Scanning archive…</span>
-    </div>
+    <div id="cardsWrap" class="sbox-s"><div class="spin"></div><span>Scanning archive…</span></div>
   </main>
 </div>
 
-<!-- ─── MODAL ───────────────────────────────────── -->
+<!-- RANKINGS -->
+<div class="view" id="rankingsView">
+  <div class="view-heading">User Rankings</div>
+  <div id="rankingsContent"><div class="sbox-s"><div class="spin"></div></div></div>
+</div>
+
+<!-- PROGRESS -->
+<div class="view" id="progressView">
+  <div class="view-heading">Contest Progress by User</div>
+  <div id="progressContent"><div class="sbox-s"><div class="spin"></div></div></div>
+</div>
+
+<!-- MODAL -->
 <div class="backdrop" id="backdrop">
   <div class="modal">
     <div class="modal-head">
-      <div class="minfo">
-        <div class="mfname" id="mFname"></div>
-        <div class="mmeta"  id="mMeta"></div>
-      </div>
+      <div class="minfo"><div class="mfname" id="mFname"></div><div class="mmeta" id="mMeta"></div></div>
       <div class="macts">
+        <button class="abt" id="prevBtn">←</button>
+        <button class="abt" id="nextBtn">→</button>
+        <button class="abt" id="favModalBtn">☆</button>
         <button class="abt" id="copyBtn">Copy</button>
         <button class="abt x" id="closeBtn">✕</button>
       </div>
     </div>
-    <div class="modal-body" id="modalBody">
-      <div class="sbox-s"><div class="spin"></div></div>
-    </div>
+    <div class="modal-body" id="modalBody"><div class="sbox-s"><div class="spin"></div></div></div>
   </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════════════════
-   LANG META
-════════════════════════════════════════════════════ */
+/* ════ LANG META ════════════════════════════════════ */
 const LANGS={
-  py:   {label:'Python',    color:'#5a9fd4',bg:'#edf4fb',hljs:'python'},
-  c:    {label:'C',         color:'#7a7abf',bg:'#f0f0fa',hljs:'c'},
-  cpp:  {label:'C++',       color:'#c9687a',bg:'#fbeeef',hljs:'cpp'},
-  cc:   {label:'C++',       color:'#c9687a',bg:'#fbeeef',hljs:'cpp'},
-  java: {label:'Java',      color:'#c48c3a',bg:'#faf3e6',hljs:'java'},
-  rs:   {label:'Rust',      color:'#b07458',bg:'#f8ede8',hljs:'rust'},
-  js:   {label:'JS',        color:'#c9b030',bg:'#faf7e0',hljs:'javascript'},
-  rb:   {label:'Ruby',      color:'#c04040',bg:'#fde8e8',hljs:'ruby'},
-  bf:   {label:'Brainfuck', color:'#8c7ab5',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
-  b:    {label:'Brainfuck', color:'#8c7ab5',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
-  ws:   {label:'Whitespace',color:'#7aab8c',bg:'#eaf3ee',hljs:'whitespace',esoteric:true},
-  hs:   {label:'Haskell',   color:'#6a7db5',bg:'#eef0f9',hljs:'haskell'},
-  go:   {label:'Go',        color:'#5ab5b5',bg:'#e8f6f6',hljs:'go'},
-  sh:   {label:'Shell',     color:'#7ab56a',bg:'#edf7ea',hljs:'bash'},
-  pl:   {label:'Perl',      color:'#a06090',bg:'#f5ecf4',hljs:'perl'},
-  php:  {label:'PHP',       color:'#7a8abf',bg:'#eef0fa',hljs:'php'},
-  kt:   {label:'Kotlin',    color:'#a07ab5',bg:'#f4eef9',hljs:'kotlin'},
-  swift:{label:'Swift',     color:'#c97040',bg:'#faeee8',hljs:'swift'},
-  cs:   {label:'C#',        color:'#5a8a5a',bg:'#eaf4ea',hljs:'csharp'},
+  py:{label:'Python',color:'#5a9fd4',bg:'#edf4fb',hljs:'python'},
+  c:{label:'C',color:'#7a7abf',bg:'#f0f0fa',hljs:'c'},
+  cpp:{label:'C++',color:'#c9687a',bg:'#fbeeef',hljs:'cpp'},
+  cc:{label:'C++',color:'#c9687a',bg:'#fbeeef',hljs:'cpp'},
+  java:{label:'Java',color:'#c48c3a',bg:'#faf3e6',hljs:'java'},
+  rs:{label:'Rust',color:'#b07458',bg:'#f8ede8',hljs:'rust'},
+  js:{label:'JS',color:'#c9b030',bg:'#faf7e0',hljs:'javascript'},
+  rb:{label:'Ruby',color:'#c04040',bg:'#fde8e8',hljs:'ruby'},
+  bf:{label:'Brainfuck',color:'#8c7ab5',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
+  b:{label:'Brainfuck',color:'#8c7ab5',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
+  ws:{label:'Whitespace',color:'#7aab8c',bg:'#eaf3ee',hljs:'whitespace',esoteric:true},
+  hs:{label:'Haskell',color:'#6a7db5',bg:'#eef0f9',hljs:'haskell'},
+  go:{label:'Go',color:'#5ab5b5',bg:'#e8f6f6',hljs:'go'},
+  sh:{label:'Shell',color:'#7ab56a',bg:'#edf7ea',hljs:'bash'},
+  pl:{label:'Perl',color:'#a06090',bg:'#f5ecf4',hljs:'perl'},
+  php:{label:'PHP',color:'#7a8abf',bg:'#eef0fa',hljs:'php'},
+  kt:{label:'Kotlin',color:'#a07ab5',bg:'#f4eef9',hljs:'kotlin'},
+  swift:{label:'Swift',color:'#c97040',bg:'#faeee8',hljs:'swift'},
+  cs:{label:'C#',color:'#5a8a5a',bg:'#eaf4ea',hljs:'csharp'},
 };
 const SRC_EXTS=new Set(Object.keys(LANGS));
 const getLang=e=>LANGS[e]||{label:e.toUpperCase(),color:'#a8998e',bg:'#f0ece4',hljs:e};
 
-/* ════════════════════════════════════════════════════
-   PARSE FILE PATH
-   archive/username/abc001-a.py  →  {user,contest,problem,lang,…}
-   archive/username/cpp/abc003-c.cpp → {user:'username',folder:'cpp',…}
-   archive/abc001-a.py (ルート直下) → {user:'',folder:'',…}
+/* ════ DARK MODE ════════════════════════════════════ */
+function isDark(){return document.documentElement.dataset.theme==='dark'}
+function applyTheme(dark){
+  document.documentElement.dataset.theme=dark?'dark':'';
+  document.getElementById('darkBtn').textContent=dark?'☀️':'🌙';
+  document.getElementById('hljsTheme').href=dark
+    ?'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/one-dark.min.css'
+    :'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/one-light.min.css';
+}
+function toggleDark(){
+  const d=!isDark();
+  applyTheme(d);
+  try{localStorage.setItem('atcoder-theme',d?'dark':'')}catch(_){}
+}
+(()=>{
+  try{const t=localStorage.getItem('atcoder-theme');if(t==='dark')applyTheme(true)}catch(_){}
+  document.getElementById('darkBtn').textContent=isDark()?'☀️':'🌙';
+})();
 
-   - archive/ 直下の最初のフォルダ = ユーザー
-   - その先のフォルダ = サブフォルダ（言語フォルダなど）
-════════════════════════════════════════════════════ */
+/* ════ MOBILE DRAWER ════════════════════════════════ */
+function openDrawer(){document.getElementById('sidebar').classList.add('open');document.getElementById('drawerOverlay').classList.add('open')}
+function closeDrawer(){document.getElementById('sidebar').classList.remove('open');document.getElementById('drawerOverlay').classList.remove('open')}
+
+/* ════ FAVORITES ════════════════════════════════════ */
+let favs=new Set();
+(()=>{try{const d=localStorage.getItem('atcoder-favs');if(d)favs=new Set(JSON.parse(d))}catch(_){}})();
+function saveFavs(){try{localStorage.setItem('atcoder-favs',JSON.stringify([...favs]))}catch(_){}}
+function toggleFav(url){
+  favs.has(url)?favs.delete(url):favs.add(url);
+  saveFavs();
+  document.getElementById('favCount').textContent=favs.size;
+  document.getElementById('favModalBtn').className='abt'+(favs.has(url)?' fav-on':'');
+  document.getElementById('favModalBtn').textContent=favs.has(url)?'★':'☆';
+  renderCards();
+}
+document.getElementById('favCount').textContent=favs.size;
+let fFav=false;
+function toggleFavFilter(){
+  fFav=!fFav;
+  document.getElementById('favFilterBtn').classList.toggle('on',fFav);
+  syncToURL();renderCards();
+}
+
+/* ════ PARSE ════════════════════════════════════════ */
 function parseURL(fullUrl){
   const archIdx=fullUrl.indexOf('archive/');
   const rel=archIdx>=0?fullUrl.slice(archIdx+8):fullUrl.split('/').pop();
   const parts=rel.split('/');
   const filename=parts[parts.length-1];
   const dot=filename.lastIndexOf('.');
-  if(dot<0) return null;
+  if(dot<0)return null;
   const base=filename.slice(0,dot);
   const ext=filename.slice(dot+1).toLowerCase();
-  if(!SRC_EXTS.has(ext)) return null;
-  // contest = part before first _ or -
+  if(!SRC_EXTS.has(ext))return null;
   const sep=base.search(/[_\-]/);
   const contest=sep>=0?base.slice(0,sep):base;
   const problem=sep>=0?base.slice(sep+1):'';
-  // archive/ 直下の最初のフォルダ = ユーザー
   const user=parts.length>1?parts[0]:'';
-  // ユーザーフォルダとファイル名の間のフォルダ群 = サブフォルダ
   const folder=parts.length>2?parts.slice(1,-1).join('/'):'';
   return{fullUrl,rel,filename,base,ext,contest,problem,user,folder,lang:getLang(ext)};
 }
-
-/* contest → sort key */
 function contestKey(c){
   const m=c.match(/^(abc|arc|agc|ahc|apc|abl)0*(\d+)$/i);
-  if(!m) return [99,c];
-  const prefix={'abc':0,'arc':1,'agc':2,'ahc':3,'apc':4,'abl':5}[m[1].toLowerCase()]??6;
-  return[prefix,parseInt(m[2],10)];
+  if(!m)return[99,c];
+  const p={'abc':0,'arc':1,'agc':2,'ahc':3,'apc':4,'abl':5}[m[1].toLowerCase()]??6;
+  return[p,parseInt(m[2],10)];
 }
-function cmpContest(a,b){
-  const ka=contestKey(a),kb=contestKey(b);
-  return ka[0]-kb[0]||ka[1]-kb[1]||a.localeCompare(b);
+function cmpContest(a,b){const ka=contestKey(a),kb=contestKey(b);return ka[0]-kb[0]||ka[1]-kb[1]||a.localeCompare(b)}
+
+/* ════ STATE ════════════════════════════════════════ */
+let all=[],currentFiles=[];
+let fLang='all',fUser='all',fContest='all',query='',sortKey='contest-asc';
+
+/* ════ URL SYNC ═════════════════════════════════════ */
+function syncToURL(){
+  const p=new URLSearchParams();
+  if(fLang!=='all')p.set('lang',fLang);
+  if(fUser!=='all')p.set('user',fUser);
+  if(fContest!=='all')p.set('contest',fContest);
+  if(query)p.set('q',query);
+  if(sortKey!=='contest-asc')p.set('sort',sortKey);
+  if(fFav)p.set('fav','1');
+  const hs=p.toString();
+  history.replaceState(null,'',location.pathname+(hs?'#?'+hs:''));
+}
+function loadFromURL(){
+  const hash=location.hash.slice(1);
+  if(!hash.startsWith('?'))return;
+  const p=new URLSearchParams(hash.slice(1));
+  if(p.has('lang'))fLang=p.get('lang');
+  if(p.has('user'))fUser=p.get('user');
+  if(p.has('contest'))fContest=p.get('contest');
+  if(p.has('q')){query=p.get('q');document.getElementById('searchBox').value=query}
+  if(p.has('sort'))sortKey=p.get('sort');
+  if(p.has('fav')){fFav=true;document.getElementById('favFilterBtn').classList.add('on')}
+}
+function syncUIFilters(){
+  document.querySelectorAll('#langFilters .fb').forEach(b=>b.classList.toggle('on',b.dataset.lang===fLang));
+  document.querySelectorAll('#userFilters .fb').forEach(b=>b.classList.toggle('on',b.dataset.user===fUser));
+  document.querySelectorAll('#contestFilters .fb').forEach(b=>b.classList.toggle('on',b.dataset.contest===fContest));
+  document.querySelectorAll('.sb').forEach(b=>b.classList.toggle('on',b.dataset.sort===sortKey));
 }
 
-/* ════════════════════════════════════════════════════
-   STATE
-════════════════════════════════════════════════════ */
-let all=[];
-let fLang='all', fUser='all', fContest='all', query='', sortKey='contest-asc';
+/* ════ CONTENT CACHE ════════════════════════════════ */
+const codeCache=new Map();
+let cacheLoaded=0;
+async function preloadContent(){
+  const BATCH=6,total=all.length;
+  for(let i=0;i<total;i+=BATCH){
+    await Promise.all(all.slice(i,i+BATCH).map(async f=>{
+      if(codeCache.has(f.fullUrl))return;
+      try{codeCache.set(f.fullUrl,await fetch(f.fullUrl).then(r=>r.text()))}
+      catch{codeCache.set(f.fullUrl,'')}
+      cacheLoaded++;
+    }));
+    document.getElementById('codeSearchStatus').textContent=
+      cacheLoaded<total?`コード検索: ${cacheLoaded}/${total} 読込中…`:'コード内容検索: 有効 ✓';
+  }
+  if(query)renderCards();
+}
 
-/* ════════════════════════════════════════════════════
-   BOOT  ―  GitHub Pages 対応
-   Python http.server の HTML一覧ではなく
-   archive/files.json を読み込む方式に変更。
-
-   files.json の形式（archive/ からの相対パスの配列）:
-   ["username/abc001-a.py", "username/abc002-b.cpp"]
-
-   生成スクリプト例（archive/ フォルダ内で実行）:
-   find . -type f ! -name "*.json" ! -name "space.txt" \
-     | sed 's|^./||' \
-     | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().splitlines()))" \
-     > files.json
-════════════════════════════════════════════════════ */
+/* ════ BOOT ═════════════════════════════════════════ */
 async function init(){
   setStatus('loading','Loading…');
   try{
     const resp=await fetch('archive/files.json');
-    if(!resp.ok) throw new Error(`archive/files.json が見つかりません (HTTP ${resp.status})`);
+    if(!resp.ok)throw new Error(`archive/files.json が見つかりません (HTTP ${resp.status})`);
     const list=await resp.json();
-    if(!Array.isArray(list)) throw new Error('archive/files.json の形式が不正です（配列が必要）');
+    if(!Array.isArray(list))throw new Error('archive/files.json の形式が不正です（配列が必要）');
     all=list
-      .filter(p=>{
-        if(typeof p!=='string') return false;
-        // archive/space.txt（ファイル名が space.txt のもの）を除外
-        const fname=p.split('/').pop();
-        return fname!=='space.txt';
-      })
-      .map(p=>{
-        const fullUrl=new URL('archive/'+p,document.baseURI).href;
-        return parseURL(fullUrl);
-      })
+      .filter(p=>typeof p==='string'&&p.split('/').pop()!=='space.txt')
+      .map(p=>parseURL(new URL('archive/'+p,document.baseURI).href))
       .filter(Boolean);
-    if(!all.length) throw new Error('archive/ にソースコードが見つかりませんでした。');
-  }catch(e){
-    setStatus('err','Error');
-    showErr(e.message); return;
-  }
+    if(!all.length)throw new Error('archive/ にソースコードが見つかりませんでした。');
+  }catch(e){setStatus('err','Error');showErr(e.message);return}
   setStatus('ok',`${all.length} files`);
   buildHome();
   buildSidebar();
+  loadFromURL();
+  syncUIFilters();
   renderCards();
+  buildRankings();
+  buildProgress();
+  preloadContent();
+}
+function setStatus(s,t){
+  document.getElementById('statusDot').className='status-dot'+(s==='ok'?' ok':s==='loading'?' loading':s==='err'?' err':'');
+  document.getElementById('statusText').textContent=t;
 }
 
-function setStatus(state,txt){
-  const d=document.getElementById('statusDot');
-  const t=document.getElementById('statusText');
-  d.className='status-dot'+(state==='ok'?' ok':state==='loading'?' loading':'');
-  t.textContent=txt;
-}
-
-/* ════════════════════════════════════════════════════
-   VIEW ROUTER
-════════════════════════════════════════════════════ */
+/* ════ VIEW ROUTER ══════════════════════════════════ */
 function showView(name){
-  document.querySelectorAll('.view,.nav-tab').forEach(el=>{
-    const isTarget=el.dataset.view===name||el.id===(name+'View');
-    el.classList.toggle('active',isTarget);
-    if(el.classList.contains('fadein')&&!isTarget) el.classList.remove('fadein');
-  });
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===name+'View'));
+  document.querySelectorAll('.nav-tab').forEach(el=>el.classList.toggle('active',el.dataset.view===name));
   if(name==='archive'){
     const av=document.getElementById('archiveView');
-    av.style.display='grid';
-    av.classList.add('active','fadein');
+    av.style.display='grid';av.classList.add('active','fadein');
     setTimeout(()=>av.classList.remove('fadein'),400);
   }
+  closeDrawer();
 }
-document.querySelectorAll('.nav-tab').forEach(b=>
-  b.addEventListener('click',()=>showView(b.dataset.view)));
+document.querySelectorAll('.nav-tab').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
 
-/* ════════════════════════════════════════════════════
-   HOME
-════════════════════════════════════════════════════ */
+/* ════ HOME ═════════════════════════════════════════ */
 function buildHome(){
-  document.getElementById('hTotal').textContent   =all.length;
+  document.getElementById('hTotal').textContent=all.length;
   document.getElementById('hContests').textContent=new Set(all.map(f=>f.contest)).size;
-  document.getElementById('hLangs').textContent   =new Set(all.map(f=>f.ext)).size;
-
-  // Users stat（ユーザーフォルダが存在する場合のみ表示）
-  const usersSet=new Set(all.map(f=>f.user).filter(Boolean));
-  if(usersSet.size>0){
-    document.getElementById('hUsersStat').style.display='';
-    document.getElementById('hUsers').textContent=usersSet.size;
-  }
-
-  // Language bars
+  document.getElementById('hLangs').textContent=new Set(all.map(f=>f.ext)).size;
+  const us=new Set(all.map(f=>f.user).filter(Boolean));
+  if(us.size>0){document.getElementById('hUsersStat').style.display='';document.getElementById('hUsers').textContent=us.size}
   const byCnt={};
   all.forEach(f=>{byCnt[f.ext]=(byCnt[f.ext]||0)+1});
   const sorted=Object.entries(byCnt).sort((a,b)=>b[1]-a[1]).slice(0,8);
   const max=sorted[0]?.[1]||1;
-  document.getElementById('langBars').innerHTML=sorted.map(([ext,cnt])=>{
-    const m=getLang(ext);
-    return`<div class="lb-item">
-      <span class="lb-name">${m.label}</span>
-      <div class="lb-track"><div class="lb-fill" style="width:${(cnt/max*100).toFixed(1)}%;background:${m.color}"></div></div>
-      <span class="lb-cnt">${cnt}</span>
-    </div>`;
+  document.getElementById('langBars').innerHTML=sorted.map(([e,cnt])=>{
+    const m=getLang(e);
+    return`<div class="lb-item"><span class="lb-name">${m.label}</span><div class="lb-track"><div class="lb-fill" style="width:${(cnt/max*100).toFixed(1)}%;background:${m.color}"></div></div><span class="lb-cnt">${cnt}</span></div>`;
   }).join('');
-
-  // Recent (last 8 by contest desc then filename)
   const recent=[...all].sort((a,b)=>cmpContest(b.contest,a.contest)||b.filename.localeCompare(a.filename)).slice(0,8);
   document.getElementById('recentList').innerHTML=recent.map(f=>`
     <div class="recent-item" onclick="openFileFromHome('${CSS.escape(f.fullUrl)}')">
       <span class="recent-fname">${f.filename}</span>
       <span class="recent-chip" style="background:${f.lang.bg};color:${f.lang.color}">${f.lang.label}</span>
     </div>`).join('');
-
-  // Contest table
-  const byContest={};
-  all.forEach(f=>{
-    if(!byContest[f.contest]) byContest[f.contest]={files:[],exts:new Set()};
-    byContest[f.contest].files.push(f);
-    byContest[f.contest].exts.add(f.ext);
-  });
-  const contestsSorted=Object.entries(byContest).sort((a,b)=>cmpContest(a[0],b[0]));
-  document.getElementById('contestRows').innerHTML=contestsSorted.map(([c,{files,exts}])=>{
-    const chips=[...exts].map(e=>{
-      const m=getLang(e);
-      return`<span style="background:${m.bg};color:${m.color};font-size:.58rem;font-weight:600;padding:.1rem .4rem;border-radius:100px">${m.label}</span>`;
-    }).join('');
-    return`<div class="contest-row" onclick="filterToContest('${c}')">
-      <span class="contest-row-name">${c}</span>
-      <span class="contest-row-meta">${chips}<span>${files.length} files</span></span>
-    </div>`;
+  const byC={};
+  all.forEach(f=>{if(!byC[f.contest])byC[f.contest]={files:[],exts:new Set()};byC[f.contest].files.push(f);byC[f.contest].exts.add(f.ext)});
+  document.getElementById('contestRows').innerHTML=Object.entries(byC).sort((a,b)=>cmpContest(a[0],b[0])).map(([c,{files,exts}])=>{
+    const chips=[...exts].map(e=>{const m=getLang(e);return`<span style="background:${m.bg};color:${m.color};font-size:.58rem;font-weight:600;padding:.1rem .4rem;border-radius:100px">${m.label}</span>`}).join('');
+    return`<div class="contest-row" onclick="filterToContest('${c}')"><span class="contest-row-name">${c}</span><span class="contest-row-meta">${chips}<span>${files.length} files</span></span></div>`;
   }).join('');
 }
-
-function openFileFromHome(url){
-  const f=all.find(x=>x.fullUrl===url)||all.find(x=>CSS.escape(x.fullUrl)===url);
-  if(f) openModal(f);
-}
+function openFileFromHome(url){const f=all.find(x=>x.fullUrl===url)||all.find(x=>CSS.escape(x.fullUrl)===url);if(f)openModal(f)}
 function filterToContest(c){
   fContest=c;
-  document.querySelectorAll('#contestFilters .fb').forEach(b=>{
-    b.classList.toggle('on',b.dataset.contest===c);
-  });
-  renderCards();
-  showView('archive');
+  document.querySelectorAll('#contestFilters .fb').forEach(b=>b.classList.toggle('on',b.dataset.contest===c));
+  syncToURL();renderCards();showView('archive');
 }
 
-/* ════════════════════════════════════════════════════
-   ARCHIVE SIDEBAR
-════════════════════════════════════════════════════ */
+/* ════ SIDEBAR ══════════════════════════════════════ */
 function buildSidebar(){
-  // Lang
   const exts=[...new Set(all.map(f=>f.ext))].sort();
   const lf=document.getElementById('langFilters');
   lf.innerHTML=`<button class="fb on" data-lang="all"><span class="ldot" style="background:var(--muted)"></span>All</button>`;
   exts.forEach(e=>{
     const m=getLang(e);
-    lf.insertAdjacentHTML('beforeend',
-      `<button class="fb" data-lang="${e}"><span class="ldot" style="background:${m.color}"></span>${m.label}</button>`);
+    lf.insertAdjacentHTML('beforeend',`<button class="fb" data-lang="${e}"><span class="ldot" style="background:${m.color}"></span>${m.label}</button>`);
   });
   lf.addEventListener('click',e=>{
     const b=e.target.closest('[data-lang]');if(!b)return;
-    fLang=b.dataset.lang;
-    lf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');renderCards();
+    fLang=b.dataset.lang;lf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');syncToURL();renderCards();
   });
-
-  // User（archive/ 直下のフォルダ = ユーザー）
   const users=[...new Set(all.map(f=>f.user).filter(Boolean))].sort();
   if(users.length>0){
     document.getElementById('userSection').style.display='';
@@ -740,87 +594,74 @@ function buildSidebar(){
     uf.innerHTML=`<button class="fb on" data-user="all">All</button>`;
     users.forEach(u=>{
       const cnt=all.filter(f=>f.user===u).length;
-      uf.insertAdjacentHTML('beforeend',
-        `<button class="fb" data-user="${u}">👤 ${u}<span class="cc">${cnt}</span></button>`);
+      uf.insertAdjacentHTML('beforeend',`<button class="fb" data-user="${u}">👤 ${u}<span class="cc">${cnt}</span></button>`);
     });
     uf.addEventListener('click',e=>{
       const b=e.target.closest('[data-user]');if(!b)return;
-      fUser=b.dataset.user;
-      uf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on');renderCards();
+      fUser=b.dataset.user;uf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');syncToURL();renderCards();
     });
   }
-
-  // Contest
   const contests=[...new Set(all.map(f=>f.contest))].sort((a,b)=>cmpContest(a,b));
   const cf=document.getElementById('contestFilters');
   cf.innerHTML=`<button class="fb on" data-contest="all">All</button>`;
   contests.forEach(c=>{
     const cnt=all.filter(f=>f.contest===c).length;
-    cf.insertAdjacentHTML('beforeend',
-      `<button class="fb" data-contest="${c}">${c}<span class="cc">${cnt}</span></button>`);
+    cf.insertAdjacentHTML('beforeend',`<button class="fb" data-contest="${c}">${c}<span class="cc">${cnt}</span></button>`);
   });
   cf.addEventListener('click',e=>{
     const b=e.target.closest('[data-contest]');if(!b)return;
-    fContest=b.dataset.contest;
-    cf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');renderCards();
+    fContest=b.dataset.contest;cf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');syncToURL();renderCards();
   });
 }
 
-/* ════════════════════════════════════════════════════
-   SEARCH / SORT
-════════════════════════════════════════════════════ */
-document.getElementById('searchBox').addEventListener('input',e=>{query=e.target.value.toLowerCase();renderCards()});
+/* ════ SEARCH / SORT ════════════════════════════════ */
+document.getElementById('searchBox').addEventListener('input',e=>{query=e.target.value.toLowerCase();syncToURL();renderCards()});
 document.addEventListener('click',e=>{
   const b=e.target.closest('.sb');if(!b)return;
-  sortKey=b.dataset.sort;
-  document.querySelectorAll('.sb').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on');renderCards();
+  sortKey=b.dataset.sort;document.querySelectorAll('.sb').forEach(x=>x.classList.remove('on'));b.classList.add('on');syncToURL();renderCards();
 });
-
 function filtered(){
   return all.filter(f=>{
     if(fLang!=='all'&&f.ext!==fLang)return false;
     if(fUser!=='all'&&f.user!==fUser)return false;
     if(fContest!=='all'&&f.contest!==fContest)return false;
-    if(query&&!f.filename.toLowerCase().includes(query)&&!f.rel.toLowerCase().includes(query))return false;
+    if(fFav&&!favs.has(f.fullUrl))return false;
+    if(query){
+      const inName=f.filename.toLowerCase().includes(query)||f.rel.toLowerCase().includes(query);
+      const cached=codeCache.get(f.fullUrl);
+      if(!inName&&!(cached!==undefined&&cached.toLowerCase().includes(query)))return false;
+    }
     return true;
   }).sort((a,b)=>{
     switch(sortKey){
-      case'contest-asc':  return cmpContest(a.contest,b.contest)||a.filename.localeCompare(b.filename);
-      case'contest-desc': return cmpContest(b.contest,a.contest)||a.filename.localeCompare(b.filename);
-      case'lang':         return a.ext.localeCompare(b.ext)||a.filename.localeCompare(b.filename);
-      default:            return a.filename.localeCompare(b.filename);
+      case'contest-asc':return cmpContest(a.contest,b.contest)||a.filename.localeCompare(b.filename);
+      case'contest-desc':return cmpContest(b.contest,a.contest)||a.filename.localeCompare(b.filename);
+      case'lang':return a.ext.localeCompare(b.ext)||a.filename.localeCompare(b.filename);
+      default:return a.filename.localeCompare(b.filename);
     }
   });
 }
 
-/* ════════════════════════════════════════════════════
-   RENDER CARDS
-════════════════════════════════════════════════════ */
+/* ════ RENDER CARDS ═════════════════════════════════ */
 function renderCards(){
-  const files=filtered();
+  currentFiles=filtered();
   const cw=document.getElementById('cardsWrap');
   document.getElementById('sortBar').style.display='flex';
-  document.getElementById('rinfo').innerHTML=`<strong>${files.length}</strong> / ${all.length} files`;
-
-  if(!files.length){
-    cw.className='sbox-s';
-    cw.innerHTML=`<span style="font-size:2rem;opacity:.3">🍃</span><span>No results</span>`;return;
-  }
+  document.getElementById('rinfo').innerHTML=`<strong>${currentFiles.length}</strong> / ${all.length} files`;
+  if(!currentFiles.length){cw.className='sbox-s';cw.innerHTML=`<span style="font-size:2rem;opacity:.3">🍃</span><span>No results</span>`;return}
   cw.className='cards';cw.innerHTML='';
-  files.forEach((f,i)=>{
+  currentFiles.forEach((f,i)=>{
     const isWS=f.ext==='ws',isBF=f.ext==='bf'||f.ext==='b';
     const pid=`p${i}`;
+    const isFav=favs.has(f.fullUrl);
+    const cached=codeCache.get(f.fullUrl);
+    const codeMatch=query&&cached!==undefined&&cached.toLowerCase().includes(query)
+      &&!f.filename.toLowerCase().includes(query)&&!f.rel.toLowerCase().includes(query);
     const card=document.createElement('div');
     card.className='card';card.style.animationDelay=`${Math.min(i*18,150)}ms`;
     card.innerHTML=`
       <div class="card-top">
-        <div>
-          <div class="card-name">${f.base}</div>
-          ${f.problem?`<div class="card-sub">problem ${f.problem}</div>`:''}
-        </div>
+        <div><div class="card-name">${f.base}</div>${f.problem?`<div class="card-sub">problem ${f.problem}</div>`:''}</div>
         <span class="chip" style="background:${f.lang.bg};color:${f.lang.color}">${f.lang.label}</span>
       </div>
       <div class="${isWS?'card-prev ws-prev':isBF?'card-prev bf-prev':'card-prev'}" id="${pid}">
@@ -830,90 +671,194 @@ function renderCards(){
         <span class="ctag">${f.contest}</span>
         ${f.user?`<span class="user-tag">👤 ${f.user}</span>`:''}
         ${f.folder?`<span class="path-tag">📂 ${f.folder}</span>`:''}
-        <span style="margin-left:auto;font-size:.62rem;color:var(--muted)">→</span>
+        ${codeMatch?`<span class="match-badge">code match</span>`:''}
+        <button class="star-btn${isFav?' on':''}" data-url="${f.fullUrl}">★</button>
       </div>`;
-    card.addEventListener('click',()=>openModal(f));
+    card.addEventListener('click',e=>{if(e.target.closest('.star-btn'))return;openModal(f,i)});
+    card.querySelector('.star-btn').addEventListener('click',e=>{e.stopPropagation();toggleFav(f.fullUrl)});
     cw.appendChild(card);
     if(!isWS){
-      fetch(f.fullUrl).then(r=>r.text()).then(code=>{
-        const el=document.getElementById(pid);
-        if(el)el.textContent=code.slice(0,260);
-      }).catch(()=>{const el=document.getElementById(pid);if(el)el.textContent='(preview unavailable)'});
+      if(codeCache.has(f.fullUrl)){
+        const el=document.getElementById(pid);if(el)el.textContent=codeCache.get(f.fullUrl).slice(0,260);
+      } else {
+        fetch(f.fullUrl).then(r=>r.text()).then(code=>{
+          codeCache.set(f.fullUrl,code);
+          const el=document.getElementById(pid);if(el)el.textContent=code.slice(0,260);
+        }).catch(()=>{const el=document.getElementById(pid);if(el)el.textContent='(preview unavailable)'});
+      }
     }
   });
 }
 
-/* ════════════════════════════════════════════════════
-   MODAL
-════════════════════════════════════════════════════ */
-let _code='';
-async function openModal(f){
+/* ════ MODAL ════════════════════════════════════════ */
+let _code='',_curIdx=-1;
+async function openModal(f,idx){
+  _curIdx=idx??currentFiles.findIndex(x=>x.fullUrl===f.fullUrl);
+  await _renderModalFile(f);
+}
+async function _renderModalFile(f){
   document.getElementById('mFname').textContent=f.filename;
   document.getElementById('mMeta').textContent=
     `${f.lang.label}  ·  ${f.contest}${f.problem?' · problem '+f.problem:''}${f.user?' · '+f.user:''}${f.folder?' / '+f.folder:''}`;
   document.getElementById('modalBody').innerHTML=`<div class="sbox-s"><div class="spin"></div></div>`;
   document.getElementById('backdrop').classList.add('open');
-  try{_code=await fetch(f.fullUrl).then(r=>r.text())}
-  catch{document.getElementById('modalBody').innerHTML=`<div class="sbox-s">⚠ Load failed</div>`;return}
-  if(f.ext==='ws') renderWS(_code);
-  else if(f.ext==='bf'||f.ext==='b') renderBF(_code);
+  const favBtn=document.getElementById('favModalBtn');
+  favBtn.className='abt'+(favs.has(f.fullUrl)?' fav-on':'');
+  favBtn.textContent=favs.has(f.fullUrl)?'★':'☆';
+  favBtn.onclick=()=>toggleFav(f.fullUrl);
+  document.getElementById('prevBtn').disabled=_curIdx<=0;
+  document.getElementById('nextBtn').disabled=_curIdx>=currentFiles.length-1;
+  try{
+    _code=codeCache.has(f.fullUrl)?codeCache.get(f.fullUrl):await fetch(f.fullUrl).then(r=>r.text());
+    codeCache.set(f.fullUrl,_code);
+  }catch{document.getElementById('modalBody').innerHTML=`<div class="sbox-s">⚠ Load failed</div>`;return}
+  if(f.ext==='ws')renderWS(_code);
+  else if(f.ext==='bf'||f.ext==='b')renderBF(_code);
   else{
     const pre=document.createElement('pre');
     const el=document.createElement('code');
     el.className=`language-${f.lang.hljs}`;el.textContent=_code;
-    pre.appendChild(el);
+    pre.appendChild(el);hljs.highlightElement(el);
+    // line numbers
+    const lines=_code.split('\n').length;
+    const lnEl=document.createElement('div');
+    lnEl.className='line-nums';
+    lnEl.textContent=Array.from({length:lines},(_,i)=>i+1).join('\n');
+    const codeWrap=document.createElement('div');
+    codeWrap.className='hljs-code-wrap';codeWrap.appendChild(pre);
+    const wrap=document.createElement('div');
+    wrap.className='code-with-lines';wrap.appendChild(lnEl);wrap.appendChild(codeWrap);
     document.getElementById('modalBody').innerHTML='';
-    document.getElementById('modalBody').appendChild(pre);
-    hljs.highlightElement(el);
+    document.getElementById('modalBody').appendChild(wrap);
   }
 }
+document.getElementById('prevBtn').addEventListener('click',()=>{if(_curIdx>0){_curIdx--;_renderModalFile(currentFiles[_curIdx])}});
+document.getElementById('nextBtn').addEventListener('click',()=>{if(_curIdx<currentFiles.length-1){_curIdx++;_renderModalFile(currentFiles[_curIdx])}});
 function renderBF(code){
   const C={'>':'#c96b6b','<':'#6b9bc9','+':'#7ab58c','-':'#b58c7a','.':'#c9aa5a',',':'#a07ab5','[':'#c9b030',']':'#c9b030'};
-  const h=[...code].map(ch=>{
-    if(C[ch])return`<span style="color:${C[ch]};font-weight:600">${ch}</span>`;
-    if(ch==='\n')return'\n';
-    return`<span style="color:var(--muted)">${esc(ch)}</span>`;
-  }).join('');
-  document.getElementById('modalBody').innerHTML=`<div class="bf-view">${h}</div>`;
+  document.getElementById('modalBody').innerHTML=`<div class="bf-view">${[...code].map(ch=>C[ch]?`<span style="color:${C[ch]};font-weight:600">${ch}</span>`:ch==='\n'?'\n':`<span style="color:var(--muted)">${esc(ch)}</span>`).join('')}</div>`;
 }
 function renderWS(code){
-  const leg=`<div class="ws-legend">
-    <span><span class="S">S</span>Space</span>
-    <span><span class="T">T</span>Tab</span>
-    <span><span class="LF">↵</span>Newline</span>
-    <span style="font-size:.6rem;font-style:italic">（他の文字はWhitespace処理系では無視されます）</span>
-  </div>`;
-  const tok=[...code].map(ch=>{
-    if(ch===' ')return`<span class="S">S</span>`;
-    if(ch==='\t')return`<span class="T">T</span>`;
-    if(ch==='\n')return`<span class="LF">↵\n</span>`;
-    return`<span class="OT">${esc(ch)}</span>`;
-  }).join('');
-  document.getElementById('modalBody').innerHTML=`${leg}<div class="ws-view">${tok}</div>`;
+  const leg=`<div class="ws-legend"><span><span class="S">S</span>Space</span><span><span class="T">T</span>Tab</span><span><span class="LF">↵</span>Newline</span><span style="font-size:.6rem;font-style:italic">（他の文字はWhitespace処理系では無視されます）</span></div>`;
+  document.getElementById('modalBody').innerHTML=`${leg}<div class="ws-view">${[...code].map(ch=>ch===' '?'<span class="S">S</span>':ch==='\t'?'<span class="T">T</span>':ch==='\n'?'<span class="LF">↵\n</span>':`<span class="OT">${esc(ch)}</span>`).join('')}</div>`;
 }
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
 document.getElementById('closeBtn').addEventListener('click',()=>document.getElementById('backdrop').classList.remove('open'));
 document.getElementById('backdrop').addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById('backdrop').classList.remove('open')});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('backdrop').classList.remove('open')});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('backdrop').classList.contains('open'))return;
+  if(e.key==='Escape')document.getElementById('backdrop').classList.remove('open');
+  if(e.key==='ArrowLeft'&&_curIdx>0){_curIdx--;_renderModalFile(currentFiles[_curIdx])}
+  if(e.key==='ArrowRight'&&_curIdx<currentFiles.length-1){_curIdx++;_renderModalFile(currentFiles[_curIdx])}
+});
 document.getElementById('copyBtn').addEventListener('click',function(){
   navigator.clipboard.writeText(_code).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)});
 });
 
-/* ════════════════════════════════════════════════════
-   ERROR
-════════════════════════════════════════════════════ */
+/* ════ RANKINGS ═════════════════════════════════════ */
+let rankSort='files',rankDir=-1;
+function buildRankings(){
+  const users=[...new Set(all.map(f=>f.user).filter(Boolean))];
+  if(!users.length){
+    document.getElementById('rankingsContent').innerHTML=`<div class="sbox-s"><span>ユーザーフォルダがありません。<br>archive/ 直下にユーザー名フォルダを作成してください。</span></div>`;
+    return;
+  }
+  renderRankTable();
+}
+function getRankData(){
+  return[...new Set(all.map(f=>f.user).filter(Boolean))].map(u=>{
+    const fs=all.filter(f=>f.user===u);
+    const extCnt=fs.reduce((a,f)=>{a[f.ext]=(a[f.ext]||0)+1;return a},{});
+    const top=Object.entries(extCnt).sort((a,b)=>b[1]-a[1])[0];
+    return{
+      user:u,files:fs.length,
+      contests:new Set(fs.map(f=>f.contest)).size,
+      langs:new Set(fs.map(f=>f.ext)).size,
+      topLang:top?top[0]:'',
+      langSet:[...new Set(fs.map(f=>f.ext))],
+    };
+  });
+}
+function renderRankTable(){
+  const data=getRankData();
+  data.sort((a,b)=>{
+    const diff=rankDir*(typeof a[rankSort]==='number'?b[rankSort]-a[rankSort]:a[rankSort].localeCompare(b[rankSort]));
+    return diff||a.user.localeCompare(b.user);
+  });
+  const maxFiles=Math.max(1,...data.map(d=>d.files));
+  const rankCls=i=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  const makeTh=(key,label)=>{
+    const cls=rankSort===key?(rankDir===-1?'desc':'asc'):'';
+    return`<th class="${cls}" onclick="setRankSort('${key}')">${label}</th>`;
+  };
+  const rows=data.map((d,i)=>{
+    const chips=d.langSet.slice(0,5).map(e=>{const m=getLang(e);return`<span class="lang-chip-sm" style="background:${m.bg};color:${m.color}">${m.label}</span>`}).join('');
+    return`<tr>
+      <td class="rank-num ${rankCls(i)}">${i+1}</td>
+      <td><div class="rank-user"><div class="rank-avatar">${d.user.slice(0,2).toUpperCase()}</div>${d.user}</div></td>
+      <td><div class="rank-bar"><div class="rank-bar-track"><div class="rank-bar-fill" style="width:${(d.files/maxFiles*100).toFixed(0)}%"></div></div><span style="font-size:.82rem;font-weight:600;color:var(--text)">${d.files}</span></div></td>
+      <td style="color:var(--text);font-size:.82rem">${d.contests}</td>
+      <td><div class="lang-chips">${chips}</div></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('rankingsContent').innerHTML=`
+    <table class="rank-table">
+      <thead><tr>
+        <th style="width:38px">#</th>
+        ${makeTh('user','User')}
+        ${makeTh('files','Files')}
+        ${makeTh('contests','Contests')}
+        <th>Languages</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+function setRankSort(key){
+  if(rankSort===key)rankDir*=-1;else{rankSort=key;rankDir=-1}
+  renderRankTable();
+}
+
+/* ════ PROGRESS ═════════════════════════════════════ */
+function buildProgress(){
+  const users=[...new Set(all.map(f=>f.user).filter(Boolean))];
+  const el=document.getElementById('progressContent');
+  if(!users.length){
+    el.innerHTML=`<div class="sbox-s"><span>ユーザーフォルダがありません。</span></div>`;
+    return;
+  }
+  const contests=[...new Set(all.map(f=>f.contest))].sort((a,b)=>cmpContest(a,b));
+  const matrix={};
+  users.forEach(u=>{matrix[u]={};contests.forEach(c=>{matrix[u][c]=0})});
+  all.forEach(f=>{if(f.user)matrix[f.user][f.contest]=(matrix[f.user][f.contest]||0)+1});
+  const maxN=Math.max(1,...users.flatMap(u=>contests.map(c=>matrix[u][c])));
+  function pgCls(n){return n===0?'pg-0':n===1?'pg-1':n===2?'pg-2':n<=4?'pg-3':'pg-hi'}
+  const thRow=`<th class="corner"></th>`+contests.map(c=>`<th>${c}</th>`).join('');
+  const bodyRows=users.map(u=>
+    `<tr><td class="user-col">👤 ${u}</td>${contests.map(c=>{const n=matrix[u][c];return`<td class="${pgCls(n)}">${n||''}</td>`}).join('')}</tr>`
+  ).join('');
+  el.innerHTML=`
+    <div class="pg-table-wrap"><table class="pg-table"><thead><tr>${thRow}</tr></thead><tbody>${bodyRows}</tbody></table></div>
+    <div class="pg-legend">
+      <span>0</span>
+      <div class="pg-swatch" style="background:var(--panel);border:1px solid var(--border)"></div>
+      <div class="pg-swatch" style="background:rgba(122,171,140,.22)"></div>
+      <div class="pg-swatch" style="background:rgba(122,171,140,.42)"></div>
+      <div class="pg-swatch" style="background:rgba(122,171,140,.62)"></div>
+      <div class="pg-swatch" style="background:rgba(122,171,140,.82)"></div>
+      <span>${maxN}+</span>
+    </div>`;
+}
+
+/* ════ ERROR ════════════════════════════════════════ */
 function showErr(msg){
   const ec=document.getElementById('errCard');
   ec.style.display='block';
   ec.innerHTML=`⚠ ${msg}<br><br>
     <strong>GitHub Pages での使い方</strong><br>
-    <code>archive/files.json</code> にファイルパスの配列を用意してください（archive/ からの相対パス）：
+    <code>archive/files.json</code> にファイルパスの配列を用意してください：
     <code>["username/abc001-a.py", "username/cpp/abc003-c.cpp"]</code>
-    <strong>生成スクリプト例</strong>（archive/ フォルダ内で実行）：
-    <code>find . -type f ! -name "*.json" ! -name "space.txt" | sed 's|^./||' | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().splitlines()))" > files.json</code>
-    <strong>対応フォルダ構造（例）</strong>
-    <code>archive/files.json<br>archive/username/abc001-a.py<br>archive/username/cpp/abc003-c.cpp</code>`;
+    <strong>生成スクリプト例</strong>（archive/ 内で実行）：
+    <code>find . -type f ! -name "*.json" ! -name "space.txt" | sed 's|^./||' | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().splitlines()))" > files.json</code>`;
   document.getElementById('cardsWrap').className='';
   document.getElementById('cardsWrap').innerHTML='';
   showView('archive');
