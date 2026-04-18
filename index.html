@@ -286,7 +286,6 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
   <div class="nav-tabs">
     <button class="nav-tab active" data-view="home">🏠 Home</button>
     <button class="nav-tab" data-view="archive">📁 Archive</button>
-    <button class="nav-tab" data-view="rankings">🏆 Rankings</button>
     <button class="nav-tab" data-view="progress">📊 Progress</button>
   </div>
   <div class="nav-right">
@@ -339,20 +338,14 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <div class="sort-bar" id="sortBar" style="display:none">
       <span class="rinfo" id="rinfo"></span>
       <div class="sort-group">
-        <button class="sb on" data-sort="contest-asc">Contest ↑</button>
-        <button class="sb" data-sort="contest-desc">Contest ↓</button>
+        <button class="sb" data-sort="contest-asc">Contest ↑</button>
+        <button class="sb on" data-sort="contest-desc">Contest ↓</button>
         <button class="sb" data-sort="name-asc">Name</button>
         <button class="sb" data-sort="lang">Lang</button>
       </div>
     </div>
     <div id="cardsWrap" class="sbox-s"><div class="spin"></div><span>Scanning archive…</span></div>
   </main>
-</div>
-
-<!-- RANKINGS -->
-<div class="view" id="rankingsView">
-  <div class="view-heading">User Rankings</div>
-  <div id="rankingsContent"><div class="sbox-s"><div class="spin"></div></div></div>
 </div>
 
 <!-- PROGRESS -->
@@ -475,7 +468,7 @@ function cmpContest(a,b){const ka=contestKey(a),kb=contestKey(b);return ka[0]-kb
 
 /* ════ STATE ════════════════════════════════════════ */
 let all=[],currentFiles=[];
-let fLang='all',fUser='all',fContest='all',query='',sortKey='contest-asc';
+let fLang='all',fUser='all',fContest='all',query='',sortKey='contest-desc';
 
 /* ════ URL SYNC ═════════════════════════════════════ */
 function syncToURL(){
@@ -545,7 +538,6 @@ async function init(){
   loadFromURL();
   syncUIFilters();
   renderCards();
-  buildRankings();
   buildProgress();
   preloadContent();
 }
@@ -563,8 +555,8 @@ function showView(name){
     av.style.display='grid';av.classList.add('active','fadein');
     setTimeout(()=>av.classList.remove('fadein'),400);
   }
-  // ホーム以外ではメニューボタン表示
-  document.querySelector('.menu-btn').style.display=name==='archive'?'':'none';
+  // archiveのみメニューボタン表示
+  document.querySelector('.menu-btn').style.display=name==='archive'?'flex':'none';
   closeDrawer();
 }
 document.querySelectorAll('.nav-tab').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
