@@ -579,14 +579,15 @@ function setStatus(s,t){
 
 /* ════ VIEW ROUTER ══════════════════════════════════ */
 function showView(name){
+  // archiveViewはstyle.displayを直接操作しているのでリセット
+  const av=document.getElementById('archiveView');
+  av.style.display='';
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===name+'View'));
   document.querySelectorAll('.nav-tab').forEach(el=>el.classList.toggle('active',el.dataset.view===name));
   if(name==='archive'){
-    const av=document.getElementById('archiveView');
     av.style.display='grid';av.classList.add('active','fadein');
     setTimeout(()=>av.classList.remove('fadein'),400);
   }
-  // archiveのみメニューボタン表示
   document.querySelector('.menu-btn').style.display=name==='archive'?'flex':'none';
   closeDrawer();
 }
