@@ -683,7 +683,14 @@ function showView(name){
   document.querySelector('.menu-btn').style.display=name==='archive'?'flex':'none';
   closeDrawer();
 }
-document.querySelectorAll('.nav-tab').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+document.querySelectorAll('.nav-tab').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.view==='guide'){
+    if(guideFiles===null) showGuide('python');
+    else showView('guide');
+  } else {
+    showView(b.dataset.view);
+  }
+}));
 
 /* ════ HOME ═════════════════════════════════════════ */
 function buildHome(){
@@ -1099,6 +1106,7 @@ function showErr(msg){
 let guideFiles=null;
 let guideLang='python';
 let guideCurrentFile=null;
+let guideFileTitles={};
 
 const GUIDE_LANGS=[
   {id:'python', dd:'guideDdPython', tab:'guideLangPython'},
@@ -1131,6 +1139,7 @@ async function showGuide(lang){
   showView('guide');
   await loadGuideFiles();
   renderGuideList();
+  loadGuideTitles();
 }
 
 // サイドバー内の言語タブ切替
@@ -1142,6 +1151,7 @@ async function switchGuideLang(lang){
   document.getElementById('guideTitleBar').classList.remove('visible');
   await loadGuideFiles();
   renderGuideList();
+  loadGuideTitles();
 }
 
 // guide/files.json を一度だけ取得
@@ -1170,8 +1180,9 @@ function renderGuideList(){
   }
   list.innerHTML=files.map(f=>{
     const name=f.slice(prefix.length);
+    const title=guideFileTitles[f]||name;
     const isActive=guideCurrentFile===f;
-    return`<button class="guide-file-btn${isActive?' active':''}" onclick="openGuideFile('${CSS.escape(f)}')" title="${name}">${name}</button>`;
+    return`<button class="guide-file-btn${isActive?' active':''}" onclick="openGuideFile('${CSS.escape(f)}')" title="${name}">${title}</button>`;
   }).join('');
 }
 
@@ -1242,6 +1253,25 @@ function setGuideTitleBar(title, relPath){
   document.getElementById('guideTitleText').textContent=title;
   document.getElementById('guideTitleFile').textContent=relPath.split('/').pop();
   document.getElementById('guideTitleBar').classList.add('visible');
+}
+
+// ファイル一覧のタイトルをバックグラウンドで取得してリストを更新
+async function loadGuideTitles(){
+  const prefix=guideLang+'/';
+  const files=(guideFiles||[]).filter(f=>f.startsWith(prefix));
+  await Promise.all(files.map(async f=>{
+    if(guideFileTitles[f])return;
+    const ext=f.split('.').pop().toLowerCase();
+    if(ext!=='md'&&ext!=='markdown')return;
+    try{
+      const r=await fetch('guide/'+f);
+      if(!r.ok)return;
+      const text=await r.text();
+      const m=text.match(/^#[ \t]+(.+)/m);
+      if(m)guideFileTitles[f]=m[1].trim();
+    }catch(_){}
+  }));
+  renderGuideList();
 }
 
 function escGuideHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
