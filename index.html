@@ -156,7 +156,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .cg-contest-header{display:flex;align-items:center;gap:.7rem;padding:.65rem 1.1rem;background:var(--panel);border-bottom:1.5px solid var(--border)}
 .cg-contest-name{font-size:.88rem;font-weight:700;color:var(--text);letter-spacing:.02em}
 .cg-contest-cnt{font-size:.63rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.06rem .45rem;font-weight:500}
-.cg-row{display:flex;align-items:center;gap:1rem;padding:.55rem 1.1rem;border-bottom:1px solid var(--border);min-height:42px}
+.cg-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.1rem;border-bottom:1px solid var(--border);min-height:84px}
 .cg-row:last-child{border-bottom:none}
 .cg-row:hover{background:color-mix(in srgb,var(--panel) 60%,transparent)}
 .cg-user{font-size:.75rem;font-weight:600;color:var(--text2);white-space:nowrap;min-width:100px;flex-shrink:0}
@@ -681,7 +681,7 @@ function renderCards(){
   document.getElementById('sortBar').style.display='flex';
   document.getElementById('rinfo').innerHTML=`<strong>${currentFiles.length}</strong> / ${all.length} files`;
   if(!currentFiles.length){cw.className='sbox-s';cw.innerHTML=`<span style="font-size:2rem;opacity:.3">🍃</span><span>No results</span>`;return}
-  cw.className='';cw.style.cssText='';
+  cw.className='';cw.innerHTML='';
 
   // contest → user → files
   const byContest=new Map();
