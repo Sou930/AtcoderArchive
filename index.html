@@ -14,6 +14,7 @@
 <meta name="theme-color" id="themeColorMeta" content="#c47f5e">
 <link rel="manifest" id="pwaManifest">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
@@ -281,6 +282,45 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .pg-legend{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.68rem;color:var(--muted)}
 .pg-swatch{width:14px;height:14px;border-radius:3px}
 
+/* ════════ GUIDE ════════════════════════════════════ */
+/* nav dropdown */
+.nav-dropdown{position:relative;display:flex;align-items:center}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 2px);left:0;min-width:148px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 8px 28px var(--sh-m);z-index:200;padding:.3rem}
+.nav-dropdown.open .nav-dropdown-menu{display:block;animation:vfade .16s ease}
+.nav-dropdown-item{display:flex;align-items:center;gap:.5rem;width:100%;background:none;border:none;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:500;color:var(--text2);padding:.46rem .75rem;border-radius:8px;cursor:pointer;text-align:left;transition:all .13s;white-space:nowrap}
+.nav-dropdown-item:hover{background:var(--panel);color:var(--text)}
+.nav-dropdown-item.sel{background:var(--acc-s);color:var(--acc);font-weight:600}
+/* guide view */
+#guideView{display:none}
+#guideView.active{display:grid;grid-template-columns:210px 1fr;gap:1.4rem;padding:1.6rem 1.8rem;max-width:1280px;margin:0 auto;align-items:start}
+@media(max-width:720px){#guideView.active{grid-template-columns:1fr;padding:1rem}}
+.guide-side{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.1rem;box-shadow:0 2px 10px var(--sh);position:sticky;top:calc(44px + 1.4rem);max-height:calc(100vh - 44px - 3rem);overflow-y:auto}
+.guide-lang-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-bottom:.85rem}
+.guide-lang-tab{flex:1;background:var(--panel);border:1.5px solid var(--border);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;color:var(--text2);padding:.36rem .4rem;cursor:pointer;text-align:center;transition:all .14s}
+.guide-lang-tab.active{background:var(--acc-s);border-color:rgba(196,127,94,.38);color:var(--acc)}
+.guide-file-list{display:flex;flex-direction:column;gap:.15rem}
+.guide-file-btn{background:none;border:1.5px solid transparent;color:var(--text2);font-family:'Outfit',sans-serif;font-size:.78rem;padding:.34rem .55rem;text-align:left;border-radius:9px;cursor:pointer;transition:all .13s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.guide-file-btn:hover{background:var(--panel);color:var(--text)}
+.guide-file-btn.active{background:var(--acc-s);border-color:rgba(196,127,94,.38);color:var(--acc);font-weight:500}
+.guide-main{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:2rem 2.5rem;box-shadow:0 2px 10px var(--sh);min-height:400px}
+/* guide rendered markdown */
+.guide-main h1{font-size:1.55rem;font-weight:800;color:var(--text);margin:0 0 1rem;line-height:1.25}
+.guide-main h2{font-size:1.15rem;font-weight:700;color:var(--text);margin:1.6rem 0 .55rem;padding-bottom:.4rem;border-bottom:1.5px solid var(--border)}
+.guide-main h3{font-size:.97rem;font-weight:700;color:var(--text);margin:1.2rem 0 .4rem}
+.guide-main p{color:var(--text2);line-height:1.78;margin-bottom:.85rem;font-size:.88rem}
+.guide-main code{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:.08rem .38rem;color:var(--acc)}
+.guide-main pre{background:var(--panel)!important;border:1.5px solid var(--border);border-radius:12px;overflow-x:auto;margin:.9rem 0}
+.guide-main pre code{background:none!important;border:none;padding:0;color:var(--text);font-size:.8rem;font-family:'JetBrains Mono',monospace}
+.guide-main ul,.guide-main ol{color:var(--text2);line-height:1.75;padding-left:1.5rem;margin-bottom:.85rem;font-size:.88rem}
+.guide-main li{margin:.28rem 0}
+.guide-main blockquote{border-left:3px solid var(--acc);background:var(--acc-s);padding:.65rem 1rem;border-radius:0 10px 10px 0;margin:.9rem 0;color:var(--text2);font-size:.86rem}
+.guide-main blockquote p{margin:0;color:inherit}
+.guide-main a{color:var(--acc);text-decoration:underline}
+.guide-main hr{border:none;border-top:1.5px solid var(--border);margin:1.5rem 0}
+.guide-main table{border-collapse:collapse;width:100%;margin:.9rem 0;font-size:.84rem}
+.guide-main th{background:var(--panel);border:1px solid var(--border);padding:.45rem .75rem;font-weight:600;color:var(--text);text-align:left}
+.guide-main td{border:1px solid var(--border);padding:.4rem .75rem;color:var(--text2)}
+.guide-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;gap:.8rem;color:var(--muted);font-size:.85rem;text-align:center}
 /* ════════ PWA BANNER ═══════════════════════════════ */
 #pwaBanner{display:none;position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 8px 32px var(--sh-m);padding:.85rem 1.1rem;align-items:center;gap:.8rem;max-width:360px;width:calc(100% - 2rem);animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
 .pwa-icon{font-size:1.6rem;flex-shrink:0}
@@ -315,6 +355,15 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <button class="nav-tab active" data-view="home">🏠 Home</button>
     <button class="nav-tab" data-view="archive">📁 Archive</button>
     <button class="nav-tab" data-view="progress">📊 Progress</button>
+    <div class="nav-dropdown" id="guideDropdown">
+      <button class="nav-tab" id="guideNavTab" data-view="guide" onclick="toggleGuideDropdown(event)">📝 Guide ▾</button>
+      <div class="nav-dropdown-menu" id="guideDropdownMenu">
+        <button class="nav-dropdown-item" id="guideDdPython" onclick="showGuide('python')">🐍 Python</button>
+        <button class="nav-dropdown-item" id="guideDdC" onclick="showGuide('c')">⚙ C</button>
+        <button class="nav-dropdown-item" id="guideDdCpp" onclick="showGuide('cpp')">⚡ C++</button>
+        <button class="nav-dropdown-item" id="guideDdBf" onclick="showGuide('brainfuck')">🧠 Brainfuck</button>
+      </div>
+    </div>
   </div>
   <div class="nav-right">
     <div class="nav-status"><span class="status-dot loading" id="statusDot"></span><span id="statusText">Loading…</span></div>
@@ -380,6 +429,24 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 <div class="view" id="progressView">
   <div class="view-heading">Contest Progress by User</div>
   <div id="progressContent"><div class="sbox-s"><div class="spin"></div></div></div>
+</div>
+
+<!-- GUIDE -->
+<div class="view" id="guideView">
+  <aside class="guide-side">
+    <div class="guide-lang-tabs">
+      <button class="guide-lang-tab active" id="guideLangPython" onclick="switchGuideLang('python')">🐍 Python</button>
+      <button class="guide-lang-tab" id="guideLangC" onclick="switchGuideLang('c')">⚙ C</button>
+      <button class="guide-lang-tab" id="guideLangCpp" onclick="switchGuideLang('cpp')">⚡ C++</button>
+      <button class="guide-lang-tab" id="guideLangBf" onclick="switchGuideLang('brainfuck')">🧠 BF</button>
+    </div>
+    <div class="guide-file-list" id="guideFileList">
+      <div style="font-size:.75rem;color:var(--muted);padding:.4rem .25rem">言語を選択してください</div>
+    </div>
+  </aside>
+  <div class="guide-main" id="guideMain">
+    <div class="guide-empty">📖<span>左のリストからファイルを選んでください</span></div>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -579,14 +646,20 @@ function setStatus(s,t){
 
 /* ════ VIEW ROUTER ══════════════════════════════════ */
 function showView(name){
-  // archiveViewはstyle.displayを直接操作しているのでリセット
+  // archiveViewとguideViewはstyle.displayを直接操作
   const av=document.getElementById('archiveView');
+  const gv=document.getElementById('guideView');
   av.style.display='';
+  gv.style.display='';
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===name+'View'));
   document.querySelectorAll('.nav-tab').forEach(el=>el.classList.toggle('active',el.dataset.view===name));
   if(name==='archive'){
     av.style.display='grid';av.classList.add('active','fadein');
     setTimeout(()=>av.classList.remove('fadein'),400);
+  }
+  if(name==='guide'){
+    gv.style.display='grid';gv.classList.add('active','fadein');
+    setTimeout(()=>gv.classList.remove('fadein'),400);
   }
   document.querySelector('.menu-btn').style.display=name==='archive'?'flex':'none';
   closeDrawer();
@@ -1002,6 +1075,126 @@ function showErr(msg){
   };
   window.closePWABanner=()=>{const b=document.getElementById('pwaBanner');if(b)b.style.display='none'};
 })();
+
+/* ════ GUIDE ════════════════════════════════════════ */
+let guideFiles=null;
+let guideLang='python';
+let guideCurrentFile=null;
+
+const GUIDE_LANGS=[
+  {id:'python', dd:'guideDdPython', tab:'guideLangPython'},
+  {id:'c',      dd:'guideDdC',      tab:'guideLangC'},
+  {id:'cpp',    dd:'guideDdCpp',    tab:'guideLangCpp'},
+  {id:'brainfuck', dd:'guideDdBf',  tab:'guideLangBf'},
+];
+
+function setGuideLangUI(lang){
+  GUIDE_LANGS.forEach(({id,dd,tab})=>{
+    document.getElementById(dd)?.classList.toggle('sel',id===lang);
+    document.getElementById(tab)?.classList.toggle('active',id===lang);
+  });
+}
+
+// ドロップダウン開閉
+function toggleGuideDropdown(e){
+  e.stopPropagation();
+  document.getElementById('guideDropdown').classList.toggle('open');
+}
+document.addEventListener('click',()=>{
+  document.getElementById('guideDropdown')?.classList.remove('open');
+});
+
+// ナビのドロップダウンから言語を選んで解説ビューを開く
+async function showGuide(lang){
+  guideLang=lang;
+  document.getElementById('guideDropdown').classList.remove('open');
+  setGuideLangUI(lang);
+  showView('guide');
+  await loadGuideFiles();
+  renderGuideList();
+}
+
+// サイドバー内の言語タブ切替
+async function switchGuideLang(lang){
+  guideLang=lang;
+  guideCurrentFile=null;
+  setGuideLangUI(lang);
+  document.getElementById('guideMain').innerHTML='<div class="guide-empty">📖<span>左のリストからファイルを選んでください</span></div>';
+  await loadGuideFiles();
+  renderGuideList();
+}
+
+// guide/files.json を一度だけ取得
+async function loadGuideFiles(){
+  if(guideFiles!==null)return;
+  const list=document.getElementById('guideFileList');
+  list.innerHTML='<div class="sbox-s" style="padding:1.5rem"><div class="spin"></div></div>';
+  try{
+    const r=await fetch('guide/files.json');
+    if(!r.ok)throw new Error('guide/files.json が見つかりません (HTTP '+r.status+')');
+    guideFiles=await r.json();
+  }catch(e){
+    guideFiles=[];
+    list.innerHTML=`<div style="font-size:.72rem;color:#c96b6b;padding:.4rem .25rem">⚠ ${e.message}</div>`;
+  }
+}
+
+// ファイル一覧を描画
+function renderGuideList(){
+  const list=document.getElementById('guideFileList');
+  const prefix=guideLang+'/';
+  const files=(guideFiles||[]).filter(f=>f.startsWith(prefix));
+  if(!files.length){
+    list.innerHTML='<div style="font-size:.74rem;color:var(--muted);padding:.4rem .25rem">ファイルが見つかりません</div>';
+    return;
+  }
+  list.innerHTML=files.map(f=>{
+    const name=f.slice(prefix.length);
+    const isActive=guideCurrentFile===f;
+    return`<button class="guide-file-btn${isActive?' active':''}" onclick="openGuideFile('${CSS.escape(f)}')" title="${name}">${name}</button>`;
+  }).join('');
+}
+
+// ファイルを取得してレンダリング
+async function openGuideFile(relPath){
+  guideCurrentFile=relPath;
+  renderGuideList();
+  const main=document.getElementById('guideMain');
+  main.innerHTML='<div class="sbox-s"><div class="spin"></div></div>';
+  try{
+    const url='guide/'+relPath;
+    const r=await fetch(url);
+    if(!r.ok)throw new Error('ファイルを読み込めませんでした (HTTP '+r.status+')');
+    const text=await r.text();
+    const ext=relPath.split('.').pop().toLowerCase();
+    main.innerHTML='';
+    if(ext==='md'||ext==='markdown'){
+      if(typeof marked!=='undefined'){
+        main.innerHTML=marked.parse(text,{gfm:true,breaks:false});
+      } else {
+        main.innerHTML=`<pre style="white-space:pre-wrap;font-size:.84rem;color:var(--text)">${escGuideHtml(text)}</pre>`;
+      }
+      main.querySelectorAll('pre code').forEach(b=>{if(typeof hljs!=='undefined')hljs.highlightElement(b)});
+    } else if(ext==='html'||ext==='htm'){
+      const wrap=document.createElement('div');
+      wrap.innerHTML=text;
+      main.appendChild(wrap);
+    } else {
+      const hljsLang=ext==='py'?'python':ext==='cpp'||ext==='cc'?'cpp':ext==='b'||ext==='bf'?'brainfuck':ext;
+      const pre=document.createElement('pre');
+      const code=document.createElement('code');
+      code.className='language-'+hljsLang;
+      code.textContent=text;
+      pre.appendChild(code);
+      main.appendChild(pre);
+      if(typeof hljs!=='undefined')hljs.highlightElement(code);
+    }
+  }catch(e){
+    main.innerHTML=`<div class="guide-empty">⚠<span>${e.message}</span></div>`;
+  }
+}
+
+function escGuideHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
 init();
 </script>
