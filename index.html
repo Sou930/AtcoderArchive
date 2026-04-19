@@ -156,20 +156,25 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .cg-contest-header{display:flex;align-items:center;gap:.7rem;padding:.65rem 1.1rem;background:var(--panel);border-bottom:1.5px solid var(--border)}
 .cg-contest-name{font-size:.88rem;font-weight:700;color:var(--text);letter-spacing:.02em}
 .cg-contest-cnt{font-size:.63rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.06rem .45rem;font-weight:500}
-.cg-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.1rem;border-bottom:1px solid var(--border);min-height:84px}
+.cg-row{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 1.1rem;border-bottom:1px solid var(--border);min-height:84px}
 .cg-row:last-child{border-bottom:none}
 .cg-row:hover{background:color-mix(in srgb,var(--panel) 60%,transparent)}
-.cg-user{font-size:.75rem;font-weight:600;color:var(--text2);white-space:nowrap;min-width:100px;flex-shrink:0}
+.cg-user{font-size:.75rem;font-weight:600;color:var(--text2);white-space:nowrap;min-width:100px;flex-shrink:0;padding-top:.55rem}
 .cg-user-none{color:var(--muted);font-weight:400}
-.cg-pills{display:flex;flex-wrap:wrap;gap:.35rem;flex:1}
-.cg-pill{display:inline-flex;align-items:center;gap:.3rem;background:var(--pb,var(--panel));border:1.5px solid color-mix(in srgb,var(--pc,var(--border)) 35%,transparent);border-radius:100px;padding:.28rem .7rem .28rem .55rem;cursor:pointer;transition:all .14s;font-family:'Outfit',sans-serif;line-height:1}
-.cg-pill:hover{filter:brightness(.92);transform:translateY(-1px);box-shadow:0 3px 8px var(--sh-m)}
-.cg-pill.cg-fav::before{content:'★';font-size:.55rem;color:#c9a030;margin-right:.1rem}
-.cg-pill-label{font-size:.84rem;font-weight:800;color:var(--pc)}
-.cg-pill-lang{font-size:.58rem;font-weight:500;color:var(--pc);opacity:.7;margin-left:.1rem}
+.cg-pills{display:flex;flex-wrap:wrap;gap:.5rem;flex:1}
+/* mini card pill */
+.cg-pill{display:flex;flex-direction:column;background:var(--pb,var(--panel));border:1.5px solid color-mix(in srgb,var(--pc,var(--border)) 30%,transparent);border-radius:10px;width:120px;cursor:pointer;transition:all .16s;font-family:'Outfit',sans-serif;overflow:hidden;text-align:left}
+.cg-pill:hover{transform:translateY(-2px);box-shadow:0 5px 16px var(--sh-m);border-color:color-mix(in srgb,var(--pc,var(--border)) 60%,transparent)}
+.cg-pill.cg-fav{outline:2px solid #c9a030;outline-offset:1px}
+.cg-pill-head{display:flex;align-items:center;justify-content:space-between;padding:.38rem .5rem .2rem}
+.cg-pill-label{font-size:.9rem;font-weight:800;color:var(--pc)}
+.cg-pill-lang{font-size:.56rem;font-weight:600;color:var(--pc);opacity:.75;background:color-mix(in srgb,var(--pc) 12%,transparent);border-radius:100px;padding:.06rem .35rem}
+.cg-pill-preview{font-family:'JetBrains Mono',monospace;font-size:.58rem;line-height:1.55;color:var(--text2);padding:.1rem .5rem .4rem;max-height:52px;overflow:hidden;white-space:pre;mask-image:linear-gradient(180deg,#000 40%,transparent);opacity:.8}
+.cg-fav-star{font-size:.6rem;color:#c9a030;margin-left:.15rem}
 @media(max-width:720px){
-  .cg-row{flex-wrap:wrap;gap:.4rem}
-  .cg-user{min-width:unset;font-size:.7rem}
+  .cg-row{flex-wrap:wrap;gap:.5rem}
+  .cg-user{min-width:unset;font-size:.7rem;padding-top:0;width:100%}
+  .cg-pill{width:100px}
 }
 
 /* ─── MODAL ──────────────────────────────────────── */
@@ -721,13 +726,31 @@ function renderCards(){
         pill.className='cg-pill'+(isFav?' cg-fav':'');
         pill.style.cssText=`--pc:${f.lang.color};--pb:${f.lang.bg}`;
         const label=f.problem?f.problem.toUpperCase():f.base;
-        pill.innerHTML=`<span class="cg-pill-label">${label}</span><span class="cg-pill-lang">${f.lang.label}</span>`;
-        pill.title=`${f.filename}`;
+        const starHtml=isFav?`<span class="cg-fav-star">★</span>`:'';
+        pill.innerHTML=`
+          <div class="cg-pill-head">
+            <span class="cg-pill-label">${label}${starHtml}</span>
+            <span class="cg-pill-lang">${f.lang.label}</span>
+          </div>
+          <div class="cg-pill-preview" id="prev_${f.base}_${f.ext}">…</div>`;
+        pill.title=f.filename;
         pill.addEventListener('click',()=>{
           const idx=currentFiles.indexOf(f);
           openModal(f,idx>=0?idx:0);
         });
         pills.appendChild(pill);
+        // load preview
+        const pid=`prev_${f.base}_${f.ext}`;
+        if(codeCache.has(f.fullUrl)){
+          const el=document.getElementById(pid);
+          if(el)el.textContent=codeCache.get(f.fullUrl).slice(0,200);
+        } else {
+          fetch(f.fullUrl).then(r=>r.text()).then(code=>{
+            codeCache.set(f.fullUrl,code);
+            const el=document.getElementById(pid);
+            if(el)el.textContent=code.slice(0,200);
+          }).catch(()=>{const el=document.getElementById(pid);if(el)el.textContent='—'});
+        }
       });
       row.appendChild(pills);
       section.appendChild(row);
