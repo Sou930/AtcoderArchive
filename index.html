@@ -921,9 +921,14 @@ async function _renderModalFile(f){
     // line count chip in header
     const existingLc=document.querySelector('.mmeta-chip.lc');
     if(!existingLc){
+      const byteCount=new TextEncoder().encode(_code).length;
+      const byteLabel=byteCount>=1024?`${(byteCount/1024).toFixed(1)} KB`:`${byteCount} B`;
       const lcChip=document.createElement('span');
       lcChip.className='mmeta-chip lc';lcChip.textContent=`${lineCount} lines`;
       document.getElementById('mMetaChips').appendChild(lcChip);
+      const bcChip=document.createElement('span');
+      bcChip.className='mmeta-chip';bcChip.textContent=byteLabel;
+      document.getElementById('mMetaChips').appendChild(bcChip);
     }
     const codeWrap=document.createElement('div');
     codeWrap.className='hljs-code-wrap';codeWrap.appendChild(pre);
