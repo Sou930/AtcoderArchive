@@ -1,0 +1,46 @@
+name: Generate guide/files.json
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'guide/**'   # guideフォルダに変更があった時のみ実行
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate files.json
+        run: |
+          cd guide
+          find . -type f \
+            ! -name "*.json" \
+            ! -name "space.txt" \
+            \( \
+              -path './python/*' \
+              -o -path './c/*' \
+              -o -path './cpp/*' \
+              -o -path './brainfuck/*' \
+            \) \
+            | sed 's|^./||' \
+            | sort \
+            | python3 -c "
+          import sys, json
+          lines = [l.rstrip() for l in sys.stdin if l.strip()]
+          print(json.dumps(lines, ensure_ascii=False, indent=2))
+          " > files.json
+
+      - name: Commit and push files.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add guide/files.json
+          git diff --cached --quiet && echo "No changes" || git commit -m "chore: update guide/files.json"
+          git push
