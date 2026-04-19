@@ -282,6 +282,97 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .pg-legend{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.68rem;color:var(--muted)}
 .pg-swatch{width:14px;height:14px;border-radius:3px}
 
+/* ════════ CONTEST ══════════════════════════════════ */
+#contestView{padding:1.6rem 1.8rem 3rem;max-width:1280px;margin:0 auto}
+@media(max-width:720px){#contestView{padding:1rem 1rem 2rem}}
+.contest-view-layout{display:grid;grid-template-columns:220px 1fr;gap:1.4rem;align-items:start}
+@media(max-width:720px){.contest-view-layout{grid-template-columns:1fr}}
+.cv-side{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;box-shadow:0 2px 10px var(--sh);position:sticky;top:calc(44px + 1.4rem);max-height:calc(100vh - 44px - 3rem);overflow-y:auto}
+.cv-main{}
+.cv-top-bar{display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.cv-count{font-size:.78rem;color:var(--muted);margin-right:auto}
+.cv-count strong{color:var(--text);font-weight:600}
+/* difficulty chip filter */
+.diff-filter-row{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.4rem}
+.diff-chip-btn{background:var(--panel);border:1.5px solid var(--border);border-radius:100px;font-size:.66rem;font-weight:700;padding:.22rem .62rem;cursor:pointer;transition:all .14s;color:var(--text2)}
+.diff-chip-btn:hover{opacity:.8}
+.diff-chip-btn.on{color:#fff;border-color:transparent}
+/* contest type filter */
+.ctype-row{display:flex;flex-direction:column;gap:.18rem}
+.ctype-btn{background:none;border:1.5px solid transparent;color:var(--text2);font-family:'Outfit',sans-serif;font-size:.79rem;padding:.34rem .6rem;text-align:left;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.5rem;transition:all .14s}
+.ctype-btn:hover{background:var(--panel);color:var(--text)}
+.ctype-btn.on{background:var(--acc-s);border-color:rgba(196,127,94,.38);color:var(--acc);font-weight:500}
+/* problem cards grid */
+.cv-prob-wrap{display:flex;flex-direction:column;gap:1.1rem}
+.cv-contest-block{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px var(--sh);animation:rise .3s ease both}
+.cv-cb-header{display:flex;align-items:center;gap:.65rem;padding:.6rem 1.1rem;background:var(--panel);border-bottom:1.5px solid var(--border)}
+.cv-cb-title{font-size:.88rem;font-weight:700;color:var(--text)}
+.cv-cb-sub{font-size:.65rem;color:var(--muted)}
+.cv-cb-cnt{margin-left:auto;font-size:.62rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.05rem .42rem}
+.cv-prob-list{display:flex;flex-wrap:wrap;gap:.6rem;padding:.9rem 1.1rem}
+/* individual problem pill */
+.cv-prob-pill{display:flex;flex-direction:column;gap:.18rem;background:var(--pb,var(--panel));border:1.5px solid color-mix(in srgb,var(--pc,var(--border)) 30%,transparent);border-radius:11px;padding:.5rem .75rem .48rem;min-width:100px;max-width:140px;cursor:pointer;text-decoration:none;transition:all .16s;font-family:'Outfit',sans-serif}
+.cv-prob-pill:hover{transform:translateY(-2px);box-shadow:0 5px 16px var(--sh-m);border-color:color-mix(in srgb,var(--pc,var(--border)) 60%,transparent)}
+.cv-pill-top{display:flex;align-items:center;justify-content:space-between;gap:.3rem}
+.cv-pill-label{font-size:.92rem;font-weight:800;color:var(--pc,var(--text))}
+.cv-pill-diff{font-size:.58rem;font-weight:700;color:var(--pc,var(--muted));opacity:.8}
+.cv-pill-name{font-size:.67rem;font-weight:500;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+/* AtCoder difficulty color vars */
+.cv-prob-pill[data-dlv="0"]{--pc:#888;--pb:var(--panel)}
+.cv-prob-pill[data-dlv="1"]{--pc:#804000;--pb:#f5ece0}
+.cv-prob-pill[data-dlv="2"]{--pc:#3a8000;--pb:#eaf3e0}
+.cv-prob-pill[data-dlv="3"]{--pc:#007a7a;--pb:#dff5f5}
+.cv-prob-pill[data-dlv="4"]{--pc:#0050c8;--pb:#e0eaff}
+.cv-prob-pill[data-dlv="5"]{--pc:#c0a000;--pb:#f9f4d8}
+.cv-prob-pill[data-dlv="6"]{--pc:#c06000;--pb:#faeadb}
+.cv-prob-pill[data-dlv="7"]{--pc:#c00000;--pb:#fce0e0}
+[data-theme="dark"] .cv-prob-pill[data-dlv="0"]{--pc:#aaa;--pb:#2a2a2a}
+[data-theme="dark"] .cv-prob-pill[data-dlv="1"]{--pc:#c88050;--pb:#251408}
+[data-theme="dark"] .cv-prob-pill[data-dlv="2"]{--pc:#70cc40;--pb:#0e1f06}
+[data-theme="dark"] .cv-prob-pill[data-dlv="3"]{--pc:#40cccc;--pb:#061a1a}
+[data-theme="dark"] .cv-prob-pill[data-dlv="4"]{--pc:#6090ff;--pb:#060e28}
+[data-theme="dark"] .cv-prob-pill[data-dlv="5"]{--pc:#e0cc40;--pb:#201800}
+[data-theme="dark"] .cv-prob-pill[data-dlv="6"]{--pc:#ff9040;--pb:#1e0a00}
+[data-theme="dark"] .cv-prob-pill[data-dlv="7"]{--pc:#ff6060;--pb:#200000}
+/* difficulty legend */
+.cv-diff-legend{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.cv-dl-chip{font-size:.62rem;font-weight:700;padding:.18rem .55rem;border-radius:100px;cursor:default}
+/* ── user comparison ── */
+.cv-user-rows{display:flex;flex-direction:column;gap:.42rem}
+.cv-user-row{display:flex;align-items:center;gap:.4rem}
+.cv-user-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,.45)}
+.cv-user-input{flex:1;background:var(--panel);border:1.5px solid var(--border);color:var(--text);font-family:'Outfit',sans-serif;font-size:.78rem;padding:.34rem .55rem;border-radius:9px;outline:none;transition:border-color .18s}
+.cv-user-input:focus{border-color:var(--acc)}
+.cv-user-input::placeholder{color:var(--muted)}
+.cv-fetch-btn{background:var(--acc);color:#fff;border:none;font-family:'Outfit',sans-serif;font-size:.7rem;font-weight:600;padding:.3rem .62rem;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .14s}
+.cv-fetch-btn:hover{background:#b36e4d}
+.cv-fetch-btn:disabled{opacity:.4;cursor:default}
+.cv-user-status{font-size:.61rem;padding-left:21px;min-height:.9rem}
+/* AC status filter */
+.cv-acf-row{display:flex;flex-wrap:wrap;gap:.3rem}
+.cv-acf-btn{background:var(--panel);border:1.5px solid var(--border);border-radius:100px;font-size:.67rem;font-weight:600;padding:.22rem .62rem;cursor:pointer;transition:all .14s;color:var(--text2);white-space:nowrap}
+.cv-acf-btn:hover{border-color:var(--border-s);color:var(--text)}
+.cv-acf-btn.on{background:var(--acc);border-color:var(--acc);color:#fff}
+/* comparison stats panel */
+.cv-stats-panel{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:.9rem 1.2rem;margin-bottom:1rem;display:none;animation:vfade .22s ease}
+.cv-stats-panel.visible{display:block}
+.cv-stats-grid{display:flex;gap:.6rem;flex-wrap:wrap}
+.cv-stat-col{display:flex;flex-direction:column;gap:.25rem;min-width:90px;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:.6rem .85rem}
+.cv-stat-user{font-size:.7rem;font-weight:700;display:flex;align-items:center;gap:.38rem;overflow:hidden;white-space:nowrap}
+.cv-stat-n{font-size:1.55rem;font-weight:800;line-height:1}
+.cv-stat-lbl{font-size:.6rem;color:var(--muted)}
+.cv-stat-divider{width:1.5px;background:var(--border);border-radius:2px}
+.cv-venn-row{display:flex;flex-direction:column;gap:.22rem}
+.cv-venn-item{font-size:.7rem;color:var(--text2);display:flex;align-items:center;gap:.4rem}
+.cv-venn-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+/* pill user badges */
+.cv-pill-users{display:flex;gap:.2rem;margin-top:.3rem;flex-wrap:wrap}
+.cv-ub{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cv-ub.unsolved{background:var(--border)}
+/* pill solved highlight */
+.cv-prob-pill.cv-ac-me{box-shadow:0 0 0 2px var(--ucolor-0,var(--acc2)) inset}
+.cv-prob-pill.cv-not-ac{opacity:.45}
+
 /* ════════ GUIDE ════════════════════════════════════ */
 /* nav dropdown */
 .nav-dropdown{position:relative;display:flex;align-items:center}
@@ -366,6 +457,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <button class="nav-tab active" data-view="home">🏠 Home</button>
     <button class="nav-tab" data-view="archive">📁 Archive</button>
     <button class="nav-tab" data-view="progress">📊 Progress</button>
+    <button class="nav-tab" data-view="contest">🏆 Contest</button>
     <div class="nav-dropdown" id="guideDropdown">
       <button class="nav-tab" id="guideNavTab" data-view="guide" onclick="toggleGuideDropdown(event)">📝 Guide ▾</button>
       <div class="nav-dropdown-menu" id="guideDropdownMenu">
@@ -440,6 +532,71 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 <div class="view" id="progressView">
   <div class="view-heading">Contest Progress by User</div>
   <div id="progressContent"><div class="sbox-s"><div class="spin"></div></div></div>
+</div>
+
+<!-- CONTEST -->
+<div class="view" id="contestView">
+  <div class="contest-view-layout">
+    <!-- sidebar -->
+    <div class="cv-side">
+      <div class="sec">
+        <div class="sec-lbl">👤 Users（AtCoder ID）</div>
+        <div class="cv-user-rows" id="cvUserRows">
+          <!-- rows injected by JS -->
+        </div>
+        <button class="cv-fetch-btn" id="cvFetchBtn" style="margin-top:.55rem;width:100%" onclick="fetchAllUsers()">取得 / 更新</button>
+      </div>
+      <div class="sec" id="cvACFilterSec" style="display:none">
+        <div class="sec-lbl">AC Status</div>
+        <div class="cv-acf-row" id="cvACFilters">
+          <button class="cv-acf-btn on" data-acf="all">All</button>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-lbl">Search</div>
+        <div class="search-wrap"><input class="sbox" id="cvSearchBox" type="text" placeholder="abc001, aplusb…"></div>
+      </div>
+      <div class="sec">
+        <div class="sec-lbl">Difficulty</div>
+        <div class="diff-filter-row" id="cvDiffFilters">
+          <button class="diff-chip-btn on" data-dlv="all" style="background:var(--panel);color:var(--text2)">All</button>
+          <button class="diff-chip-btn" data-dlv="0" style="background:#888;color:#fff">Gray</button>
+          <button class="diff-chip-btn" data-dlv="1" style="background:#804000;color:#fff">Brown</button>
+          <button class="diff-chip-btn" data-dlv="2" style="background:#3a8000;color:#fff">Green</button>
+          <button class="diff-chip-btn" data-dlv="3" style="background:#007a7a;color:#fff">Cyan</button>
+          <button class="diff-chip-btn" data-dlv="4" style="background:#0050c8;color:#fff">Blue</button>
+          <button class="diff-chip-btn" data-dlv="5" style="background:#c0a000;color:#fff">Yellow</button>
+          <button class="diff-chip-btn" data-dlv="6" style="background:#c06000;color:#fff">Orange</button>
+          <button class="diff-chip-btn" data-dlv="7" style="background:#c00000;color:#fff">Red</button>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-lbl">Contest Type</div>
+        <div class="ctype-row" id="cvTypeFilters">
+          <button class="ctype-btn on" data-ctype="all">All<span class="cc" id="cvTypeAllCnt">—</span></button>
+          <button class="ctype-btn" data-ctype="abc">ABC<span class="cc" id="cvTypeAbcCnt">—</span></button>
+          <button class="ctype-btn" data-ctype="arc">ARC<span class="cc" id="cvTypeArcCnt">—</span></button>
+          <button class="ctype-btn" data-ctype="agc">AGC<span class="cc" id="cvTypeAgcCnt">—</span></button>
+          <button class="ctype-btn" data-ctype="ahc">AHC<span class="cc" id="cvTypeAhcCnt">—</span></button>
+          <button class="ctype-btn" data-ctype="other">Other<span class="cc" id="cvTypeOtherCnt">—</span></button>
+        </div>
+      </div>
+    </div>
+    <!-- main -->
+    <div class="cv-main">
+      <div class="cv-top-bar">
+        <span class="cv-count" id="cvCount"><strong>—</strong> problems</span>
+        <div class="sort-group">
+          <button class="sb on" data-cvsort="contest-desc">Contest ↓</button>
+          <button class="sb" data-cvsort="contest-asc">Contest ↑</button>
+          <button class="sb" data-cvsort="diff-asc">Diff ↑</button>
+          <button class="sb" data-cvsort="diff-desc">Diff ↓</button>
+        </div>
+      </div>
+      <div class="cv-stats-panel" id="cvStatsPanel"></div>
+      <div id="cvProblems" class="sbox-s"><div class="spin"></div><span>Loading problems…</span></div>
+    </div>
+  </div>
 </div>
 
 <!-- GUIDE -->
@@ -687,6 +844,9 @@ document.querySelectorAll('.nav-tab').forEach(b=>b.addEventListener('click',()=>
   if(b.dataset.view==='guide'){
     if(guideFiles===null) showGuide('python');
     else showView('guide');
+  } else if(b.dataset.view==='contest'){
+    showView('contest');
+    loadContestView();
   } else {
     showView(b.dataset.view);
   }
@@ -1280,6 +1440,334 @@ async function loadGuideTitles(){
 }
 
 function escGuideHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ════ CONTEST VIEW ═════════════════════════════════ */
+let cvProblems=[];
+let cvModels={};
+let cvContests={};
+let cvLoaded=false;
+let cvDiffFilter='all';
+let cvTypeFilter='all';
+let cvSortKey='contest-desc';
+let cvQuery='';
+let cvACFilter='all'; // 'all'|'ac-N'|'nac-N'|'unique-N'|'common'
+
+// ── user comparison state ──
+const CV_USER_COLORS=['#5a9fd4','#7aab8c','#e0834a'];
+let cvUserNames=['','',''];  // up to 3 users
+let cvUserAC=[null,null,null]; // Set<problem_id> | null
+let cvUserLoading=[false,false,false];
+
+function diffLevel(d){
+  if(d===null||d===undefined||isNaN(d))return 0;
+  if(d<400)return 0;if(d<800)return 1;if(d<1200)return 2;
+  if(d<1600)return 3;if(d<2000)return 4;if(d<2400)return 5;
+  if(d<2800)return 6;return 7;
+}
+function contestTypeOf(cid){
+  const l=cid.toLowerCase();
+  if(l.startsWith('abc'))return'abc';if(l.startsWith('arc'))return'arc';
+  if(l.startsWith('agc'))return'agc';if(l.startsWith('ahc'))return'ahc';
+  return'other';
+}
+
+// ── Build user input rows ──
+function buildCVUserRows(){
+  const el=document.getElementById('cvUserRows');
+  el.innerHTML=cvUserNames.map((name,i)=>`
+    <div>
+      <div class="cv-user-row">
+        <span class="cv-user-dot" style="background:${CV_USER_COLORS[i]}"></span>
+        <input class="cv-user-input" id="cvUserInput${i}" type="text" value="${name}"
+          placeholder="User ${i+1}" oninput="cvUserNames[${i}]=this.value.trim()">
+      </div>
+      <div class="cv-user-status" id="cvUserStatus${i}"></div>
+    </div>`).join('');
+}
+
+// ── Paginated fetch of all AC submissions for a user ──
+async function fetchAllAC(username){
+  const solved=new Set();
+  let epoch=0;
+  while(true){
+    const r=await fetch(`https://kenkoooo.com/atcoder/atcoder-api/v3/user/accepted_submissions?user=${encodeURIComponent(username)}&epoch_second=${epoch}`);
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const subs=await r.json();
+    if(!subs.length)break;
+    subs.forEach(s=>solved.add(s.problem_id));
+    if(subs.length<500)break;
+    epoch=Math.max(...subs.map(s=>s.epoch_second))+1;
+  }
+  return solved;
+}
+
+async function fetchAllUsers(){
+  const btn=document.getElementById('cvFetchBtn');
+  btn.disabled=true;
+  btn.textContent='取得中…';
+  const names=cvUserNames.map(n=>n.trim()).filter(Boolean);
+  if(!names.length){btn.disabled=false;btn.textContent='取得 / 更新';return}
+  await Promise.all(cvUserNames.map(async(name,i)=>{
+    const statusEl=document.getElementById(`cvUserStatus${i}`);
+    if(!name.trim()){cvUserAC[i]=null;if(statusEl)statusEl.textContent='';return}
+    cvUserLoading[i]=true;
+    if(statusEl)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ 取得中…</span>`;
+    try{
+      cvUserAC[i]=await fetchAllAC(name.trim());
+      if(statusEl)statusEl.innerHTML=`<span style="color:var(--acc2)">✓ ${cvUserAC[i].size} AC</span>`;
+    }catch(e){
+      cvUserAC[i]=null;
+      if(statusEl)statusEl.innerHTML=`<span style="color:#c96b6b">✕ ${e.message}</span>`;
+    }
+    cvUserLoading[i]=false;
+  }));
+  btn.disabled=false;
+  btn.textContent='取得 / 更新';
+  buildACFilterUI();
+  buildStatsPanel();
+  renderContestView();
+}
+
+function activeUsers(){return cvUserNames.map((n,i)=>n.trim()&&cvUserAC[i]?{name:n.trim(),ac:cvUserAC[i],color:CV_USER_COLORS[i],idx:i}:null).filter(Boolean)}
+
+// ── Build AC status filter buttons ──
+function buildACFilterUI(){
+  const users=activeUsers();
+  const sec=document.getElementById('cvACFilterSec');
+  const row=document.getElementById('cvACFilters');
+  if(!users.length){sec.style.display='none';cvACFilter='all';return}
+  sec.style.display='';
+  let html=`<button class="cv-acf-btn on" data-acf="all">All</button>`;
+  users.forEach(u=>{
+    html+=`<button class="cv-acf-btn" data-acf="ac-${u.idx}" style="--uac:${u.color}">
+      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${u.color};margin-right:.3rem;vertical-align:middle"></span>AC済
+    </button>`;
+    html+=`<button class="cv-acf-btn" data-acf="nac-${u.idx}">
+      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${u.color};opacity:.35;margin-right:.3rem;vertical-align:middle"></span>未AC
+    </button>`;
+  });
+  if(users.length>=2){
+    html+=`<button class="cv-acf-btn" data-acf="common">共通AC</button>`;
+    users.forEach(u=>{
+      const others=users.filter(x=>x.idx!==u.idx);
+      html+=`<button class="cv-acf-btn" data-acf="unique-${u.idx}">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${u.color};margin-right:.3rem;vertical-align:middle"></span>のみ
+      </button>`;
+    });
+  }
+  row.innerHTML=html;
+  row.querySelectorAll('.cv-acf-btn').forEach(b=>b.addEventListener('click',()=>{
+    cvACFilter=b.dataset.acf;
+    row.querySelectorAll('.cv-acf-btn').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    renderContestView();
+  }));
+}
+
+// ── Stats panel ──
+function buildStatsPanel(){
+  const panel=document.getElementById('cvStatsPanel');
+  const users=activeUsers();
+  if(!users.length){panel.classList.remove('visible');return}
+  const total=cvProblems.length;
+  // per-user stats
+  let html=`<div class="cv-stats-grid">`;
+  users.forEach(u=>{
+    const pct=total?(u.ac.size/total*100).toFixed(1):0;
+    html+=`<div class="cv-stat-col">
+      <span class="cv-stat-user"><span style="width:9px;height:9px;border-radius:50%;background:${u.color};flex-shrink:0;display:inline-block"></span>${u.name}</span>
+      <span class="cv-stat-n" style="color:${u.color}">${u.ac.size}</span>
+      <span class="cv-stat-lbl">AC / ${total} (${pct}%)</span>
+    </div>`;
+  });
+  if(users.length>=2){
+    // pairwise Venn
+    html+=`<div class="cv-stat-divider"></div><div class="cv-stat-col" style="min-width:130px">
+      <span class="cv-stat-user" style="color:var(--text2)">比較</span>
+      <div class="cv-venn-row">`;
+    // common
+    const intersection=[...users[0].ac].filter(id=>users.slice(1).every(u=>u.ac.has(id))).length;
+    html+=`<span class="cv-venn-item"><span class="cv-venn-dot" style="background:linear-gradient(135deg,${users.map(u=>u.color).join(',')})"></span>共通 ${intersection}</span>`;
+    users.forEach(u=>{
+      const others=users.filter(x=>x.idx!==u.idx);
+      const unique=[...u.ac].filter(id=>others.every(o=>!o.ac.has(id))).length;
+      html+=`<span class="cv-venn-item"><span class="cv-venn-dot" style="background:${u.color}"></span>${u.name} のみ ${unique}</span>`;
+    });
+    html+=`</div></div>`;
+  }
+  html+=`</div>`;
+  panel.innerHTML=html;
+  panel.classList.add('visible');
+}
+
+async function loadContestView(){
+  if(cvLoaded)return;
+  const el=document.getElementById('cvProblems');
+  el.className='sbox-s';
+  el.innerHTML='<div class="spin"></div><span>AtCoder Problems から取得中…</span>';
+  try{
+    const [pRes,mRes,cRes]=await Promise.all([
+      fetch('https://kenkoooo.com/atcoder/resources/problems.json'),
+      fetch('https://kenkoooo.com/atcoder/resources/problem-models.json'),
+      fetch('https://kenkoooo.com/atcoder/resources/contests.json'),
+    ]);
+    cvProblems=await pRes.json();
+    const models=await mRes.json();
+    cvContests={};
+    (await cRes.json()).forEach(c=>{cvContests[c.id]=c});
+    cvProblems.forEach(p=>{
+      const m=models[p.id];
+      p.difficulty=(m&&m.difficulty!=null)?Math.round(m.difficulty):null;
+      p.dlv=diffLevel(p.difficulty);
+    });
+    cvLoaded=true;
+  }catch(e){
+    el.className='sbox-s';
+    el.innerHTML=`<span style="color:#c96b6b">⚠ 読み込み失敗: ${e.message}</span>`;
+    return;
+  }
+  const cnt={abc:0,arc:0,agc:0,ahc:0,other:0};
+  cvProblems.forEach(p=>{cnt[contestTypeOf(p.contest_id)]++});
+  document.getElementById('cvTypeAllCnt').textContent=cvProblems.length;
+  document.getElementById('cvTypeAbcCnt').textContent=cnt.abc;
+  document.getElementById('cvTypeArcCnt').textContent=cnt.arc;
+  document.getElementById('cvTypeAgcCnt').textContent=cnt.agc;
+  document.getElementById('cvTypeAhcCnt').textContent=cnt.ahc;
+  document.getElementById('cvTypeOtherCnt').textContent=cnt.other;
+  buildCVUserRows();
+  renderContestView();
+}
+
+function cvFiltered(){
+  const users=activeUsers();
+  return cvProblems.filter(p=>{
+    if(cvDiffFilter!=='all'&&String(p.dlv)!==cvDiffFilter)return false;
+    if(cvTypeFilter!=='all'&&contestTypeOf(p.contest_id)!==cvTypeFilter)return false;
+    if(cvQuery){
+      const q=cvQuery.toLowerCase();
+      if(!p.id.toLowerCase().includes(q)&&!p.title.toLowerCase().includes(q)&&!p.contest_id.toLowerCase().includes(q))return false;
+    }
+    // AC filter
+    if(cvACFilter!=='all'&&users.length){
+      if(cvACFilter==='common'){
+        if(!users.every(u=>u.ac.has(p.id)))return false;
+      } else if(cvACFilter.startsWith('ac-')){
+        const idx=parseInt(cvACFilter.slice(3));
+        const u=users.find(x=>x.idx===idx);
+        if(!u||!u.ac.has(p.id))return false;
+      } else if(cvACFilter.startsWith('nac-')){
+        const idx=parseInt(cvACFilter.slice(4));
+        const u=users.find(x=>x.idx===idx);
+        if(!u||u.ac.has(p.id))return false;
+      } else if(cvACFilter.startsWith('unique-')){
+        const idx=parseInt(cvACFilter.slice(7));
+        const u=users.find(x=>x.idx===idx);
+        const others=users.filter(x=>x.idx!==idx);
+        if(!u||!u.ac.has(p.id)||others.some(o=>o.ac.has(p.id)))return false;
+      }
+    }
+    return true;
+  }).sort((a,b)=>{
+    switch(cvSortKey){
+      case'contest-asc': return a.contest_id.localeCompare(b.contest_id)||a.id.localeCompare(b.id);
+      case'contest-desc':return b.contest_id.localeCompare(a.contest_id)||a.id.localeCompare(b.id);
+      case'diff-asc':    return (a.difficulty??-1)-(b.difficulty??-1);
+      case'diff-desc':   return (b.difficulty??-1)-(a.difficulty??-1);
+      default:           return 0;
+    }
+  });
+}
+
+function renderContestView(){
+  if(!cvLoaded)return;
+  const users=activeUsers();
+  const list=cvFiltered();
+  const el=document.getElementById('cvProblems');
+  document.getElementById('cvCount').innerHTML=`<strong>${list.length}</strong> / ${cvProblems.length} problems`;
+  if(!list.length){
+    el.className='sbox-s';
+    el.innerHTML='<span style="font-size:2rem;opacity:.3">🍃</span><span>No results</span>';
+    return;
+  }
+  el.className='';
+  const byContest=new Map();
+  list.forEach(p=>{
+    if(!byContest.has(p.contest_id))byContest.set(p.contest_id,[]);
+    byContest.get(p.contest_id).push(p);
+  });
+  const wrap=document.createElement('div');
+  wrap.className='cv-prob-wrap';
+  [...byContest.entries()].forEach(([cid,probs],ci)=>{
+    const meta=cvContests[cid];
+    const title=meta?meta.title:cid;
+    const block=document.createElement('div');
+    block.className='cv-contest-block';
+    block.style.animationDelay=`${Math.min(ci,20)*25}ms`;
+    block.innerHTML=`<div class="cv-cb-header">
+      <span class="cv-cb-title">${title}</span>
+      <span class="cv-cb-sub">${cid}</span>
+      <span class="cv-cb-cnt">${probs.length} probs</span>
+    </div>`;
+    const grid=document.createElement('div');
+    grid.className='cv-prob-list';
+    probs.forEach(p=>{
+      const diffTxt=p.difficulty!=null?p.difficulty:'?';
+      const pill=document.createElement('a');
+      pill.className='cv-prob-pill';
+      pill.dataset.dlv=p.dlv;
+      pill.href=`https://atcoder.jp/contests/${p.contest_id}/tasks/${p.id}`;
+      pill.target='_blank';
+      pill.rel='noopener noreferrer';
+      const letter=(p.id.split('_').pop()||p.id).toUpperCase();
+      // user badges
+      let badgesHtml='';
+      if(users.length){
+        const dots=users.map(u=>{
+          const solved=u.ac.has(p.id);
+          return`<span class="cv-ub${solved?'':' unsolved'}" style="${solved?`background:${u.color}`:''}"></span>`;
+        }).join('');
+        badgesHtml=`<div class="cv-pill-users">${dots}</div>`;
+        // highlight if first user solved
+        if(users[0]&&users[0].ac.has(p.id))pill.classList.add('cv-ac-me');
+      }
+      pill.innerHTML=`
+        <div class="cv-pill-top">
+          <span class="cv-pill-label">${letter}</span>
+          <span class="cv-pill-diff">${diffTxt}</span>
+        </div>
+        <span class="cv-pill-name">${p.title}</span>
+        ${badgesHtml}`;
+      grid.appendChild(pill);
+    });
+    block.appendChild(grid);
+    wrap.appendChild(block);
+  });
+  el.innerHTML='';
+  el.appendChild(wrap);
+}
+
+// filter event listeners
+document.getElementById('cvDiffFilters').addEventListener('click',e=>{
+  const b=e.target.closest('[data-dlv]');if(!b)return;
+  cvDiffFilter=b.dataset.dlv;
+  document.querySelectorAll('#cvDiffFilters [data-dlv]').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');renderContestView();
+});
+document.getElementById('cvTypeFilters').addEventListener('click',e=>{
+  const b=e.target.closest('[data-ctype]');if(!b)return;
+  cvTypeFilter=b.dataset.ctype;
+  document.querySelectorAll('#cvTypeFilters .ctype-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');renderContestView();
+});
+document.getElementById('cvSearchBox').addEventListener('input',e=>{
+  cvQuery=e.target.value.toLowerCase();renderContestView();
+});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-cvsort]');if(!b)return;
+  cvSortKey=b.dataset.cvsort;
+  document.querySelectorAll('[data-cvsort]').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');renderContestView();
+});
 
 init();
 </script>
