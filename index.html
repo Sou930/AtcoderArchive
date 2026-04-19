@@ -168,7 +168,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .cg-pill.cg-fav{outline:2px solid #c9a030;outline-offset:1px}
 .cg-pill-head{display:flex;align-items:center;justify-content:space-between;padding:.38rem .5rem .2rem}
 .cg-pill-label{font-size:.9rem;font-weight:800;color:var(--pc)}
-.cg-pill-lang{font-size:.56rem;font-weight:600;color:var(--pc);opacity:.75;background:color-mix(in srgb,var(--pc) 12%,transparent);border-radius:100px;padding:.06rem .35rem}
+.cg-pill-lang{font-size:.56rem;font-weight:600;border-radius:100px;padding:.06rem .35rem}
 .cg-pill-preview{font-family:'JetBrains Mono',monospace;font-size:.58rem;line-height:1.55;color:var(--text2);padding:.1rem .5rem .4rem;max-height:52px;overflow:hidden;white-space:pre;mask-image:linear-gradient(180deg,#000 40%,transparent);opacity:.8}
 .cg-fav-star{font-size:.6rem;color:#c9a030;margin-left:.15rem}
 @media(max-width:720px){
@@ -177,7 +177,23 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
   .cg-pill{width:100px}
 }
 
-/* ─── MODAL ──────────────────────────────────────── */
+/* ── PROBLEM DIFFICULTY COLORS ── */
+.cg-pill[data-diff="A"]{--pc:#2e9e5b;--pb:#e8f7ee}
+.cg-pill[data-diff="B"]{--pc:#3a7ec4;--pb:#e8f1fb}
+.cg-pill[data-diff="C"]{--pc:#c4a020;--pb:#faf6e0}
+.cg-pill[data-diff="D"]{--pc:#c47030;--pb:#faeee3}
+.cg-pill[data-diff="E"]{--pc:#b03060;--pb:#fae8ee}
+.cg-pill[data-diff="F"]{--pc:#8040b0;--pb:#f3e8fa}
+.cg-pill[data-diff="G"]{--pc:#207070;--pb:#e3f4f4}
+.cg-pill[data-diff="H"]{--pc:#505050;--pb:#efefef}
+[data-theme="dark"] .cg-pill[data-diff="A"]{--pc:#5dcc88;--pb:#0d2318}
+[data-theme="dark"] .cg-pill[data-diff="B"]{--pc:#6aaae8;--pb:#0d1a2e}
+[data-theme="dark"] .cg-pill[data-diff="C"]{--pc:#e0c040;--pb:#251e00}
+[data-theme="dark"] .cg-pill[data-diff="D"]{--pc:#e89050;--pb:#271500}
+[data-theme="dark"] .cg-pill[data-diff="E"]{--pc:#e06090;--pb:#270010}
+[data-theme="dark"] .cg-pill[data-diff="F"]{--pc:#b070e0;--pb:#1a0028}
+[data-theme="dark"] .cg-pill[data-diff="G"]{--pc:#40b0b0;--pb:#001818}
+[data-theme="dark"] .cg-pill[data-diff="H"]{--pc:#909090;--pb:#1a1a1a}
 .backdrop{display:none;position:fixed;inset:0;background:rgba(50,38,28,.42);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;padding:1.5rem}
 .backdrop.open{display:flex}
 .modal{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(60,45,35,.22);animation:popIn .22s cubic-bezier(.34,1.56,.64,1);overflow:hidden}
@@ -723,14 +739,15 @@ function renderCards(){
       files.forEach(f=>{
         const isFav=favs.has(f.fullUrl);
         const pill=document.createElement('button');
+        const diff=(f.problem?f.problem.slice(0,1):'?').toUpperCase();
         pill.className='cg-pill'+(isFav?' cg-fav':'');
-        pill.style.cssText=`--pc:${f.lang.color};--pb:${f.lang.bg}`;
+        pill.dataset.diff=diff;
         const label=f.problem?f.problem.toUpperCase():f.base;
         const starHtml=isFav?`<span class="cg-fav-star">★</span>`:'';
         pill.innerHTML=`
           <div class="cg-pill-head">
             <span class="cg-pill-label">${label}${starHtml}</span>
-            <span class="cg-pill-lang">${f.lang.label}</span>
+            <span class="cg-pill-lang" style="background:${f.lang.bg};color:${f.lang.color}">${f.lang.label}</span>
           </div>
           <div class="cg-pill-preview" id="prev_${f.base}_${f.ext}">…</div>`;
         pill.title=f.filename;
