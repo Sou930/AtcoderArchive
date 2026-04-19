@@ -366,9 +366,9 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <div class="sort-bar" id="sortBar" style="display:none">
       <span class="rinfo" id="rinfo"></span>
       <div class="view-toggle">
-        <button class="vt-btn on" id="vtGrid" title="グリッド表示" onclick="setViewMode('grid')">⊞</button>
+        <button class="vt-btn" id="vtGrid" title="グリッド表示" onclick="setViewMode('grid')">⊞</button>
         <button class="vt-btn" id="vtList" title="リスト表示" onclick="setViewMode('list')">☰</button>
-        <button class="vt-btn" id="vtGroup" title="コンテスト別グループ" onclick="setViewMode('group')">⊟</button>
+        <button class="vt-btn on" id="vtGroup" title="コンテスト別グループ" onclick="setViewMode('group')">⊟</button>
       </div>
       <div class="sort-group">
         <button class="sb" data-sort="contest-asc">Contest ↑</button>
@@ -457,7 +457,7 @@ function openDrawer(){document.getElementById('sidebar').classList.add('open');d
 function closeDrawer(){document.getElementById('sidebar').classList.remove('open');document.getElementById('drawerOverlay').classList.remove('open')}
 
 /* ════ VIEW MODE ════════════════════════════════════ */
-let viewMode='grid'; // 'grid' | 'list' | 'group'
+let viewMode='group'; // 'grid' | 'list' | 'group'
 function setViewMode(m){
   viewMode=m;
   document.getElementById('vtGrid').classList.toggle('on',m==='grid');
