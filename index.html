@@ -309,9 +309,12 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .cv-cb-title{font-size:.88rem;font-weight:700;color:var(--text)}
 .cv-cb-sub{font-size:.65rem;color:var(--muted)}
 .cv-cb-cnt{margin-left:auto;font-size:.62rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.05rem .42rem}
-.cv-prob-list{display:flex;flex-wrap:wrap;gap:.6rem;padding:.9rem 1.1rem}
+.cv-prob-list{display:flex;flex-wrap:nowrap;gap:.6rem;padding:.9rem 1.1rem;overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.cv-prob-list::-webkit-scrollbar{height:5px}
+.cv-prob-list::-webkit-scrollbar-track{background:transparent}
+.cv-prob-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
 /* individual problem pill */
-.cv-prob-pill{display:flex;flex-direction:column;gap:.18rem;background:var(--pb,var(--panel));border:1.5px solid color-mix(in srgb,var(--pc,var(--border)) 30%,transparent);border-radius:11px;padding:.5rem .75rem .48rem;min-width:100px;max-width:140px;cursor:pointer;text-decoration:none;transition:all .16s;font-family:'Outfit',sans-serif}
+.cv-prob-pill{display:flex;flex-direction:column;gap:.18rem;background:var(--pb,var(--panel));border:1.5px solid color-mix(in srgb,var(--pc,var(--border)) 30%,transparent);border-radius:11px;padding:.5rem .75rem .48rem;min-width:88px;flex-shrink:0;cursor:pointer;text-decoration:none;transition:all .16s;font-family:'Outfit',sans-serif}
 .cv-prob-pill:hover{transform:translateY(-2px);box-shadow:0 5px 16px var(--sh-m);border-color:color-mix(in srgb,var(--pc,var(--border)) 60%,transparent)}
 .cv-pill-top{display:flex;align-items:center;justify-content:space-between;gap:.3rem}
 .cv-pill-label{font-size:.92rem;font-weight:800;color:var(--pc,var(--text))}
@@ -573,8 +576,8 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
       <div class="sec">
         <div class="sec-lbl">Contest Type</div>
         <div class="ctype-row" id="cvTypeFilters">
-          <button class="ctype-btn on" data-ctype="all">All<span class="cc" id="cvTypeAllCnt">—</span></button>
-          <button class="ctype-btn" data-ctype="abc">ABC<span class="cc" id="cvTypeAbcCnt">—</span></button>
+          <button class="ctype-btn" data-ctype="all">All<span class="cc" id="cvTypeAllCnt">—</span></button>
+          <button class="ctype-btn on" data-ctype="abc">ABC<span class="cc" id="cvTypeAbcCnt">—</span></button>
           <button class="ctype-btn" data-ctype="arc">ARC<span class="cc" id="cvTypeArcCnt">—</span></button>
           <button class="ctype-btn" data-ctype="agc">AGC<span class="cc" id="cvTypeAgcCnt">—</span></button>
           <button class="ctype-btn" data-ctype="ahc">AHC<span class="cc" id="cvTypeAhcCnt">—</span></button>
@@ -1447,7 +1450,7 @@ let cvModels={};
 let cvContests={};
 let cvLoaded=false;
 let cvDiffFilter='all';
-let cvTypeFilter='all';
+let cvTypeFilter='abc';
 let cvSortKey='contest-desc';
 let cvQuery='';
 let cvACFilter='all'; // 'all'|'ac-N'|'nac-N'|'unique-N'|'common'
@@ -1486,17 +1489,39 @@ function buildCVUserRows(){
 }
 
 // ── Paginated fetch of all AC submissions for a user ──
-async function fetchAllAC(username){
+async function fetchAllAC(username,statusEl){
   const solved=new Set();
   let epoch=0;
-  while(true){
-    const r=await fetch(`https://kenkoooo.com/atcoder/atcoder-api/v3/user/accepted_submissions?user=${encodeURIComponent(username)}&epoch_second=${epoch}`);
-    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+  const maxPages=40;
+  for(let page=0;page<maxPages;page++){
+    if(statusEl&&page>0)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ ${solved.size} AC取得中 (p${page+1})…</span>`;
+    let r;
+    for(let attempt=0;attempt<3;attempt++){
+      try{
+        r=await fetch(
+          `https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${encodeURIComponent(username)}&epoch_second=${epoch}`,
+          {mode:'cors',headers:{Accept:'application/json'}}
+        );
+        break;
+      }catch(err){
+        if(attempt===2)throw new Error('接続失敗（CORS またはネットワーク）');
+        await new Promise(res=>setTimeout(res,800*(attempt+1)));
+      }
+    }
+    if(!r.ok){
+      if(r.status===404)throw new Error('ユーザーが見つかりません');
+      if(r.status===429)throw new Error('レート制限 (しばらく待ってください)');
+      throw new Error(`HTTP ${r.status}`);
+    }
     const subs=await r.json();
     if(!subs.length)break;
-    subs.forEach(s=>solved.add(s.problem_id));
+    subs.filter(s=>s.result==='AC').forEach(s=>solved.add(s.problem_id));
     if(subs.length<500)break;
-    epoch=Math.max(...subs.map(s=>s.epoch_second))+1;
+    let maxEpoch=0;
+    for(const s of subs)if(s.epoch_second>maxEpoch)maxEpoch=s.epoch_second;
+    if(maxEpoch<=epoch)break;
+    epoch=maxEpoch+1;
+    if(page>0)await new Promise(res=>setTimeout(res,200));
   }
   return solved;
 }
@@ -1513,7 +1538,7 @@ async function fetchAllUsers(){
     cvUserLoading[i]=true;
     if(statusEl)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ 取得中…</span>`;
     try{
-      cvUserAC[i]=await fetchAllAC(name.trim());
+      cvUserAC[i]=await fetchAllAC(name.trim(),statusEl);
       if(statusEl)statusEl.innerHTML=`<span style="color:var(--acc2)">✓ ${cvUserAC[i].size} AC</span>`;
     }catch(e){
       cvUserAC[i]=null;
