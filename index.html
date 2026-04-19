@@ -302,24 +302,35 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .guide-file-btn{background:none;border:1.5px solid transparent;color:var(--text2);font-family:'Outfit',sans-serif;font-size:.78rem;padding:.34rem .55rem;text-align:left;border-radius:9px;cursor:pointer;transition:all .13s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
 .guide-file-btn:hover{background:var(--panel);color:var(--text)}
 .guide-file-btn.active{background:var(--acc-s);border-color:rgba(196,127,94,.38);color:var(--acc);font-weight:500}
-.guide-main{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:2rem 2.5rem;box-shadow:0 2px 10px var(--sh);min-height:400px}
+.guide-main{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 2px 10px var(--sh);min-height:400px;overflow:hidden;display:flex;flex-direction:column}
+.guide-title-bar{display:none;align-items:center;gap:.65rem;padding:.75rem 1.4rem;background:var(--panel);border-bottom:1.5px solid var(--border);flex-shrink:0}
+.guide-title-bar.visible{display:flex}
+.guide-title-lang{font-size:.68rem;font-weight:700;padding:.18rem .55rem;border-radius:100px;flex-shrink:0}
+.guide-title-sep{color:var(--border-s);font-size:.9rem;flex-shrink:0}
+.guide-title-text{font-size:.97rem;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.guide-title-file{margin-left:auto;font-size:.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.guide-body{padding:1.8rem 2.4rem;overflow-y:auto;flex:1}
 /* guide rendered markdown */
-.guide-main h1{font-size:1.55rem;font-weight:800;color:var(--text);margin:0 0 1rem;line-height:1.25}
-.guide-main h2{font-size:1.15rem;font-weight:700;color:var(--text);margin:1.6rem 0 .55rem;padding-bottom:.4rem;border-bottom:1.5px solid var(--border)}
-.guide-main h3{font-size:.97rem;font-weight:700;color:var(--text);margin:1.2rem 0 .4rem}
-.guide-main p{color:var(--text2);line-height:1.78;margin-bottom:.85rem;font-size:.88rem}
-.guide-main code{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:.08rem .38rem;color:var(--acc)}
-.guide-main pre{background:var(--panel)!important;border:1.5px solid var(--border);border-radius:12px;overflow-x:auto;margin:.9rem 0}
-.guide-main pre code{background:none!important;border:none;padding:0;color:var(--text);font-size:.8rem;font-family:'JetBrains Mono',monospace}
-.guide-main ul,.guide-main ol{color:var(--text2);line-height:1.75;padding-left:1.5rem;margin-bottom:.85rem;font-size:.88rem}
-.guide-main li{margin:.28rem 0}
-.guide-main blockquote{border-left:3px solid var(--acc);background:var(--acc-s);padding:.65rem 1rem;border-radius:0 10px 10px 0;margin:.9rem 0;color:var(--text2);font-size:.86rem}
-.guide-main blockquote p{margin:0;color:inherit}
-.guide-main a{color:var(--acc);text-decoration:underline}
-.guide-main hr{border:none;border-top:1.5px solid var(--border);margin:1.5rem 0}
-.guide-main table{border-collapse:collapse;width:100%;margin:.9rem 0;font-size:.84rem}
-.guide-main th{background:var(--panel);border:1px solid var(--border);padding:.45rem .75rem;font-weight:600;color:var(--text);text-align:left}
-.guide-main td{border:1px solid var(--border);padding:.4rem .75rem;color:var(--text2)}
+.guide-body h1{font-size:1.55rem;font-weight:800;color:var(--text);margin:0 0 1rem;line-height:1.25}
+.guide-body h2{font-size:1.15rem;font-weight:700;color:var(--text);margin:1.8rem 0 .6rem;padding-bottom:.4rem;border-bottom:1.5px solid var(--border)}
+.guide-body h3{font-size:.97rem;font-weight:700;color:var(--text);margin:1.3rem 0 .45rem}
+/* h4 → 「入力」「コード」「出力」ラベル */
+.guide-body h4{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin:1.1rem 0 .3rem;display:flex;align-items:center;gap:.4rem}
+.guide-body h4::before{content:'';display:inline-block;width:3px;height:.85em;border-radius:2px;background:var(--acc);flex-shrink:0}
+.guide-body p{color:var(--text2);line-height:1.78;margin-bottom:.85rem;font-size:.88rem}
+.guide-body code{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:.08rem .38rem;color:var(--acc)}
+/* コードブロック */
+.guide-body pre{background:var(--surface)!important;border:1.5px solid var(--border-s);border-radius:10px;overflow-x:auto;margin:.3rem 0 .9rem;box-shadow:inset 0 1px 4px var(--sh)}
+.guide-body pre code{background:none!important;border:none;padding:1rem 1.2rem;display:block;color:var(--text);font-size:.8rem;font-family:'JetBrains Mono',monospace;line-height:1.75}
+.guide-body ul,.guide-body ol{color:var(--text2);line-height:1.75;padding-left:1.5rem;margin-bottom:.85rem;font-size:.88rem}
+.guide-body li{margin:.28rem 0}
+.guide-body blockquote{border-left:3px solid var(--acc);background:var(--acc-s);padding:.65rem 1rem;border-radius:0 10px 10px 0;margin:.9rem 0;color:var(--text2);font-size:.86rem}
+.guide-body blockquote p{margin:0;color:inherit}
+.guide-body a{color:var(--acc);text-decoration:underline}
+.guide-body hr{border:none;border-top:1.5px solid var(--border);margin:1.5rem 0}
+.guide-body table{border-collapse:collapse;width:100%;margin:.9rem 0;font-size:.84rem}
+.guide-body th{background:var(--panel);border:1px solid var(--border);padding:.45rem .75rem;font-weight:600;color:var(--text);text-align:left}
+.guide-body td{border:1px solid var(--border);padding:.4rem .75rem;color:var(--text2)}
 .guide-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;gap:.8rem;color:var(--muted);font-size:.85rem;text-align:center}
 /* ════════ PWA BANNER ═══════════════════════════════ */
 #pwaBanner{display:none;position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 8px 32px var(--sh-m);padding:.85rem 1.1rem;align-items:center;gap:.8rem;max-width:360px;width:calc(100% - 2rem);animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
@@ -445,7 +456,15 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     </div>
   </aside>
   <div class="guide-main" id="guideMain">
-    <div class="guide-empty">📖<span>左のリストからファイルを選んでください</span></div>
+    <div class="guide-title-bar" id="guideTitleBar">
+      <span class="guide-title-lang" id="guideTitleLang"></span>
+      <span class="guide-title-sep">›</span>
+      <span class="guide-title-text" id="guideTitleText"></span>
+      <span class="guide-title-file" id="guideTitleFile"></span>
+    </div>
+    <div class="guide-body" id="guideBody">
+      <div class="guide-empty">📖<span>左のリストからファイルを選んでください</span></div>
+    </div>
   </div>
 </div>
 
@@ -1119,7 +1138,8 @@ async function switchGuideLang(lang){
   guideLang=lang;
   guideCurrentFile=null;
   setGuideLangUI(lang);
-  document.getElementById('guideMain').innerHTML='<div class="guide-empty">📖<span>左のリストからファイルを選んでください</span></div>';
+  document.getElementById('guideBody').innerHTML='<div class="guide-empty">📖<span>左のリストからファイルを選んでください</span></div>';
+  document.getElementById('guideTitleBar').classList.remove('visible');
   await loadGuideFiles();
   renderGuideList();
 }
@@ -1159,26 +1179,37 @@ function renderGuideList(){
 async function openGuideFile(relPath){
   guideCurrentFile=relPath;
   renderGuideList();
-  const main=document.getElementById('guideMain');
-  main.innerHTML='<div class="sbox-s"><div class="spin"></div></div>';
+  const body=document.getElementById('guideBody');
+  const titleBar=document.getElementById('guideTitleBar');
+  titleBar.classList.remove('visible');
+  body.innerHTML='<div class="sbox-s"><div class="spin"></div></div>';
   try{
     const url='guide/'+relPath;
     const r=await fetch(url);
     if(!r.ok)throw new Error('ファイルを読み込めませんでした (HTTP '+r.status+')');
     const text=await r.text();
     const ext=relPath.split('.').pop().toLowerCase();
-    main.innerHTML='';
+    body.innerHTML='';
     if(ext==='md'||ext==='markdown'){
       if(typeof marked!=='undefined'){
-        main.innerHTML=marked.parse(text,{gfm:true,breaks:false});
+        body.innerHTML=marked.parse(text,{gfm:true,breaks:false});
       } else {
-        main.innerHTML=`<pre style="white-space:pre-wrap;font-size:.84rem;color:var(--text)">${escGuideHtml(text)}</pre>`;
+        body.innerHTML=`<pre style="white-space:pre-wrap;font-size:.84rem;color:var(--text)">${escGuideHtml(text)}</pre>`;
       }
-      main.querySelectorAll('pre code').forEach(b=>{if(typeof hljs!=='undefined')hljs.highlightElement(b)});
+      body.querySelectorAll('pre code').forEach(b=>{if(typeof hljs!=='undefined')hljs.highlightElement(b)});
+      // h1 を題名バーに抜き出して非表示に
+      const h1=body.querySelector('h1');
+      if(h1){
+        setGuideTitleBar(h1.textContent.trim(), relPath);
+        h1.style.display='none';
+      } else {
+        setGuideTitleBar(relPath.split('/').pop(), relPath);
+      }
     } else if(ext==='html'||ext==='htm'){
       const wrap=document.createElement('div');
       wrap.innerHTML=text;
-      main.appendChild(wrap);
+      body.appendChild(wrap);
+      setGuideTitleBar(relPath.split('/').pop(), relPath);
     } else {
       const hljsLang=ext==='py'?'python':ext==='cpp'||ext==='cc'?'cpp':ext==='b'||ext==='bf'?'brainfuck':ext;
       const pre=document.createElement('pre');
@@ -1186,12 +1217,31 @@ async function openGuideFile(relPath){
       code.className='language-'+hljsLang;
       code.textContent=text;
       pre.appendChild(code);
-      main.appendChild(pre);
+      body.appendChild(pre);
       if(typeof hljs!=='undefined')hljs.highlightElement(code);
+      setGuideTitleBar(relPath.split('/').pop(), relPath);
     }
   }catch(e){
-    main.innerHTML=`<div class="guide-empty">⚠<span>${e.message}</span></div>`;
+    body.innerHTML=`<div class="guide-empty">⚠<span>${e.message}</span></div>`;
+    titleBar.classList.remove('visible');
   }
+}
+
+const GUIDE_LANG_META={
+  python:{label:'Python', emoji:'🐍', color:'#5a9fd4', bg:'#edf4fb'},
+  c:     {label:'C',      emoji:'⚙',  color:'#7a7abf', bg:'#f0f0fa'},
+  cpp:   {label:'C++',    emoji:'⚡', color:'#c9687a', bg:'#fbeeef'},
+  brainfuck:{label:'BF',  emoji:'🧠', color:'#8c7ab5', bg:'#f2eff9'},
+};
+function setGuideTitleBar(title, relPath){
+  const meta=GUIDE_LANG_META[guideLang]||{label:guideLang,emoji:'📝',color:'var(--acc)',bg:'var(--acc-s)'};
+  const langEl=document.getElementById('guideTitleLang');
+  langEl.textContent=meta.emoji+' '+meta.label;
+  langEl.style.background=meta.bg;
+  langEl.style.color=meta.color;
+  document.getElementById('guideTitleText').textContent=title;
+  document.getElementById('guideTitleFile').textContent=relPath.split('/').pop();
+  document.getElementById('guideTitleBar').classList.add('visible');
 }
 
 function escGuideHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
