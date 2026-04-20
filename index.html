@@ -262,8 +262,45 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .lang-chip-sm{font-size:.56rem;font-weight:600;padding:.1rem .35rem;border-radius:100px}
 
 /* ════════ PROGRESS ═════════════════════════════════ */
-#progressView{padding:2rem 2.5rem 3rem;max-width:100%;margin:0 auto}
-@media(max-width:720px){#progressView{padding:1.2rem}}
+#progressView{padding:2rem 2.5rem 3rem;max-width:1200px;margin:0 auto}
+@media(max-width:720px){#progressView{padding:1rem}}
+
+/* summary cards */
+.pg-summary{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.pg-sum-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:.9rem 1.3rem;flex:1;min-width:120px;box-shadow:0 2px 10px var(--sh);display:flex;flex-direction:column;gap:.2rem}
+.pg-sum-n{font-size:1.9rem;font-weight:800;line-height:1;color:var(--acc)}
+.pg-sum-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+
+/* per-user cards */
+.pg-users-grid{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:1.6rem}
+.pg-user-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px var(--sh);animation:rise .3s ease both}
+.pg-uc-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.2rem;background:var(--panel);border-bottom:1.5px solid var(--border)}
+.pg-uc-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;flex-shrink:0}
+.pg-uc-name{font-size:.95rem;font-weight:700;color:var(--text);flex:1}
+.pg-uc-stats{display:flex;gap:1rem}
+.pg-uc-stat{text-align:right}
+.pg-uc-stat-n{font-size:1.05rem;font-weight:800;color:var(--acc);line-height:1}
+.pg-uc-stat-l{font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+/* contest rows in user card */
+.pg-contest-list{display:flex;flex-direction:column;gap:0}
+.pg-contest-row{display:flex;align-items:center;gap:.9rem;padding:.6rem 1.2rem;border-bottom:1px solid var(--border);transition:background .12s}
+.pg-contest-row:last-child{border-bottom:none}
+.pg-contest-row:hover{background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.pg-cr-name{font-size:.82rem;font-weight:600;color:var(--text);min-width:100px;flex-shrink:0}
+.pg-cr-bar-wrap{flex:1;height:10px;background:var(--panel);border-radius:100px;overflow:hidden;border:1px solid var(--border)}
+.pg-cr-bar{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.pg-cr-count{font-size:.78rem;font-weight:700;color:var(--text2);min-width:28px;text-align:right;flex-shrink:0}
+.pg-cr-pills{display:flex;gap:.3rem;flex-wrap:wrap;flex-shrink:0}
+.pg-cr-pill{font-size:.6rem;font-weight:700;padding:.1rem .38rem;border-radius:100px}
+
+/* compact table toggle */
+.pg-view-toggle{display:flex;gap:.4rem;margin-bottom:1rem;align-items:center}
+.pg-vt-lbl{font-size:.72rem;color:var(--muted);margin-right:.2rem}
+.pg-vt-btn{background:var(--panel);border:1.5px solid var(--border);border-radius:100px;font-size:.7rem;font-weight:600;padding:.22rem .7rem;cursor:pointer;color:var(--text2);transition:all .14s}
+.pg-vt-btn.on{background:var(--acc);border-color:var(--acc);color:#fff}
+
+/* heatmap (compact) */
 .pg-table-wrap{overflow-x:auto;border:1.5px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:0 2px 10px var(--sh)}
 .pg-table{border-collapse:collapse;min-width:max-content}
 .pg-table th{background:var(--panel);border-right:1px solid var(--border);border-bottom:1.5px solid var(--border);font-size:.6rem;font-weight:600;color:var(--muted);writing-mode:vertical-rl;padding:.5rem .3rem;position:sticky;top:0;z-index:1;min-height:60px;white-space:nowrap}
@@ -279,8 +316,10 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 [data-theme="dark"] .pg-2{color:#9ad4b8}
 [data-theme="dark"] .pg-3{color:#bce8d0}
 [data-theme="dark"] .pg-hi{color:#dff5eb}
-.pg-legend{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.68rem;color:var(--muted)}
+.pg-legend{display:flex;align-items:center;gap:.5rem;font-size:.68rem;color:var(--muted)}
 .pg-swatch{width:14px;height:14px;border-radius:3px}
+.pg-legend-wrap{display:flex;align-items:center;gap:.9rem;margin-top:.75rem;flex-wrap:wrap}
+.pg-total-lbl{font-size:.68rem;color:var(--muted)}
 
 /* ════════ CONTEST ══════════════════════════════════ */
 #contestView{padding:1.6rem 1.8rem 3rem;max-width:1280px;margin:0 auto}
@@ -534,6 +573,12 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 <!-- PROGRESS -->
 <div class="view" id="progressView">
   <div class="view-heading">Contest Progress by User</div>
+  <div id="pgSummary" class="pg-summary" style="display:none"></div>
+  <div class="pg-view-toggle" id="pgViewToggle" style="display:none">
+    <span class="pg-vt-lbl">表示：</span>
+    <button class="pg-vt-btn on" id="pgBtnCards" onclick="setPgView('cards')">📊 カード</button>
+    <button class="pg-vt-btn" id="pgBtnHeat" onclick="setPgView('heat')">🔥 ヒートマップ</button>
+  </div>
   <div id="progressContent"><div class="sbox-s"><div class="spin"></div></div></div>
 </div>
 
@@ -1188,33 +1233,125 @@ function setRankSort(key){
 }
 
 /* ════ PROGRESS ═════════════════════════════════════ */
+let pgView='cards'; // 'cards' | 'heat'
+let pgMatrix={}, pgUsers=[], pgContests=[], pgMaxN=1;
+
+function setPgView(v){
+  pgView=v;
+  document.getElementById('pgBtnCards').classList.toggle('on',v==='cards');
+  document.getElementById('pgBtnHeat').classList.toggle('on',v==='heat');
+  renderProgress();
+}
+
+// ユーザーごとのアクセントカラー
+const PG_COLORS=['#c47f5e','#7aab8c','#6a7abf','#c4a030','#b06080','#5aabb5','#a07ab5'];
+function pgColor(i){return PG_COLORS[i%PG_COLORS.length]}
+
 function buildProgress(){
-  const users=[...new Set(all.map(f=>f.user).filter(Boolean))];
+  pgUsers=[...new Set(all.map(f=>f.user).filter(Boolean))];
   const el=document.getElementById('progressContent');
-  if(!users.length){
+  const sumEl=document.getElementById('pgSummary');
+  const toggleEl=document.getElementById('pgViewToggle');
+
+  if(!pgUsers.length){
     el.innerHTML=`<div class="sbox-s"><span>ユーザーフォルダがありません。</span></div>`;
+    sumEl.style.display='none';
+    toggleEl.style.display='none';
     return;
   }
-  const contests=[...new Set(all.map(f=>f.contest))].sort((a,b)=>cmpContest(a,b));
-  const matrix={};
-  users.forEach(u=>{matrix[u]={};contests.forEach(c=>{matrix[u][c]=0})});
-  all.forEach(f=>{if(f.user)matrix[f.user][f.contest]=(matrix[f.user][f.contest]||0)+1});
-  const maxN=Math.max(1,...users.flatMap(u=>contests.map(c=>matrix[u][c])));
+
+  pgContests=[...new Set(all.map(f=>f.contest))].sort((a,b)=>cmpContest(a,b));
+  pgMatrix={};
+  pgUsers.forEach(u=>{pgMatrix[u]={};pgContests.forEach(c=>{pgMatrix[u][c]=0})});
+  all.forEach(f=>{if(f.user)pgMatrix[f.user][f.contest]=(pgMatrix[f.user][f.contest]||0)+1});
+  pgMaxN=Math.max(1,...pgUsers.flatMap(u=>pgContests.map(c=>pgMatrix[u][c])));
+
+  // summary cards
+  const totalFiles=all.length;
+  const totalContests=pgContests.length;
+  sumEl.style.display='flex';
+  sumEl.innerHTML=`
+    <div class="pg-sum-card"><div class="pg-sum-n">${totalFiles}</div><div class="pg-sum-lbl">Total Files</div></div>
+    <div class="pg-sum-card"><div class="pg-sum-n">${totalContests}</div><div class="pg-sum-lbl">Contests</div></div>
+    <div class="pg-sum-card"><div class="pg-sum-n">${pgUsers.length}</div><div class="pg-sum-lbl">Users</div></div>
+  `;
+
+  toggleEl.style.display='flex';
+  renderProgress();
+}
+
+function renderProgress(){
+  if(!pgUsers.length) return;
+  const el=document.getElementById('progressContent');
+  if(pgView==='cards'){
+    renderProgressCards(el);
+  } else {
+    renderProgressHeat(el);
+  }
+}
+
+function renderProgressCards(el){
+  const html=pgUsers.map((u,ui)=>{
+    const color=pgColor(ui);
+    const rows=pgContests.filter(c=>pgMatrix[u][c]>0);
+    if(!rows.length) return '';
+    const totalFiles=rows.reduce((s,c)=>s+pgMatrix[u][c],0);
+    const maxN=Math.max(1,...rows.map(c=>pgMatrix[u][c]));
+
+    const rowsHtml=rows.map(c=>{
+      const n=pgMatrix[u][c];
+      const pct=(n/maxN*100).toFixed(0);
+      // lang pills for this user+contest
+      const langCnt={};
+      all.filter(f=>f.user===u&&f.contest===c).forEach(f=>{langCnt[f.ext]=(langCnt[f.ext]||0)+1});
+      const topLangs=Object.entries(langCnt).sort((a,b)=>b[1]-a[1]).slice(0,3);
+      const pillsHtml=topLangs.map(([ext])=>{
+        const m=getLang(ext);
+        return`<span class="pg-cr-pill" style="background:${m.bg};color:${m.color}">${m.label}</span>`;
+      }).join('');
+      return`<div class="pg-contest-row">
+        <span class="pg-cr-name">${c}</span>
+        <div class="pg-cr-bar-wrap"><div class="pg-cr-bar" style="width:${pct}%;background:${color}"></div></div>
+        <span class="pg-cr-count">${n}</span>
+        <div class="pg-cr-pills">${pillsHtml}</div>
+      </div>`;
+    }).join('');
+
+    return`<div class="pg-user-card" style="animation-delay:${ui*60}ms">
+      <div class="pg-uc-header">
+        <div class="pg-uc-avatar" style="background:${color}">${u.slice(0,2).toUpperCase()}</div>
+        <span class="pg-uc-name">👤 ${u}</span>
+        <div class="pg-uc-stats">
+          <div class="pg-uc-stat"><div class="pg-uc-stat-n">${totalFiles}</div><div class="pg-uc-stat-l">Files</div></div>
+          <div class="pg-uc-stat"><div class="pg-uc-stat-n">${rows.length}</div><div class="pg-uc-stat-l">Contests</div></div>
+        </div>
+      </div>
+      <div class="pg-contest-list">${rowsHtml}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`<div class="pg-users-grid">${html||'<div class="sbox-s"><span>データがありません</span></div>'}</div>`;
+}
+
+function renderProgressHeat(el){
   function pgCls(n){return n===0?'pg-0':n===1?'pg-1':n===2?'pg-2':n<=4?'pg-3':'pg-hi'}
-  const thRow=`<th class="corner"></th>`+contests.map(c=>`<th>${c}</th>`).join('');
-  const bodyRows=users.map(u=>
-    `<tr><td class="user-col">👤 ${u}</td>${contests.map(c=>{const n=matrix[u][c];return`<td class="${pgCls(n)}">${n||''}</td>`}).join('')}</tr>`
+  const thRow=`<th class="corner"></th>`+pgContests.map(c=>`<th>${c}</th>`).join('');
+  const bodyRows=pgUsers.map(u=>
+    `<tr><td class="user-col">👤 ${u}</td>${pgContests.map(c=>{const n=pgMatrix[u][c];return`<td class="${pgCls(n)}">${n||''}</td>`}).join('')}</tr>`
   ).join('');
   el.innerHTML=`
     <div class="pg-table-wrap"><table class="pg-table"><thead><tr>${thRow}</tr></thead><tbody>${bodyRows}</tbody></table></div>
-    <div class="pg-legend">
-      <span>0</span>
-      <div class="pg-swatch" style="background:var(--panel);border:1px solid var(--border)"></div>
-      <div class="pg-swatch" style="background:rgba(122,171,140,.22)"></div>
-      <div class="pg-swatch" style="background:rgba(122,171,140,.42)"></div>
-      <div class="pg-swatch" style="background:rgba(122,171,140,.62)"></div>
-      <div class="pg-swatch" style="background:rgba(122,171,140,.82)"></div>
-      <span>${maxN}+</span>
+    <div class="pg-legend-wrap">
+      <div class="pg-legend">
+        <span>少</span>
+        <div class="pg-swatch" style="background:var(--panel);border:1px solid var(--border)"></div>
+        <div class="pg-swatch" style="background:rgba(122,171,140,.22)"></div>
+        <div class="pg-swatch" style="background:rgba(122,171,140,.42)"></div>
+        <div class="pg-swatch" style="background:rgba(122,171,140,.62)"></div>
+        <div class="pg-swatch" style="background:rgba(122,171,140,.82)"></div>
+        <span>多</span>
+      </div>
+      <span class="pg-total-lbl">最大 ${pgMaxN} ファイル / コンテスト</span>
     </div>`;
 }
 
