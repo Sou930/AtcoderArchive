@@ -1493,19 +1493,19 @@ async function fetchAllAC(username,statusEl){
   const solved=new Set();
   let epoch=0;
   const maxPages=40;
+  const DIRECT=(u,e)=>`https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${encodeURIComponent(u)}&epoch_second=${e}`;
+  const PROXY=(u,e)=>`https://corsproxy.io/?url=${encodeURIComponent(DIRECT(u,e))}`;
   for(let page=0;page<maxPages;page++){
     if(statusEl&&page>0)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ ${solved.size} AC取得中 (p${page+1})…</span>`;
     let r;
-    for(let attempt=0;attempt<3;attempt++){
+    for(let attempt=0;attempt<4;attempt++){
       try{
-        r=await fetch(
-          `https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${encodeURIComponent(username)}&epoch_second=${epoch}`,
-          {mode:'cors',headers:{Accept:'application/json'}}
-        );
+        const url=attempt<2?DIRECT(username,epoch):PROXY(username,epoch);
+        r=await fetch(url,{headers:{Accept:'application/json'}});
         break;
       }catch(err){
-        if(attempt===2)throw new Error('接続失敗（CORS またはネットワーク）');
-        await new Promise(res=>setTimeout(res,800*(attempt+1)));
+        if(attempt===3)throw new Error('接続失敗（CORS またはネットワーク）');
+        await new Promise(res=>setTimeout(res,600*(attempt+1)));
       }
     }
     if(!r.ok){
