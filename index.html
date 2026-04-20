@@ -321,6 +321,46 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .pg-legend-wrap{display:flex;align-items:center;gap:.9rem;margin-top:.75rem;flex-wrap:wrap}
 .pg-total-lbl{font-size:.68rem;color:var(--muted)}
 
+/* ── AC率チャート ── */
+.pg-ac-section{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px var(--sh);margin-bottom:1.4rem}
+.pg-ac-header{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.2rem;background:var(--panel);border-bottom:1.5px solid var(--border)}
+.pg-ac-title{font-size:.9rem;font-weight:700;color:var(--text);flex:1}
+.pg-ac-sub{font-size:.65rem;color:var(--muted)}
+.pg-ac-body{padding:1.1rem 1.4rem;display:flex;flex-direction:column;gap:.6rem}
+.pg-ac-row{display:flex;align-items:center;gap:.8rem}
+.pg-ac-label{font-size:.78rem;font-weight:800;color:var(--text2);min-width:22px;text-align:center;flex-shrink:0}
+.pg-ac-track{flex:1;height:20px;background:var(--panel);border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative}
+.pg-ac-fill{height:100%;border-radius:6px;transition:width .7s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;padding-left:.45rem}
+.pg-ac-pct{font-size:.65rem;font-weight:700;color:#fff;white-space:nowrap;line-height:1}
+.pg-ac-count{font-size:.7rem;color:var(--muted);min-width:52px;text-align:right;flex-shrink:0;white-space:nowrap}
+.pg-ac-tabs{display:flex;gap:.35rem;flex-wrap:wrap}
+.pg-ac-tab{background:var(--panel);border:1.5px solid var(--border);border-radius:100px;font-size:.68rem;font-weight:600;padding:.2rem .65rem;cursor:pointer;color:var(--text2);transition:all .14s}
+.pg-ac-tab.on{background:var(--acc);border-color:var(--acc);color:#fff}
+
+/* ── Contest tooltip ── */
+.cv-tooltip{position:fixed;z-index:500;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 8px 28px var(--sh-m);padding:.75rem 1rem;min-width:180px;max-width:240px;pointer-events:none;animation:vfade .14s ease;font-family:'Outfit',sans-serif}
+.cv-tt-title{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.3}
+.cv-tt-row{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--text2);margin:.18rem 0}
+.cv-tt-label{color:var(--muted);flex-shrink:0;margin-right:.5rem}
+.cv-tt-diff-bar{height:5px;border-radius:100px;flex:1;max-width:80px;margin-left:.4rem}
+.cv-tt-users{display:flex;gap:.28rem;margin-top:.5rem;flex-wrap:wrap}
+.cv-tt-user-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4)}
+.cv-tt-user-lbl{font-size:.65rem;display:flex;align-items:center;gap:.3rem;color:var(--text2)}
+.cv-tt-solved{color:var(--acc2);font-weight:600}
+.cv-tt-unsolved{color:var(--muted)}
+
+/* ── スワイプインジケーター ── */
+.swipe-hint{position:absolute;bottom:.7rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.35rem;font-size:.65rem;color:var(--muted);opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.swipe-hint.show{opacity:1}
+.swipe-arrows{display:flex;gap:.2rem;font-size:.85rem}
+.modal{position:relative}
+.swipe-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none}
+@media(max-width:720px){
+  .swipe-hint{display:flex}
+  .modal-head{flex-wrap:wrap;gap:.4rem}
+  .macts{flex-wrap:nowrap;overflow-x:auto;gap:.28rem}
+}
+
 /* ════════ CONTEST ══════════════════════════════════ */
 #contestView{padding:1.6rem 1.8rem 3rem;max-width:1280px;margin:0 auto}
 @media(max-width:720px){#contestView{padding:1rem 1rem 2rem}}
@@ -414,6 +454,21 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 /* pill solved highlight */
 .cv-prob-pill.cv-ac-me{box-shadow:0 0 0 2px var(--ucolor-0,var(--acc2)) inset}
 .cv-prob-pill.cv-not-ac{opacity:.45}
+/* point badge on pill */
+.cv-pill-point{font-size:.55rem;font-weight:700;color:var(--pc,var(--muted));opacity:.75;letter-spacing:.01em;line-height:1}
+/* solver count */
+.cv-pill-solvers{font-size:.56rem;color:var(--muted);margin-top:.08rem;line-height:1}
+/* diff now below title */
+.cv-pill-diff{font-size:.56rem;font-weight:600;color:var(--pc,var(--muted));opacity:.7;line-height:1}
+/* experimental pill outline */
+.cv-prob-pill.cv-experimental{outline:1.5px dashed var(--border-s);outline-offset:1px}
+/* rated target badge in contest header */
+.cv-cb-rated{font-size:.6rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.04rem .42rem;font-weight:500}
+/* pts in stats panel */
+.cv-stat-pts{font-size:.65rem;color:var(--muted);margin-top:.1rem}
+/* cache clear button */
+.cv-cache-btn{background:none;border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.65rem;color:var(--muted);padding:.22rem .55rem;cursor:pointer;transition:all .14s;margin-top:.55rem;width:100%}
+.cv-cache-btn:hover{border-color:var(--acc);color:var(--acc)}
 
 /* ════════ GUIDE ════════════════════════════════════ */
 /* nav dropdown */
@@ -578,6 +633,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <span class="pg-vt-lbl">表示：</span>
     <button class="pg-vt-btn on" id="pgBtnCards" onclick="setPgView('cards')">📊 カード</button>
     <button class="pg-vt-btn" id="pgBtnHeat" onclick="setPgView('heat')">🔥 ヒートマップ</button>
+    <button class="pg-vt-btn" id="pgBtnAC" onclick="setPgView('ac')">🎯 AC率</button>
   </div>
   <div id="progressContent"><div class="sbox-s"><div class="spin"></div></div></div>
 </div>
@@ -593,6 +649,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
           <!-- rows injected by JS -->
         </div>
         <button class="cv-fetch-btn" id="cvFetchBtn" style="margin-top:.55rem;width:100%" onclick="fetchAllUsers()">取得 / 更新</button>
+        <button class="cv-cache-btn" onclick="cvClearCache()">🗑 APIキャッシュをクリア</button>
       </div>
       <div class="sec" id="cvACFilterSec" style="display:none">
         <div class="sec-lbl">AC Status</div>
@@ -676,7 +733,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 <!-- MODAL -->
 <div class="backdrop" id="backdrop">
   <div class="modal">
-    <div class="modal-head">
+    <div class="swipe-hint" id="swipeHint"><span class="swipe-arrows">←→</span> スワイプで切り替え</div>
       <div class="minfo">
         <div class="mfname" id="mFname"></div>
         <div class="mmeta-chips" id="mMetaChips"></div>
@@ -1240,6 +1297,7 @@ function setPgView(v){
   pgView=v;
   document.getElementById('pgBtnCards').classList.toggle('on',v==='cards');
   document.getElementById('pgBtnHeat').classList.toggle('on',v==='heat');
+  document.getElementById('pgBtnAC').classList.toggle('on',v==='ac');
   renderProgress();
 }
 
@@ -1285,8 +1343,10 @@ function renderProgress(){
   const el=document.getElementById('progressContent');
   if(pgView==='cards'){
     renderProgressCards(el);
-  } else {
+  } else if(pgView==='heat'){
     renderProgressHeat(el);
+  } else {
+    renderProgressAC(el);
   }
 }
 
@@ -1353,6 +1413,79 @@ function renderProgressHeat(el){
       </div>
       <span class="pg-total-lbl">最大 ${pgMaxN} ファイル / コンテスト</span>
     </div>`;
+}
+
+let pgACUser='__all__';
+function renderProgressAC(el){
+  // 問題ラベル（abc001_a → "a"）からアルファベット部分を取得
+  // archiveのファイルからproblemフィールドを使う
+  const letters=['a','b','c','d','e','f','g','h','ex'];
+  // ユーザー選択タブ
+  const allUsers=['__all__',...pgUsers];
+  const tabsHtml=allUsers.map((u,i)=>{
+    const label=u==='__all__'?'全員':u;
+    return`<button class="pg-ac-tab${pgACUser===u?' on':''}" onclick="pgACUser='${u}';renderProgressAC(document.getElementById('progressContent'))">${label}</button>`;
+  }).join('');
+
+  // 対象ファイルを絞る
+  const targetFiles=pgACUser==='__all__'?all:all.filter(f=>f.user===pgACUser);
+  const totalFiles=targetFiles.length;
+
+  // letterごとに集計
+  const letterData=letters.map(l=>{
+    const files=targetFiles.filter(f=>(f.problem||'').toLowerCase()===l||(f.problem||'').toLowerCase().startsWith(l+'_')||(f.problem||'').toLowerCase()===l.padStart(1,''));
+    // より柔軟に：problem末尾がletter
+    const files2=targetFiles.filter(f=>{
+      const p=(f.problem||'').toLowerCase();
+      return p===l||p.endsWith('_'+l)||p===l+'ex'||(l==='ex'&&p.includes('ex'));
+    });
+    return{letter:l.toUpperCase(),count:files2.length};
+  }).filter(d=>d.count>0);
+
+  if(!letterData.length){
+    el.innerHTML=`<div class="sbox-s"><span>データがありません（問題ファイル名にa/b/c…が含まれている必要があります）</span></div>`;
+    return;
+  }
+
+  const maxCount=Math.max(1,...letterData.map(d=>d.count));
+  const LETTER_COLORS={A:'#2e9e5b',B:'#3a7ec4',C:'#c4a020',D:'#c47030',E:'#b03060',F:'#8040b0',G:'#207070',H:'#505050',EX:'#c47f5e'};
+
+  const rowsHtml=letterData.map(d=>{
+    const pct=Math.round(d.count/maxCount*100);
+    const color=LETTER_COLORS[d.letter]||'#888';
+    const filledPct=Math.round(d.count/totalFiles*100);
+    return`<div class="pg-ac-row">
+      <span class="pg-ac-label" style="color:${color}">${d.letter}</span>
+      <div class="pg-ac-track">
+        <div class="pg-ac-fill" style="width:${pct}%;background:${color}">
+          ${pct>=18?`<span class="pg-ac-pct">${filledPct}%</span>`:''}
+        </div>
+        ${pct<18?`<span style="position:absolute;left:${pct+2}%;top:50%;transform:translateY(-50%);font-size:.65rem;font-weight:700;color:${color}">${filledPct}%</span>`:''}
+      </div>
+      <span class="pg-ac-count">${d.count} files</span>
+    </div>`;
+  }).join('');
+
+  // コンテスト別のletter分布
+  const byContestLetter={};
+  targetFiles.forEach(f=>{
+    const l=(f.problem||'?').toLowerCase();
+    if(!byContestLetter[f.contest])byContestLetter[f.contest]={};
+    byContestLetter[f.contest][l]=(byContestLetter[f.contest][l]||0)+1;
+  });
+
+  el.innerHTML=`
+    <div class="pg-ac-section">
+      <div class="pg-ac-header">
+        <span class="pg-ac-title">問題別 解答数</span>
+        <span class="pg-ac-sub">合計 ${totalFiles} ファイル</span>
+      </div>
+      <div style="padding:.75rem 1.2rem .4rem;border-bottom:1px solid var(--border)">
+        <div class="pg-ac-tabs">${tabsHtml}</div>
+      </div>
+      <div class="pg-ac-body">${rowsHtml}</div>
+    </div>
+  `;
 }
 
 /* ════ ERROR ════════════════════════════════════════ */
@@ -1611,15 +1744,23 @@ function contestTypeOf(cid){
   return'other';
 }
 
-// ── Build user input rows ──
+// ── Build user input rows（フォーカス中のinputは再描画しない）──
 function buildCVUserRows(){
   const el=document.getElementById('cvUserRows');
+  // 既に描画済みなら値だけ同期してフォーカスを保持
+  const existing=el.querySelectorAll('.cv-user-input');
+  if(existing.length===cvUserNames.length){
+    existing.forEach((inp,i)=>{
+      if(document.activeElement!==inp)inp.value=cvUserNames[i];
+    });
+    return;
+  }
   el.innerHTML=cvUserNames.map((name,i)=>`
     <div>
       <div class="cv-user-row">
         <span class="cv-user-dot" style="background:${CV_USER_COLORS[i]}"></span>
         <input class="cv-user-input" id="cvUserInput${i}" type="text" value="${name}"
-          placeholder="User ${i+1}" oninput="cvUserNames[${i}]=this.value.trim()">
+          placeholder="AtCoder ID ${i+1}" oninput="cvUserNames[${i}]=this.value.trim()">
       </div>
       <div class="cv-user-status" id="cvUserStatus${i}"></div>
     </div>`).join('');
@@ -1628,8 +1769,8 @@ function buildCVUserRows(){
 // ── Paginated fetch of all AC submissions for a user ──
 async function fetchAllAC(username,statusEl){
   const solved=new Set();
-  let epoch=0;
-  const maxPages=40;
+  let fromSecond=0;
+  const maxPages=60;
   const isFile=location.protocol==='file:';
   const WRAPPERS=[
     ...(isFile?[]:[url=>url]),
@@ -1638,33 +1779,66 @@ async function fetchAllAC(username,statusEl){
     url=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
   ];
   let wi=0;
+
   for(let page=0;page<maxPages;page++){
-    if(statusEl&&page>0)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ ${solved.size} AC取得中 (p${page+1})…</span>`;
-    const base=`https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${encodeURIComponent(username)}&epoch_second=${epoch}`;
-    let r=null;
+    if(statusEl&&page>0)
+      statusEl.innerHTML=`<span style="color:var(--muted)">⟳ ${solved.size} AC取得中 (p${page+1})…</span>`;
+
+    // APIドキュメント通り from_second を使用
+    const base=`https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${encodeURIComponent(username)}&from_second=${fromSecond}`;
+
+    let subs=null;
+    let lastErr=null;
+
     for(let i=wi;i<WRAPPERS.length;i++){
       try{
         const res=await fetch(WRAPPERS[i](base),{headers:{Accept:'application/json'}});
-        // 404/429 はプロキシ関係なくAPIの応答 → 即エラー
+
+        // HTTPステータス判定（プロキシ越しでも404/429はAPIから返る）
         if(res.status===404)throw Object.assign(new Error('ユーザーが見つかりません'),{fatal:true});
-        if(res.status===429)throw Object.assign(new Error('レート制限 (しばらく待ってください)'),{fatal:true});
-        // 200以外（403,500など）はプロキシ側の問題 → 次のプロキシへ
-        if(res.ok){r=res;wi=i;break;}
+        if(res.status===429)throw Object.assign(new Error('レート制限。しばらく待ってから再試行してください'),{fatal:true});
+        if(!res.ok){lastErr=new Error(`HTTP ${res.status}`);continue}
+
+        // Content-TypeチェックでHTMLエラーページを弾く
+        const ct=res.headers.get('content-type')||'';
+        if(!ct.includes('json')&&!ct.includes('octet')){
+          // bodyを読み捨てて次のプロキシへ
+          await res.text().catch(()=>{});
+          lastErr=new Error(`非JSONレスポンス (${ct})`);
+          continue;
+        }
+
+        const data=await res.json();
+        if(!Array.isArray(data)){lastErr=new Error('レスポンス形式エラー');continue}
+        subs=data;
+        wi=i; // 成功したプロキシを記憶
+        break;
       }catch(err){
         if(err.fatal)throw err;
+        lastErr=err;
       }
-      if(i<WRAPPERS.length-1)await new Promise(res=>setTimeout(res,400));
+      // プロキシ切り替え前に少し待つ
+      if(i<WRAPPERS.length-1)await new Promise(r=>setTimeout(r,400));
     }
-    if(!r)throw new Error('接続失敗（全プロキシ失敗）');
-    const subs=await r.json();
+
+    if(!subs)throw new Error(`接続失敗: ${lastErr?.message||'全プロキシ失敗'}`);
     if(!subs.length)break;
-    subs.filter(s=>s.result==='AC').forEach(s=>solved.add(s.problem_id));
+
+    let maxEpoch=fromSecond;
+    subs.forEach(s=>{
+      if(s.result==='AC')solved.add(s.problem_id);
+      if(s.epoch_second>maxEpoch)maxEpoch=s.epoch_second;
+    });
+
+    // 500件未満 → 最終ページ
     if(subs.length<500)break;
-    let maxEpoch=0;
-    for(const s of subs)if(s.epoch_second>maxEpoch)maxEpoch=s.epoch_second;
-    if(maxEpoch<=epoch)break;
-    epoch=maxEpoch+1;
-    if(page>0)await new Promise(res=>setTimeout(res,200));
+
+    // epochが進まない場合は無限ループ防止で終了
+    if(maxEpoch<=fromSecond)break;
+    fromSecond=maxEpoch+1;
+
+    // APIへの負荷軽減（1秒以上のsleep推奨だが実用上200ms）
+    await new Promise(r=>setTimeout(r,250));
   }
   return solved;
 }
@@ -1675,21 +1849,32 @@ async function fetchAllUsers(){
   btn.textContent='取得中…';
   const names=cvUserNames.map(n=>n.trim()).filter(Boolean);
   if(!names.length){btn.disabled=false;btn.textContent='取得 / 更新';return}
+
+  // 各ユーザーのエラーを個別に捕捉し、Promise.all全体がrejectedにならないよう包む
   await Promise.all(cvUserNames.map(async(name,i)=>{
     const statusEl=document.getElementById(`cvUserStatus${i}`);
-    if(!name.trim()){cvUserAC[i]=null;if(statusEl)statusEl.textContent='';return}
+    if(!name.trim()){
+      cvUserAC[i]=null;
+      if(statusEl)statusEl.textContent='';
+      return;
+    }
     cvUserLoading[i]=true;
     if(statusEl)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ 取得中…</span>`;
     try{
       cvUserAC[i]=await fetchAllAC(name.trim(),statusEl);
       if(statusEl)statusEl.innerHTML=`<span style="color:var(--acc2)">✓ ${cvUserAC[i].size} AC</span>`;
     }catch(e){
+      // fatalエラー含め必ずここで止める
       cvUserAC[i]=null;
-      const hint=location.protocol==='file:'?'<br><span style="font-size:.68rem">file://で開いています。ローカルサーバー経由で開いてください（python3 -m http.server）</span>':'';
+      const hint=location.protocol==='file:'
+        ?'<br><span style="font-size:.68rem">file://環境です。python3 -m http.server などで開いてください</span>'
+        :'';
       if(statusEl)statusEl.innerHTML=`<span style="color:#c96b6b">✕ ${e.message}${hint}</span>`;
+    }finally{
+      cvUserLoading[i]=false;
     }
-    cvUserLoading[i]=false;
   }));
+
   btn.disabled=false;
   btn.textContent='取得 / 更新';
   buildACFilterUI();
@@ -1739,28 +1924,28 @@ function buildStatsPanel(){
   const users=activeUsers();
   if(!users.length){panel.classList.remove('visible');return}
   const total=cvProblems.length;
-  // per-user stats
   let html=`<div class="cv-stats-grid">`;
   users.forEach(u=>{
     const pct=total?(u.ac.size/total*100).toFixed(1):0;
+    // rated point sum (from AC'd problems)
+    const ratedPts=cvProblems.filter(p=>u.ac.has(p.id)&&p.point!=null).reduce((s,p)=>s+p.point,0);
     html+=`<div class="cv-stat-col">
       <span class="cv-stat-user"><span style="width:9px;height:9px;border-radius:50%;background:${u.color};flex-shrink:0;display:inline-block"></span>${u.name}</span>
-      <span class="cv-stat-n" style="color:${u.color}">${u.ac.size}</span>
-      <span class="cv-stat-lbl">AC / ${total} (${pct}%)</span>
+      <span class="cv-stat-n" style="color:${u.color}">${u.ac.size.toLocaleString()}</span>
+      <span class="cv-stat-lbl">AC / ${total.toLocaleString()} (${pct}%)</span>
+      ${ratedPts>0?`<span class="cv-stat-pts">${ratedPts.toLocaleString()} pts</span>`:''}
     </div>`;
   });
   if(users.length>=2){
-    // pairwise Venn
+    const intersection=[...users[0].ac].filter(id=>users.slice(1).every(u=>u.ac.has(id))).length;
     html+=`<div class="cv-stat-divider"></div><div class="cv-stat-col" style="min-width:130px">
       <span class="cv-stat-user" style="color:var(--text2)">比較</span>
       <div class="cv-venn-row">`;
-    // common
-    const intersection=[...users[0].ac].filter(id=>users.slice(1).every(u=>u.ac.has(id))).length;
-    html+=`<span class="cv-venn-item"><span class="cv-venn-dot" style="background:linear-gradient(135deg,${users.map(u=>u.color).join(',')})"></span>共通 ${intersection}</span>`;
+    html+=`<span class="cv-venn-item"><span class="cv-venn-dot" style="background:linear-gradient(135deg,${users.map(u=>u.color).join(',')})"></span>共通 ${intersection.toLocaleString()}</span>`;
     users.forEach(u=>{
       const others=users.filter(x=>x.idx!==u.idx);
       const unique=[...u.ac].filter(id=>others.every(o=>!o.ac.has(id))).length;
-      html+=`<span class="cv-venn-item"><span class="cv-venn-dot" style="background:${u.color}"></span>${u.name} のみ ${unique}</span>`;
+      html+=`<span class="cv-venn-item"><span class="cv-venn-dot" style="background:${u.color}"></span>${u.name} のみ ${unique.toLocaleString()}</span>`;
     });
     html+=`</div></div>`;
   }
@@ -1769,32 +1954,95 @@ function buildStatsPanel(){
   panel.classList.add('visible');
 }
 
+/* ── API cache helpers (localStorage, 6h TTL) ── */
+const CV_CACHE_TTL=6*60*60*1000;
+function cvCacheGet(key){
+  try{
+    const raw=localStorage.getItem('cv_'+key);
+    if(!raw)return null;
+    const{ts,data}=JSON.parse(raw);
+    if(Date.now()-ts>CV_CACHE_TTL){localStorage.removeItem('cv_'+key);return null}
+    return data;
+  }catch{return null}
+}
+function cvCacheSet(key,data){
+  try{localStorage.setItem('cv_'+key,JSON.stringify({ts:Date.now(),data}))}catch{}
+}
+
+function cvClearCache(){
+  ['merged','contest-problem','contests','models'].forEach(k=>{
+    try{localStorage.removeItem('cv_'+k)}catch{}
+  });
+  cvLoaded=false;
+  const el=document.getElementById('cvProblems');
+  el.className='sbox-s';
+  el.innerHTML='<span style="color:var(--acc2)">✓ キャッシュをクリアしました。再取得ボタンで更新できます。</span>';
+}
+
 async function loadContestView(){
   if(cvLoaded)return;
   const el=document.getElementById('cvProblems');
   el.className='sbox-s';
   el.innerHTML='<div class="spin"></div><span>AtCoder Problems から取得中…</span>';
+
+  /* ── fetch with localStorage cache ── */
+  async function fetchJSON(url,cacheKey){
+    const cached=cvCacheGet(cacheKey);
+    if(cached){return cached}
+    const r=await fetch(url);
+    if(!r.ok)throw new Error(`HTTP ${r.status}: ${url}`);
+    const data=await r.json();
+    cvCacheSet(cacheKey,data);
+    return data;
+  }
+
   try{
-    const [pRes,mRes,cRes]=await Promise.all([
-      fetch('https://kenkoooo.com/atcoder/resources/problems.json'),
-      fetch('https://kenkoooo.com/atcoder/resources/problem-models.json'),
-      fetch('https://kenkoooo.com/atcoder/resources/contests.json'),
+    el.innerHTML='<div class="spin"></div><span>問題情報を取得中… (1/3)</span>';
+    const [mergedArr, contestProbArr, contestsArr, modelsObj] = await Promise.all([
+      fetchJSON('https://kenkoooo.com/atcoder/resources/merged-problems.json','merged'),
+      fetchJSON('https://kenkoooo.com/atcoder/resources/contest-problem.json','contest-problem'),
+      fetchJSON('https://kenkoooo.com/atcoder/resources/contests.json','contests'),
+      fetchJSON('https://kenkoooo.com/atcoder/resources/problem-models.json','models'),
     ]);
-    cvProblems=await pRes.json();
-    const models=await mRes.json();
+
+    /* contests map */
     cvContests={};
-    (await cRes.json()).forEach(c=>{cvContests[c.id]=c});
-    cvProblems.forEach(p=>{
-      const m=models[p.id];
-      p.difficulty=(m&&m.difficulty!=null)?Math.round(m.difficulty):null;
-      p.dlv=diffLevel(p.difficulty);
+    contestsArr.forEach(c=>{cvContests[c.id]=c});
+
+    /* contest-problem: problem_id → {contest_id, problem_index} */
+    const cpMap={};
+    contestProbArr.forEach(cp=>{cpMap[cp.problem_id]={contest_id:cp.contest_id,index:cp.problem_index}});
+
+    /* merged-problems map */
+    const mergedMap={};
+    mergedArr.forEach(p=>{mergedMap[p.id]=p});
+
+    /* build cvProblems from merged-problems (richer data) */
+    cvProblems=mergedArr.map(p=>{
+      const m=modelsObj[p.id];
+      const cp=cpMap[p.id];
+      return{
+        id:p.id,
+        title:p.title,
+        contest_id:cp?cp.contest_id:p.contest_id,
+        problem_index:cp?cp.index:(p.id.split('_').pop()||'?').toUpperCase(),
+        difficulty:(m&&m.difficulty!=null)?Math.round(m.difficulty):null,
+        dlv:diffLevel((m&&m.difficulty!=null)?m.difficulty:null),
+        point:p.point??null,
+        solver_count:p.solver_count??null,
+        is_experimental:(m&&m.is_experimental)||false,
+        source_contest:p.source_contest??null,
+      };
     });
+
     cvLoaded=true;
   }catch(e){
     el.className='sbox-s';
-    el.innerHTML=`<span style="color:#c96b6b">⚠ 読み込み失敗: ${e.message}</span>`;
+    el.innerHTML=`<span style="color:#c96b6b">⚠ 読み込み失敗: ${e.message}</span>
+      <button class="cv-fetch-btn" style="margin-top:.7rem" onclick="cvLoaded=false;loadContestView()">再試行</button>`;
     return;
   }
+
   const cnt={abc:0,arc:0,agc:0,ahc:0,other:0};
   cvProblems.forEach(p=>{cnt[contestTypeOf(p.contest_id)]++});
   document.getElementById('cvTypeAllCnt').textContent=cvProblems.length;
@@ -1869,25 +2117,31 @@ function renderContestView(){
   [...byContest.entries()].forEach(([cid,probs],ci)=>{
     const meta=cvContests[cid];
     const title=meta?meta.title:cid;
+    const ratedTarget=meta?cvRatedTarget(meta):'';
     const block=document.createElement('div');
     block.className='cv-contest-block';
     block.style.animationDelay=`${Math.min(ci,20)*25}ms`;
     block.innerHTML=`<div class="cv-cb-header">
       <span class="cv-cb-title">${title}</span>
       <span class="cv-cb-sub">${cid}</span>
+      ${ratedTarget?`<span class="cv-cb-rated">${ratedTarget}</span>`:''}
       <span class="cv-cb-cnt">${probs.length} probs</span>
     </div>`;
     const grid=document.createElement('div');
     grid.className='cv-prob-list';
+    // sort by problem_index
+    probs.sort((a,b)=>(a.problem_index||'').localeCompare(b.problem_index||''));
     probs.forEach(p=>{
       const diffTxt=p.difficulty!=null?p.difficulty:'?';
       const pill=document.createElement('a');
       pill.className='cv-prob-pill';
+      if(p.is_experimental)pill.classList.add('cv-experimental');
       pill.dataset.dlv=p.dlv;
+      pill.dataset.pid=p.id;
       pill.href=`https://atcoder.jp/contests/${p.contest_id}/tasks/${p.id}`;
       pill.target='_blank';
       pill.rel='noopener noreferrer';
-      const letter=(p.id.split('_').pop()||p.id).toUpperCase();
+      const letter=(p.problem_index||p.id.split('_').pop()||'?').toUpperCase();
       // user badges
       let badgesHtml='';
       if(users.length){
@@ -1896,15 +2150,19 @@ function renderContestView(){
           return`<span class="cv-ub${solved?'':' unsolved'}" style="${solved?`background:${u.color}`:''}"></span>`;
         }).join('');
         badgesHtml=`<div class="cv-pill-users">${dots}</div>`;
-        // highlight if first user solved
         if(users[0]&&users[0].ac.has(p.id))pill.classList.add('cv-ac-me');
       }
+      // point badge
+      const pointHtml=p.point!=null
+        ?`<span class="cv-pill-point">${p.point}</span>`:'';
       pill.innerHTML=`
         <div class="cv-pill-top">
           <span class="cv-pill-label">${letter}</span>
-          <span class="cv-pill-diff">${diffTxt}</span>
+          ${pointHtml}
         </div>
         <span class="cv-pill-name">${p.title}</span>
+        <span class="cv-pill-diff">${diffTxt}</span>
+        ${p.solver_count!=null?`<span class="cv-pill-solvers">AC: ${p.solver_count.toLocaleString()}</span>`:''}
         ${badgesHtml}`;
       grid.appendChild(pill);
     });
@@ -1913,6 +2171,14 @@ function renderContestView(){
   });
   el.innerHTML='';
   el.appendChild(wrap);
+}
+
+function cvRatedTarget(meta){
+  if(!meta)return'';
+  const r=meta.rate_change;
+  if(!r||r==='-')return'';
+  if(r==='All')return'🏆 Rated All';
+  return`📊 Rated ${r}`;
 }
 
 // filter event listeners
@@ -1937,6 +2203,136 @@ document.addEventListener('click',e=>{
   document.querySelectorAll('[data-cvsort]').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');renderContestView();
 });
+
+/* ════ CONTEST TOOLTIP ══════════════════════════════ */
+let _ttEl=null,_ttTimer=null;
+function getOrCreateTooltip(){
+  if(!_ttEl){
+    _ttEl=document.createElement('div');
+    _ttEl.className='cv-tooltip';
+    _ttEl.style.display='none';
+    document.body.appendChild(_ttEl);
+  }
+  return _ttEl;
+}
+function showCVTooltip(e,p){
+  const tt=getOrCreateTooltip();
+  const users=activeUsers();
+  const dlvColors=['#888','#804000','#3a8000','#007a7a','#0050c8','#c0a000','#c06000','#c00000'];
+  const diffColor=dlvColors[p.dlv]||'#888';
+  const diffNum=p.difficulty!=null?p.difficulty:'?';
+  const diffBarW=p.difficulty!=null?Math.min(100,Math.round(p.difficulty/3000*100)):0;
+
+  let usersHtml='';
+  if(users.length){
+    usersHtml='<div class="cv-tt-users">'+users.map(u=>{
+      const solved=u.ac.has(p.id);
+      return`<span class="cv-tt-user-lbl">
+        <span class="cv-tt-user-dot" style="${solved?`background:${u.color};border-color:${u.color}`:'background:var(--border)'}"></span>
+        <span class="${solved?'cv-tt-solved':'cv-tt-unsolved'}">${u.name||'User'}${solved?' ✓':''}</span>
+      </span>`;
+    }).join('')+'</div>';
+  }
+
+  const expBadge=p.is_experimental
+    ?`<span style="font-size:.6rem;background:#faf3e0;color:#b08a00;border:1px solid #e0c060;border-radius:100px;padding:.05rem .38rem;margin-left:.4rem">🔬 実験的</span>`:'';
+
+  tt.innerHTML=`
+    <div class="cv-tt-title">${p.title}${expBadge}</div>
+    <div class="cv-tt-row">
+      <span class="cv-tt-label">難易度</span>
+      <span style="font-weight:700;color:${diffColor};font-size:.78rem">${diffNum}</span>
+      <div class="cv-tt-diff-bar" style="background:var(--panel);border:1px solid var(--border)">
+        <div style="height:100%;width:${diffBarW}%;background:${diffColor};border-radius:100px"></div>
+      </div>
+    </div>
+    ${p.point!=null?`<div class="cv-tt-row"><span class="cv-tt-label">配点</span><span style="font-weight:600;color:var(--text)">${p.point} pts</span></div>`:''}
+    ${p.solver_count!=null?`<div class="cv-tt-row"><span class="cv-tt-label">AC人数</span><span style="color:var(--acc2);font-weight:600">${p.solver_count.toLocaleString()} 人</span></div>`:''}
+    <div class="cv-tt-row"><span class="cv-tt-label">ID</span><span style="font-size:.65rem;font-family:'JetBrains Mono',monospace;color:var(--text2)">${p.id}</span></div>
+    ${usersHtml}
+    <div style="font-size:.6rem;color:var(--muted);margin-top:.5rem">クリックで問題ページへ →</div>
+  `;
+  tt.style.display='block';
+  positionTooltip(e,tt);
+}
+function positionTooltip(e,tt){
+  const margin=12;
+  const tw=tt.offsetWidth||220,th=tt.offsetHeight||120;
+  let x=e.clientX+margin,y=e.clientY+margin;
+  if(x+tw>window.innerWidth-margin)x=e.clientX-tw-margin;
+  if(y+th>window.innerHeight-margin)y=e.clientY-th-margin;
+  tt.style.left=x+'px';
+  tt.style.top=y+'px';
+}
+function hideCVTooltip(){
+  if(_ttEl)_ttEl.style.display='none';
+}
+// delegate on contestView
+document.getElementById('contestView').addEventListener('mouseover',e=>{
+  const pill=e.target.closest('.cv-prob-pill');
+  if(!pill)return;
+  clearTimeout(_ttTimer);
+  const pid=pill.getAttribute('data-pid');
+  if(!pid)return;
+  const p=cvProblems.find(x=>x.id===pid);
+  if(p)_ttTimer=setTimeout(()=>showCVTooltip(e,p),220);
+});
+document.getElementById('contestView').addEventListener('mousemove',e=>{
+  if(_ttEl&&_ttEl.style.display!=='none')positionTooltip(e,_ttEl);
+});
+document.getElementById('contestView').addEventListener('mouseout',e=>{
+  if(!e.target.closest('.cv-prob-pill')){clearTimeout(_ttTimer);hideCVTooltip()}
+});
+
+/* ════ MODAL SWIPE ══════════════════════════════════ */
+(()=>{
+  const modal=document.querySelector('.modal');
+  let touchStartX=0,touchStartY=0,swiping=false;
+  let hintShown=false;
+
+  modal.addEventListener('touchstart',e=>{
+    // モーダルボディのスクロール中は無視
+    const body=document.getElementById('modalBody');
+    touchStartX=e.touches[0].clientX;
+    touchStartY=e.touches[0].clientY;
+    swiping=true;
+  },{passive:true});
+
+  modal.addEventListener('touchmove',e=>{
+    if(!swiping)return;
+    const dx=e.touches[0].clientX-touchStartX;
+    const dy=e.touches[0].clientY-touchStartY;
+    // 縦スクロールが大きければスワイプ無効
+    if(Math.abs(dy)>Math.abs(dx)+10){swiping=false;return}
+    // 横スワイプ中はページスクロールを抑制
+    if(Math.abs(dx)>12)e.preventDefault();
+  },{passive:false});
+
+  modal.addEventListener('touchend',e=>{
+    if(!swiping)return;
+    swiping=false;
+    const dx=e.changedTouches[0].clientX-touchStartX;
+    const dy=e.changedTouches[0].clientY-touchStartY;
+    if(Math.abs(dx)<40||Math.abs(dy)>Math.abs(dx))return;
+    if(dx<0&&_curIdx<currentFiles.length-1){
+      _curIdx++;_renderModalFile(currentFiles[_curIdx]);
+    } else if(dx>0&&_curIdx>0){
+      _curIdx--;_renderModalFile(currentFiles[_curIdx]);
+    }
+  });
+
+  // モーダルが開いたとき初回スワイプヒントを表示
+  const observer=new MutationObserver(()=>{
+    const backdrop=document.getElementById('backdrop');
+    if(backdrop.classList.contains('open')&&!hintShown&&'ontouchstart' in window){
+      hintShown=true;
+      const hint=document.getElementById('swipeHint');
+      hint.classList.add('show');
+      setTimeout(()=>hint.classList.remove('show'),2500);
+    }
+  });
+  observer.observe(document.getElementById('backdrop'),{attributes:true,attributeFilter:['class']});
+})();
 
 init();
 </script>
