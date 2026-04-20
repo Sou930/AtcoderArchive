@@ -1494,33 +1494,31 @@ async function fetchAllAC(username,statusEl){
   let epoch=0;
   const maxPages=40;
   const isFile=location.protocol==='file:';
-  // プロキシ候補（file://の場合は直接アクセスをスキップ）
   const WRAPPERS=[
     ...(isFile?[]:[url=>url]),
     url=>`https://corsproxy.io/?url=${encodeURIComponent(url)}`,
     url=>`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    url=>`https://thingproxy.freeboard.io/fetch/${url}`,
+    url=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
   ];
-  let wi=0; // 成功したプロキシのインデックスを記憶
+  let wi=0;
   for(let page=0;page<maxPages;page++){
     if(statusEl&&page>0)statusEl.innerHTML=`<span style="color:var(--muted)">⟳ ${solved.size} AC取得中 (p${page+1})…</span>`;
     const base=`https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user=${encodeURIComponent(username)}&epoch_second=${epoch}`;
-    let r;
+    let r=null;
     for(let i=wi;i<WRAPPERS.length;i++){
       try{
-        r=await fetch(WRAPPERS[i](base),{headers:{Accept:'application/json'}});
-        wi=i; // 成功したプロキシを記憶して次ページでも使う
-        break;
+        const res=await fetch(WRAPPERS[i](base),{headers:{Accept:'application/json'}});
+        // 404/429 はプロキシ関係なくAPIの応答 → 即エラー
+        if(res.status===404)throw Object.assign(new Error('ユーザーが見つかりません'),{fatal:true});
+        if(res.status===429)throw Object.assign(new Error('レート制限 (しばらく待ってください)'),{fatal:true});
+        // 200以外（403,500など）はプロキシ側の問題 → 次のプロキシへ
+        if(res.ok){r=res;wi=i;break;}
       }catch(err){
-        if(i===WRAPPERS.length-1)throw new Error('接続失敗（CORS またはネットワーク）');
-        await new Promise(res=>setTimeout(res,400));
+        if(err.fatal)throw err;
       }
+      if(i<WRAPPERS.length-1)await new Promise(res=>setTimeout(res,400));
     }
-    if(!r.ok){
-      if(r.status===404)throw new Error('ユーザーが見つかりません');
-      if(r.status===429)throw new Error('レート制限 (しばらく待ってください)');
-      throw new Error(`HTTP ${r.status}`);
-    }
+    if(!r)throw new Error('接続失敗（全プロキシ失敗）');
     const subs=await r.json();
     if(!subs.length)break;
     subs.filter(s=>s.result==='AC').forEach(s=>solved.add(s.problem_id));
