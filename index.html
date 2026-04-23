@@ -22,6 +22,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ruby.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/fortran.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cobol.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/basic.min.js"></script>
 <style>
 /* ─── THEME ──────────────────────────────────────── */
 :root{
@@ -712,6 +715,9 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
       <button class="guide-lang-tab" id="guideLangC" onclick="switchGuideLang('c')">⚙ C</button>
       <button class="guide-lang-tab" id="guideLangCpp" onclick="switchGuideLang('cpp')">⚡ C++</button>
       <button class="guide-lang-tab" id="guideLangBf" onclick="switchGuideLang('brainfuck')">🧠 BF</button>
+      <button class="guide-lang-tab" id="guideLangFortran" onclick="switchGuideLang('fortran')">🔢 Fortran</button>
+      <button class="guide-lang-tab" id="guideLangCobol" onclick="switchGuideLang('cobol')">🏛 COBOL</button>
+      <button class="guide-lang-tab" id="guideLangBasic" onclick="switchGuideLang('basic')">📺 BASIC</button>
     </div>
     <div class="guide-file-list" id="guideFileList">
       <div style="font-size:.75rem;color:var(--muted);padding:.4rem .25rem">言語を選択してください</div>
@@ -772,6 +778,14 @@ const LANGS={
   kt:{label:'Kotlin',color:'#a07ab5',bg:'#f4eef9',hljs:'kotlin'},
   swift:{label:'Swift',color:'#c97040',bg:'#faeee8',hljs:'swift'},
   cs:{label:'C#',color:'#5a8a5a',bg:'#eaf4ea',hljs:'csharp'},
+  f:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
+  f90:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
+  f95:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
+  for:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
+  f77:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
+  cob:{label:'COBOL',color:'#3a7a5a',bg:'#e6f5ee',hljs:'cobol'},
+  cbl:{label:'COBOL',color:'#3a7a5a',bg:'#e6f5ee',hljs:'cobol'},
+  bas:{label:'BASIC',color:'#b05020',bg:'#faeae0',hljs:'basic'},
 };
 const SRC_EXTS=new Set(Object.keys(LANGS));
 const getLang=e=>LANGS[e]||{label:e.toUpperCase(),color:'#a8998e',bg:'#f0ece4',hljs:e};
@@ -1660,7 +1674,7 @@ async function openGuideFile(relPath){
       body.appendChild(wrap);
       setGuideTitleBar(relPath.split('/').pop(), relPath);
     } else {
-      const hljsLang=ext==='py'?'python':ext==='cpp'||ext==='cc'?'cpp':ext==='b'||ext==='bf'?'brainfuck':ext;
+      const hljsLang=ext==='py'?'python':ext==='cpp'||ext==='cc'?'cpp':ext==='b'||ext==='bf'?'brainfuck':ext==='f90'||ext==='f95'||ext==='for'||ext==='f77'||ext==='f'?'fortran':ext==='cob'||ext==='cbl'?'cobol':ext==='bas'?'basic':ext;
       const pre=document.createElement('pre');
       const code=document.createElement('code');
       code.className='language-'+hljsLang;
@@ -1681,6 +1695,9 @@ const GUIDE_LANG_META={
   c:     {label:'C',      emoji:'⚙',  color:'#7a7abf', bg:'#f0f0fa'},
   cpp:   {label:'C++',    emoji:'⚡', color:'#c9687a', bg:'#fbeeef'},
   brainfuck:{label:'BF',  emoji:'🧠', color:'#8c7ab5', bg:'#f2eff9'},
+  fortran:{label:'Fortran',emoji:'🔢',color:'#734f96', bg:'#f0eaf8'},
+  cobol: {label:'COBOL',  emoji:'🏛', color:'#3a7a5a', bg:'#e6f5ee'},
+  basic: {label:'BASIC',  emoji:'📺', color:'#b05020', bg:'#faeae0'},
 };
 function setGuideTitleBar(title, relPath){
   const meta=GUIDE_LANG_META[guideLang]||{label:guideLang,emoji:'📝',color:'var(--acc)',bg:'var(--acc-s)'};
