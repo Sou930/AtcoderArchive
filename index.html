@@ -760,33 +760,63 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 <script>
 /* ════ LANG META ════════════════════════════════════ */
 const LANGS={
-  py:{label:'Python',color:'#5a9fd4',bg:'#edf4fb',hljs:'python'},
-  c:{label:'C',color:'#7a7abf',bg:'#f0f0fa',hljs:'c'},
-  cpp:{label:'C++',color:'#c9687a',bg:'#fbeeef',hljs:'cpp'},
-  cc:{label:'C++',color:'#c9687a',bg:'#fbeeef',hljs:'cpp'},
-  java:{label:'Java',color:'#c48c3a',bg:'#faf3e6',hljs:'java'},
-  rs:{label:'Rust',color:'#b07458',bg:'#f8ede8',hljs:'rust'},
-  js:{label:'JS',color:'#c9b030',bg:'#faf7e0',hljs:'javascript'},
-  rb:{label:'Ruby',color:'#c04040',bg:'#fde8e8',hljs:'ruby'},
-  bf:{label:'Brainfuck',color:'#8c7ab5',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
-  b:{label:'Brainfuck',color:'#8c7ab5',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
-  ws:{label:'Whitespace',color:'#7aab8c',bg:'#eaf3ee',hljs:'whitespace',esoteric:true},
-  hs:{label:'Haskell',color:'#6a7db5',bg:'#eef0f9',hljs:'haskell'},
-  go:{label:'Go',color:'#5ab5b5',bg:'#e8f6f6',hljs:'go'},
-  sh:{label:'Shell',color:'#7ab56a',bg:'#edf7ea',hljs:'bash'},
-  pl:{label:'Perl',color:'#a06090',bg:'#f5ecf4',hljs:'perl'},
-  php:{label:'PHP',color:'#7a8abf',bg:'#eef0fa',hljs:'php'},
-  kt:{label:'Kotlin',color:'#a07ab5',bg:'#f4eef9',hljs:'kotlin'},
-  swift:{label:'Swift',color:'#c97040',bg:'#faeee8',hljs:'swift'},
-  cs:{label:'C#',color:'#5a8a5a',bg:'#eaf4ea',hljs:'csharp'},
-  f:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
-  f90:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
-  f95:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
-  for:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
-  f77:{label:'Fortran',color:'#734f96',bg:'#f0eaf8',hljs:'fortran'},
-  cob:{label:'COBOL',color:'#3a7a5a',bg:'#e6f5ee',hljs:'cobol'},
-  cbl:{label:'COBOL',color:'#3a7a5a',bg:'#e6f5ee',hljs:'cobol'},
-  bas:{label:'BASIC',color:'#b05020',bg:'#faeae0',hljs:'basic'},
+  py:{label:'Python',color:'#3572A5',bg:'#edf4fb',hljs:'python'},
+  c:{label:'C',color:'#555555',bg:'#f0f0fa',hljs:'c'},
+  cpp:{label:'C++',color:'#f34b7d',bg:'#fbeeef',hljs:'cpp'},
+  cc:{label:'C++',color:'#f34b7d',bg:'#fbeeef',hljs:'cpp'},
+  java:{label:'Java',color:'#b07219',bg:'#faf3e6',hljs:'java'},
+  rs:{label:'Rust',color:'#DEA584',bg:'#f8ede8',hljs:'rust'},
+  js:{label:'JavaScript',color:'#f1e05a',bg:'#faf7e0',hljs:'javascript'},
+  rb:{label:'Ruby',color:'#701516',bg:'#fde8e8',hljs:'ruby'},
+
+  bf:{label:'Brainfuck',color:'#2F2530',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
+  b:{label:'Brainfuck',color:'#2F2530',bg:'#f2eff9',hljs:'brainfuck',esoteric:true},
+  ws:{label:'Whitespace',color:'#FFFFFF',bg:'#eaf3ee',hljs:'plaintext',esoteric:true},
+
+  hs:{label:'Haskell',color:'#5e5086',bg:'#eef0f9',hljs:'haskell'},
+  go:{label:'Go',color:'#00ADD8',bg:'#e8f6f6',hljs:'go'},
+  sh:{label:'Shell',color:'#89e051',bg:'#edf7ea',hljs:'bash'},
+
+  pl:{label:'Perl',color:'#0298c3',bg:'#f5ecf4',hljs:'perl'},
+  php:{label:'PHP',color:'#4F5D95',bg:'#eef0fa',hljs:'php'},
+  kt:{label:'Kotlin',color:'#A97BFF',bg:'#f4eef9',hljs:'kotlin'},
+  swift:{label:'Swift',color:'#ffac45',bg:'#faeee8',hljs:'swift'},
+  cs:{label:'C#',color:'#178600',bg:'#eaf4ea',hljs:'csharp'},
+
+  // Fortranは全部統合
+  f:{label:'Fortran',color:'#4d41b1',bg:'#f0eaf8',hljs:'fortran'},
+  f90:{label:'Fortran',color:'#4d41b1',bg:'#f0eaf8',hljs:'fortran'},
+  f95:{label:'Fortran',color:'#4d41b1',bg:'#f0eaf8',hljs:'fortran'},
+  for:{label:'Fortran',color:'#4d41b1',bg:'#f0eaf8',hljs:'fortran'},
+  f77:{label:'Fortran',color:'#4d41b1',bg:'#f0eaf8',hljs:'fortran'},
+
+  cob:{label:'COBOL',color:'#005ca5',bg:'#e6f5ee',hljs:'cobol'},
+  cbl:{label:'COBOL',color:'#005ca5',bg:'#e6f5ee',hljs:'cobol'},
+  bas:{label:'BASIC',color:'#ff0000',bg:'#faeae0',hljs:'basic'},
+
+  // Lisp系
+  lisp:{label:'Lisp',color:'#3fb68b',bg:'#e8f3f0',hljs:'lisp'},
+  clj:{label:'Clojure',color:'#5881d8',bg:'#e8edfa',hljs:'clojure'},
+  el:{label:'Elixir',color:'#6e4a7e',bg:'#f3e8f8',hljs:'elixir'},
+  exs:{label:'Elixir',color:'#6e4a7e',bg:'#f3e8f8',hljs:'elixir'},
+  erl:{label:'Erlang',color:'#a90533',bg:'#fae7ee',hljs:'erlang'},
+
+  sc:{label:'Scala',color:'#c22d40',bg:'#fde8e8',hljs:'scala'},
+  ml:{label:'OCaml',color:'#ef7a08',bg:'#faf0e0',hljs:'ocaml'},
+  sml:{label:'Standard ML',color:'#a05a30',bg:'#f6e9df',hljs:'sml'},
+  rkt:{label:'Racket',color:'#3c5caa',bg:'#ececfa',hljs:'racket'},
+
+  lua:{label:'Lua',color:'#000080',bg:'#e6eafb',hljs:'lua'},
+  nim:{label:'Nim',color:'#ffe953',bg:'#fbf6dd',hljs:'nim'},
+  zig:{label:'Zig',color:'#ec915c',bg:'#fff3e0',hljs:'zig'},
+  dart:{label:'Dart',color:'#00B4AB',bg:'#e3f7fb',hljs:'dart'},
+
+  tex:{label:'LaTeX',color:'#3d6117',bg:'#efefef',hljs:'latex'},
+  asm:{label:'Assembly',color:'#6E4C13',bg:'#f4f4f4',hljs:'asm'},
+  wat:{label:'WebAssembly (wat)',color:'#6250e7',bg:'#ececf9',hljs:'wasm'},
+  pas:{label:'Pascal',color:'#E3F171',bg:'#e6eef9',hljs:'pascal'},
+  d:{label:'D',color:'#ba595e',bg:'#fae8e8',hljs:'d'},
+  ada:{label:'Ada',color:'#02f88c',bg:'#e7f3fa',hljs:'ada'}
 };
 const SRC_EXTS=new Set(Object.keys(LANGS));
 const getLang=e=>LANGS[e]||{label:e.toUpperCase(),color:'#a8998e',bg:'#f0ece4',hljs:e};
