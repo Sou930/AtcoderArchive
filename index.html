@@ -40,7 +40,7 @@
   --bg:#1c1917;--surface:#242220;--panel:#2c2926;
   --border:#3d3830;--border-s:#504840;
   --acc:#d4956e;--acc-s:#2d1f16;
-  --acc2:#7aab8c;--acc2-s:#162218;
+  --acc2:#5fcf8a;--acc2-s:#162218;
   --text:#e8e0d8;--text2:#a89880;--muted:#6a5f54;
   --sh:rgba(0,0,0,.4);--sh-m:rgba(0,0,0,.6);
   --modal-bg:#1e1c1a;
@@ -218,12 +218,19 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .modal-body{overflow-y:auto;flex:1;background:var(--modal-bg)}
 .modal-body pre{margin:0;border-radius:0;background:var(--modal-bg)!important}
 
+/* code viewer font size (controlled by JS) */
+:root{--code-fs:.79rem;--code-lh:1.8}
+.line-nums{flex-shrink:0;user-select:none;padding:1.3rem .7rem 1.3rem .9rem;font-family:'JetBrains Mono',monospace;font-size:var(--code-fs);line-height:var(--code-lh);color:var(--muted);text-align:right;background:var(--panel);border-right:1px solid var(--border);min-width:2.8rem;white-space:pre}
+.hljs-code-wrap{flex:1;overflow-x:auto}
+.modal-body code.hljs{font-family:'JetBrains Mono',monospace!important;font-size:var(--code-fs)!important;line-height:var(--code-lh)!important;padding:1.3rem 1.5rem!important;background:var(--modal-bg)!important}
+.bf-view{font-family:'JetBrains Mono',monospace;font-size:var(--code-fs);line-height:1.9;padding:1.3rem 1.5rem;white-space:pre-wrap;word-break:break-all;background:var(--modal-bg)}
 /* line numbers */
 .code-with-lines{display:flex}
-.line-nums{flex-shrink:0;user-select:none;padding:1.3rem .7rem 1.3rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.8;color:var(--muted);text-align:right;background:var(--panel);border-right:1px solid var(--border);min-width:2.8rem;white-space:pre}
-.hljs-code-wrap{flex:1;overflow-x:auto}
-.modal-body code.hljs{font-family:'JetBrains Mono',monospace!important;font-size:.79rem!important;line-height:1.8!important;padding:1.3rem 1.5rem!important;background:var(--modal-bg)!important}
-.bf-view{font-family:'JetBrains Mono',monospace;font-size:.79rem;line-height:1.9;padding:1.3rem 1.5rem;white-space:pre-wrap;word-break:break-all;background:var(--modal-bg)}
+/* font-size stepper in modal */
+.code-size-ctrl{display:flex;align-items:center;gap:.18rem;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface)}
+.code-size-btn{background:none;border:none;color:var(--text2);font-size:.8rem;padding:.22rem .52rem;cursor:pointer;transition:background .12s;line-height:1;font-weight:700}
+.code-size-btn:hover{background:var(--panel);color:var(--text)}
+.code-size-lbl{font-size:.65rem;color:var(--muted);min-width:28px;text-align:center;user-select:none}
 .ws-legend{display:flex;gap:1rem;padding:.55rem 1.4rem;border-bottom:1px solid var(--border);background:var(--panel);font-size:.68rem;color:var(--muted);flex-wrap:wrap;align-items:center}
 .ws-legend span{display:flex;align-items:center;gap:.3rem}
 .ws-view{font-family:'JetBrains Mono',monospace;font-size:.77rem;line-height:2.05;padding:1.3rem 1.5rem;background:var(--modal-bg)}
@@ -238,31 +245,6 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 @keyframes spin{to{transform:rotate(360deg)}}
 .err-card{background:rgba(201,107,107,.07);border:1.5px solid rgba(201,107,107,.3);border-radius:14px;padding:1.3rem 1.5rem;font-size:.79rem;color:#a0503a;line-height:1.85;display:none;margin-bottom:1rem}
 .err-card code{font-family:'JetBrains Mono',monospace;background:var(--panel);border-radius:6px;padding:.5rem .8rem;display:block;margin:.3rem 0;color:var(--text);font-size:.73rem}
-
-/* ════════ RANKINGS ═════════════════════════════════ */
-#rankingsView{padding:2rem 2.5rem 3rem;max-width:900px;margin:0 auto}
-@media(max-width:720px){#rankingsView{padding:1.2rem}}
-.view-heading{font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:1.4rem;display:flex;align-items:center;gap:.6rem}
-.view-heading::before{content:'';display:inline-block;width:4px;height:1.1em;background:var(--acc);border-radius:2px;flex-shrink:0}
-.rank-table{width:100%;border-collapse:collapse;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--sh)}
-.rank-table th{background:var(--panel);font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:.65rem 1rem;text-align:left;border-bottom:1.5px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;transition:color .14s}
-.rank-table th:hover{color:var(--text)}
-.rank-table th.asc::after{content:' ↑';color:var(--acc)}
-.rank-table th.desc::after{content:' ↓';color:var(--acc)}
-.rank-table td{padding:.6rem 1rem;font-size:.83rem;color:var(--text2);border-bottom:1px solid var(--border)}
-.rank-table tr:last-child td{border-bottom:none}
-.rank-table tr:hover td{background:var(--panel)}
-.rank-num{font-size:.72rem;color:var(--muted);font-weight:600;text-align:center}
-.rank-num.gold{color:#c9a030}
-.rank-num.silver{color:#909090}
-.rank-num.bronze{color:#a06040}
-.rank-user{font-weight:600;color:var(--text);display:flex;align-items:center;gap:.5rem}
-.rank-avatar{width:26px;height:26px;border-radius:50%;background:var(--acc-s);border:1.5px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:var(--acc);flex-shrink:0}
-.rank-bar{display:flex;align-items:center;gap:.5rem}
-.rank-bar-track{width:72px;height:6px;background:var(--panel);border-radius:100px;overflow:hidden;flex-shrink:0}
-.rank-bar-fill{height:100%;border-radius:100px;background:var(--acc)}
-.lang-chips{display:flex;gap:.3rem;flex-wrap:wrap}
-.lang-chip-sm{font-size:.56rem;font-weight:600;padding:.1rem .35rem;border-radius:100px}
 
 /* ════════ PROGRESS ═════════════════════════════════ */
 #progressView{padding:2rem 2.5rem 3rem;max-width:1200px;margin:0 auto}
@@ -340,6 +322,9 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .pg-ac-tab{background:var(--panel);border:1.5px solid var(--border);border-radius:100px;font-size:.68rem;font-weight:600;padding:.2rem .65rem;cursor:pointer;color:var(--text2);transition:all .14s}
 .pg-ac-tab.on{background:var(--acc);border-color:var(--acc);color:#fff}
 
+/* ── Contest サイドバー モバイル対応 ── */
+.cv-drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:140}
+.cv-drawer-overlay.open{display:block}
 /* ── Contest tooltip ── */
 .cv-tooltip{position:fixed;z-index:500;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 8px 28px var(--sh-m);padding:.75rem 1rem;min-width:180px;max-width:240px;pointer-events:none;animation:vfade .14s ease;font-family:'Outfit',sans-serif}
 .cv-tt-title{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.3}
@@ -368,7 +353,18 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 #contestView{padding:1.6rem 1.8rem 3rem;max-width:1280px;margin:0 auto}
 @media(max-width:720px){#contestView{padding:1rem 1rem 2rem}}
 .contest-view-layout{display:grid;grid-template-columns:220px 1fr;gap:1.4rem;align-items:start}
-@media(max-width:720px){.contest-view-layout{grid-template-columns:1fr}}
+@media(max-width:720px){
+  .contest-view-layout{grid-template-columns:1fr}
+  .cv-side{
+    position:fixed;top:0;left:0;bottom:0;width:272px;
+    border-radius:0 16px 16px 0;z-index:150;
+    transform:translateX(-110%);transition:transform .25s ease;
+    max-height:100vh;overflow-y:auto
+  }
+  .cv-side.open{transform:translateX(0);box-shadow:4px 0 32px rgba(0,0,0,.25)}
+  .cv-menu-btn{display:flex!important}
+}
+.cv-menu-btn{display:none;background:var(--acc);color:#fff;border:none;border-radius:100px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;padding:.38rem .9rem;cursor:pointer;gap:.35rem;align-items:center;margin-bottom:.75rem}
 .cv-side{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;box-shadow:0 2px 10px var(--sh);position:sticky;top:calc(44px + 1.4rem);max-height:calc(100vh - 44px - 3rem);overflow-y:auto}
 .cv-main{}
 .cv-top-bar{display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;flex-wrap:wrap}
@@ -523,6 +519,28 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
 .guide-body th{background:var(--panel);border:1px solid var(--border);padding:.45rem .75rem;font-weight:600;color:var(--text);text-align:left}
 .guide-body td{border:1px solid var(--border);padding:.4rem .75rem;color:var(--text2)}
 .guide-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;gap:.8rem;color:var(--muted);font-size:.85rem;text-align:center}
+/* ════════ CALENDAR HEATMAP ══════════════════════════ */
+.cal-heat-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px var(--sh);margin-bottom:1.6rem}
+.cal-heat-header{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.2rem;background:var(--panel);border-bottom:1.5px solid var(--border)}
+.cal-heat-title{font-size:.9rem;font-weight:700;color:var(--text);flex:1}
+.cal-heat-sub{font-size:.65rem;color:var(--muted)}
+.cal-heat-body{padding:1rem 1.2rem;overflow-x:auto}
+.cal-heat-year{margin-bottom:1rem}
+.cal-heat-year-lbl{font-size:.68rem;font-weight:700;color:var(--muted);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.09em}
+.cal-heat-months{display:flex;gap:2px}
+.cal-heat-month{display:flex;flex-direction:column;gap:2px}
+.cal-month-lbl{font-size:.55rem;color:var(--muted);margin-bottom:3px;white-space:nowrap;text-align:center;overflow:hidden}
+.cal-week{display:flex;flex-direction:column;gap:2px}
+.cal-day{width:12px;height:12px;border-radius:2px;cursor:default;transition:transform .1s}
+.cal-day:hover{transform:scale(1.35);z-index:2;position:relative}
+.cal-d0{background:var(--panel);border:1px solid var(--border)}
+.cal-d1{background:rgba(122,171,140,.28)}
+.cal-d2{background:rgba(122,171,140,.52)}
+.cal-d3{background:rgba(122,171,140,.76)}
+.cal-d4{background:rgba(122,171,140,1)}
+.cal-heat-legend{display:flex;align-items:center;gap:.4rem;padding:.5rem 1.2rem .75rem;flex-wrap:wrap}
+.cal-sw{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+
 /* ════════ PWA BANNER ═══════════════════════════════ */
 #pwaBanner{display:none;position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 8px 32px var(--sh-m);padding:.85rem 1.1rem;align-items:center;gap:.8rem;max-width:360px;width:calc(100% - 2rem);animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
 .pwa-icon{font-size:1.6rem;flex-shrink:0}
@@ -558,6 +576,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <button class="nav-tab" data-view="archive">📁 Archive</button>
     <button class="nav-tab" data-view="progress">📊 Progress</button>
     <button class="nav-tab" data-view="contest">🏆 Contest</button>
+    <!-- Rankings tab removed -->
     <div class="nav-dropdown" id="guideDropdown">
       <button class="nav-tab" id="guideNavTab" data-view="guide" onclick="toggleGuideDropdown(event)">📝 Guide ▾</button>
       <div class="nav-dropdown-menu" id="guideDropdownMenu">
@@ -638,14 +657,32 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     <button class="pg-vt-btn" id="pgBtnHeat" onclick="setPgView('heat')">🔥 ヒートマップ</button>
     <button class="pg-vt-btn" id="pgBtnAC" onclick="setPgView('ac')">🎯 AC率</button>
   </div>
+  <!-- Calendar Heatmap -->
+  <div class="cal-heat-wrap" id="calHeatWrap" style="display:none">
+    <div class="cal-heat-header">
+      <span class="cal-heat-title">📅 Activity Calendar</span>
+      <span class="cal-heat-sub" id="calHeatSub"></span>
+    </div>
+    <div class="cal-heat-body" id="calHeatBody"></div>
+    <div class="cal-heat-legend">
+      <span style="font-size:.65rem;color:var(--muted)">少</span>
+      <div class="cal-sw" style="background:var(--panel);border:1px solid var(--border)"></div>
+      <div class="cal-sw" style="background:rgba(122,171,140,.25)"></div>
+      <div class="cal-sw" style="background:rgba(122,171,140,.50)"></div>
+      <div class="cal-sw" style="background:rgba(122,171,140,.75)"></div>
+      <div class="cal-sw" style="background:rgba(122,171,140,1)"></div>
+      <span style="font-size:.65rem;color:var(--muted)">多</span>
+    </div>
+  </div>
   <div id="progressContent"><div class="sbox-s"><div class="spin"></div></div></div>
 </div>
 
 <!-- CONTEST -->
 <div class="view" id="contestView">
+  <div class="cv-drawer-overlay" id="cvDrawerOverlay" onclick="closeCVDrawer()"></div>
   <div class="contest-view-layout">
     <!-- sidebar -->
-    <div class="cv-side">
+    <div class="cv-side" id="cvSide">
       <div class="sec">
         <div class="sec-lbl">👤 Users（AtCoder ID）</div>
         <div class="cv-user-rows" id="cvUserRows">
@@ -692,6 +729,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
     </div>
     <!-- main -->
     <div class="cv-main">
+      <button class="cv-menu-btn" onclick="openCVDrawer()">☰ フィルター</button>
       <div class="cv-top-bar">
         <span class="cv-count" id="cvCount"><strong>—</strong> problems</span>
         <div class="sort-group">
@@ -749,6 +787,12 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
         <button class="abt" id="prevBtn">←</button>
         <button class="abt" id="nextBtn">→</button>
         <button class="abt" id="favModalBtn">☆</button>
+        <button class="abt" id="rawLinkBtn" title="ファイルを直接開く">🔗 Raw</button>
+        <div class="code-size-ctrl" title="フォントサイズ">
+          <button class="code-size-btn" id="codeSizeDec">A−</button>
+          <span class="code-size-lbl" id="codeSizeLbl">12</span>
+          <button class="code-size-btn" id="codeSizeInc">A+</button>
+        </div>
         <button class="abt" id="copyBtn">Copy</button>
         <button class="abt x" id="closeBtn">✕</button>
       </div>
@@ -757,7 +801,7 @@ aside{background:var(--surface);border:1.5px solid var(--border);border-radius:1
   </div>
 </div>
 
-<script>
+<script type="module">
 /* ════ LANG META ════════════════════════════════════ */
 const LANGS={
   py:{label:'Python',color:'#3572A5',bg:'#edf4fb',hljs:'python'},
@@ -1018,17 +1062,28 @@ function buildHome(){
     return`<div class="lb-item"><span class="lb-name">${m.label}</span><div class="lb-track"><div class="lb-fill" style="width:${(cnt/max*100).toFixed(1)}%;background:${m.color}"></div></div><span class="lb-cnt">${cnt}</span></div>`;
   }).join('');
   const recent=[...all].sort((a,b)=>cmpContest(b.contest,a.contest)||b.filename.localeCompare(a.filename)).slice(0,8);
-  document.getElementById('recentList').innerHTML=recent.map(f=>`
-    <div class="recent-item" onclick="openFileFromHome('${CSS.escape(f.fullUrl)}')">
+  const recentListEl=document.getElementById('recentList');
+  recentListEl.innerHTML=recent.map((f,ri)=>`
+    <div class="recent-item" data-ridx="${ri}">
       <span class="recent-fname">${f.filename}</span>
       <span class="recent-chip" style="background:${f.lang.bg};color:${f.lang.color}">${f.lang.label}</span>
     </div>`).join('');
+  recentListEl.addEventListener('click',e=>{
+    const item=e.target.closest('[data-ridx]');if(!item)return;
+    openModal(recent[Number(item.dataset.ridx)]);
+  });
   const byC={};
   all.forEach(f=>{if(!byC[f.contest])byC[f.contest]={files:[],exts:new Set()};byC[f.contest].files.push(f);byC[f.contest].exts.add(f.ext)});
-  document.getElementById('contestRows').innerHTML=Object.entries(byC).sort((a,b)=>cmpContest(a[0],b[0])).map(([c,{files,exts}])=>{
+  const contestRowsEl=document.getElementById('contestRows');
+  const contestEntries=Object.entries(byC).sort((a,b)=>cmpContest(a[0],b[0]));
+  contestRowsEl.innerHTML=contestEntries.map(([c,{files,exts}],ci)=>{
     const chips=[...exts].map(e=>{const m=getLang(e);return`<span style="background:${m.bg};color:${m.color};font-size:.58rem;font-weight:600;padding:.1rem .4rem;border-radius:100px">${m.label}</span>`}).join('');
-    return`<div class="contest-row" onclick="filterToContest('${c}')"><span class="contest-row-name">${c}</span><span class="contest-row-meta">${chips}<span>${files.length} files</span></span></div>`;
+    return`<div class="contest-row" data-cidx="${ci}"><span class="contest-row-name">${c}</span><span class="contest-row-meta">${chips}<span>${files.length} files</span></span></div>`;
   }).join('');
+  contestRowsEl.addEventListener('click',e=>{
+    const row=e.target.closest('[data-cidx]');if(!row)return;
+    filterToContest(contestEntries[Number(row.dataset.cidx)][0]);
+  });
 }
 function openFileFromHome(url){const f=all.find(x=>x.fullUrl===url)||all.find(x=>CSS.escape(x.fullUrl)===url);if(f)openModal(f)}
 function filterToContest(c){
@@ -1209,6 +1264,8 @@ async function _renderModalFile(f){
   favBtn.className='abt'+(favs.has(f.fullUrl)?' fav-on':'');
   favBtn.textContent=favs.has(f.fullUrl)?'★':'☆';
   favBtn.onclick=()=>toggleFav(f.fullUrl);
+  const rawBtn=document.getElementById('rawLinkBtn');
+  rawBtn.onclick=()=>window.open(f.fullUrl,'_blank','noopener,noreferrer');
   document.getElementById('prevBtn').disabled=_curIdx<=0;
   document.getElementById('nextBtn').disabled=_curIdx>=currentFiles.length-1;
   try{
@@ -1271,69 +1328,6 @@ document.getElementById('copyBtn').addEventListener('click',function(){
   navigator.clipboard.writeText(_code).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)});
 });
 
-/* ════ RANKINGS ═════════════════════════════════════ */
-let rankSort='files',rankDir=-1;
-function buildRankings(){
-  const users=[...new Set(all.map(f=>f.user).filter(Boolean))];
-  if(!users.length){
-    document.getElementById('rankingsContent').innerHTML=`<div class="sbox-s"><span>ユーザーフォルダがありません。<br>archive/ 直下にユーザー名フォルダを作成してください。</span></div>`;
-    return;
-  }
-  renderRankTable();
-}
-function getRankData(){
-  return[...new Set(all.map(f=>f.user).filter(Boolean))].map(u=>{
-    const fs=all.filter(f=>f.user===u);
-    const extCnt=fs.reduce((a,f)=>{a[f.ext]=(a[f.ext]||0)+1;return a},{});
-    const top=Object.entries(extCnt).sort((a,b)=>b[1]-a[1])[0];
-    return{
-      user:u,files:fs.length,
-      contests:new Set(fs.map(f=>f.contest)).size,
-      langs:new Set(fs.map(f=>f.ext)).size,
-      topLang:top?top[0]:'',
-      langSet:[...new Set(fs.map(f=>f.ext))],
-    };
-  });
-}
-function renderRankTable(){
-  const data=getRankData();
-  data.sort((a,b)=>{
-    const diff=rankDir*(typeof a[rankSort]==='number'?b[rankSort]-a[rankSort]:a[rankSort].localeCompare(b[rankSort]));
-    return diff||a.user.localeCompare(b.user);
-  });
-  const maxFiles=Math.max(1,...data.map(d=>d.files));
-  const rankCls=i=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
-  const makeTh=(key,label)=>{
-    const cls=rankSort===key?(rankDir===-1?'desc':'asc'):'';
-    return`<th class="${cls}" onclick="setRankSort('${key}')">${label}</th>`;
-  };
-  const rows=data.map((d,i)=>{
-    const chips=d.langSet.slice(0,5).map(e=>{const m=getLang(e);return`<span class="lang-chip-sm" style="background:${m.bg};color:${m.color}">${m.label}</span>`}).join('');
-    return`<tr>
-      <td class="rank-num ${rankCls(i)}">${i+1}</td>
-      <td><div class="rank-user"><div class="rank-avatar">${d.user.slice(0,2).toUpperCase()}</div>${d.user}</div></td>
-      <td><div class="rank-bar"><div class="rank-bar-track"><div class="rank-bar-fill" style="width:${(d.files/maxFiles*100).toFixed(0)}%"></div></div><span style="font-size:.82rem;font-weight:600;color:var(--text)">${d.files}</span></div></td>
-      <td style="color:var(--text);font-size:.82rem">${d.contests}</td>
-      <td><div class="lang-chips">${chips}</div></td>
-    </tr>`;
-  }).join('');
-  document.getElementById('rankingsContent').innerHTML=`
-    <table class="rank-table">
-      <thead><tr>
-        <th style="width:38px">#</th>
-        ${makeTh('user','User')}
-        ${makeTh('files','Files')}
-        ${makeTh('contests','Contests')}
-        <th>Languages</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
-}
-function setRankSort(key){
-  if(rankSort===key)rankDir*=-1;else{rankSort=key;rankDir=-1}
-  renderRankTable();
-}
-
 /* ════ PROGRESS ═════════════════════════════════════ */
 let pgView='cards'; // 'cards' | 'heat'
 let pgMatrix={}, pgUsers=[], pgContests=[], pgMaxN=1;
@@ -1380,7 +1374,112 @@ function buildProgress(){
   `;
 
   toggleEl.style.display='flex';
+  buildCalendarHeatmap();
   renderProgress();
+}
+
+/* ─── Calendar Heatmap ──────────────────────────── */
+function buildCalendarHeatmap(){
+  // Build a day-level activity map from filenames/contest dates
+  // We use cmpContest to approximate dates: abc001=2012-07, abc400=2024-09 (linear approx)
+  // More robust: extract date from contest ID if possible via pattern abc(\d+)
+  // For now: bucket by contest → approximate date
+  const wrapEl=document.getElementById('calHeatWrap');
+  const bodyEl=document.getElementById('calHeatBody');
+  const subEl=document.getElementById('calHeatSub');
+  if(!all.length){wrapEl.style.display='none';return}
+
+  // Count files per contest
+  const contestCount={};
+  all.forEach(f=>{contestCount[f.contest]=(contestCount[f.contest]||0)+1});
+
+  // Map contest ID to approximate date using known ABC/ARC/AGC numbering
+  // ABC: ~2012-07 start, roughly 1.5 per month → epoch=(num-1)/1.5 months after 2012-07
+  // ARC: ~2012-01 start, roughly 1 per month
+  // AGC: ~2016-07 start, roughly 0.5 per month
+  // AHC: ~2021-01 start, ~0.8 per month
+  // Fallback: spread across 2020
+  function contestToDate(cid){
+    const m=cid.match(/^(abc|arc|agc|ahc|apc|abl)0*(\d+)$/i);
+    if(!m)return null;
+    const type=m[1].toLowerCase(),num=parseInt(m[2]);
+    let base,rate;
+    if(type==='abc'){base=new Date('2012-07-01');rate=1.5/30.44}
+    else if(type==='arc'){base=new Date('2012-01-01');rate=1/30.44}
+    else if(type==='agc'){base=new Date('2016-07-01');rate=0.5/30.44}
+    else if(type==='ahc'){base=new Date('2021-01-01');rate=0.8/30.44}
+    else return null;
+    const days=Math.round((num-1)/rate);
+    const d=new Date(base);d.setDate(d.getDate()+days);
+    return d;
+  }
+
+  // Build day-level map: "YYYY-MM-DD" → count
+  const dayMap={};
+  let minDate=null,maxDate=null;
+  Object.entries(contestCount).forEach(([cid,cnt])=>{
+    const d=contestToDate(cid);
+    if(!d)return;
+    const key=d.toISOString().slice(0,10);
+    dayMap[key]=(dayMap[key]||0)+cnt;
+    if(!minDate||d<minDate)minDate=new Date(d);
+    if(!maxDate||d>maxDate)maxDate=new Date(d);
+  });
+  if(!minDate){wrapEl.style.display='none';return}
+  wrapEl.style.display='';
+
+  // Only show last N years (max 4)
+  const today=new Date();
+  const startYear=Math.max(minDate.getFullYear(), today.getFullYear()-3);
+  const endYear=today.getFullYear();
+
+  const totalFiles=all.length;
+  subEl.textContent=`${totalFiles} ファイル · ${Object.keys(dayMap).length} days`;
+
+  const maxCount=Math.max(1,...Object.values(dayMap));
+  function dayClass(n){
+    if(!n)return'cal-d0';
+    const r=n/maxCount;
+    if(r<.25)return'cal-d1';if(r<.5)return'cal-d2';if(r<.75)return'cal-d3';return'cal-d4';
+  }
+  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  let html='';
+  for(let yr=startYear;yr<=endYear;yr++){
+    html+=`<div class="cal-heat-year"><div class="cal-heat-year-lbl">${yr}</div><div class="cal-heat-months">`;
+    for(let mo=0;mo<12;mo++){
+      const daysInMonth=new Date(yr,mo+1,0).getDate();
+      // Build weeks
+      // Start from day 1, pad by weekday
+      const firstDay=new Date(yr,mo,1).getDay(); // 0=Sun
+      let weeks=[[]];
+      for(let pad=0;pad<firstDay;pad++)weeks[0].push(null);
+      for(let d=1;d<=daysInMonth;d++){
+        const last=weeks[weeks.length-1];
+        if(last.length===7)weeks.push([]);
+        weeks[weeks.length-1].push(new Date(yr,mo,d));
+      }
+      // pad last week
+      while(weeks[weeks.length-1].length<7)weeks[weeks.length-1].push(null);
+
+      html+=`<div class="cal-heat-month"><div class="cal-month-lbl">${MONTHS[mo]}</div>`;
+      weeks.forEach(wk=>{
+        html+=`<div class="cal-week">`;
+        wk.forEach(day=>{
+          if(!day){html+=`<div class="cal-day" style="visibility:hidden"></div>`;return}
+          const key=day.toISOString().slice(0,10);
+          const cnt=dayMap[key]||0;
+          const cls=dayClass(cnt);
+          const tip=cnt?`${key}: ${cnt} ファイル`:key;
+          html+=`<div class="cal-day ${cls}" title="${tip}"></div>`;
+        });
+        html+=`</div>`;
+      });
+      html+=`</div>`;
+    }
+    html+=`</div></div>`;
+  }
+  bodyEl.innerHTML=html;
 }
 
 function renderProgress(){
@@ -1467,9 +1566,9 @@ function renderProgressAC(el){
   const letters=['a','b','c','d','e','f','g','h','ex'];
   // ユーザー選択タブ
   const allUsers=['__all__',...pgUsers];
-  const tabsHtml=allUsers.map((u,i)=>{
+  const tabsHtml=allUsers.map((u)=>{
     const label=u==='__all__'?'全員':u;
-    return`<button class="pg-ac-tab${pgACUser===u?' on':''}" onclick="pgACUser='${u}';renderProgressAC(document.getElementById('progressContent'))">${label}</button>`;
+    return`<button class="pg-ac-tab${pgACUser===u?' on':''}" data-pgacuser="${u}">${label}</button>`;
   }).join('');
 
   // 対象ファイルを絞る
@@ -1531,6 +1630,12 @@ function renderProgressAC(el){
       <div class="pg-ac-body">${rowsHtml}</div>
     </div>
   `;
+  el.querySelectorAll('.pg-ac-tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      pgACUser=btn.dataset.pgacuser;
+      renderProgressAC(el);
+    });
+  });
 }
 
 /* ════ ERROR ════════════════════════════════════════ */
@@ -1665,8 +1770,11 @@ function renderGuideList(){
     const name=f.slice(prefix.length);
     const title=guideFileTitles[f]||name;
     const isActive=guideCurrentFile===f;
-    return`<button class="guide-file-btn${isActive?' active':''}" onclick="openGuideFile('${CSS.escape(f)}')" title="${name}">${title}</button>`;
+    return`<button class="guide-file-btn${isActive?' active':''}" data-gfile="${f}" title="${name}">${title}</button>`;
   }).join('');
+  list.querySelectorAll('[data-gfile]').forEach(btn=>{
+    btn.addEventListener('click',()=>openGuideFile(btn.dataset.gfile));
+  });
 }
 
 // ファイルを取得してレンダリング
@@ -1762,6 +1870,10 @@ async function loadGuideTitles(){
 
 function escGuideHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
+/* ════ CONTEST VIEW MOBILE DRAWER ════════════════════ */
+function openCVDrawer(){document.getElementById('cvSide').classList.add('open');document.getElementById('cvDrawerOverlay').classList.add('open')}
+function closeCVDrawer(){document.getElementById('cvSide').classList.remove('open');document.getElementById('cvDrawerOverlay').classList.remove('open')}
+
 /* ════ CONTEST VIEW ═════════════════════════════════ */
 let cvProblems=[];
 let cvModels={};
@@ -1808,10 +1920,14 @@ function buildCVUserRows(){
       <div class="cv-user-row">
         <span class="cv-user-dot" style="background:${CV_USER_COLORS[i]}"></span>
         <input class="cv-user-input" id="cvUserInput${i}" type="text" value="${name}"
-          placeholder="AtCoder ID ${i+1}" oninput="cvUserNames[${i}]=this.value.trim()">
+          placeholder="AtCoder ID ${i+1}" data-idx="${i}">
       </div>
       <div class="cv-user-status" id="cvUserStatus${i}"></div>
     </div>`).join('');
+  // attach input listeners (avoid inline oninput for module scope)
+  el.querySelectorAll('.cv-user-input').forEach(inp=>{
+    inp.addEventListener('input',()=>{cvUserNames[Number(inp.dataset.idx)]=inp.value.trim()});
+  });
 }
 
 // ── Paginated fetch of all AC submissions for a user ──
@@ -2087,7 +2203,8 @@ async function loadContestView(){
   }catch(e){
     el.className='sbox-s';
     el.innerHTML=`<span style="color:#c96b6b">⚠ 読み込み失敗: ${e.message}</span>
-      <button class="cv-fetch-btn" style="margin-top:.7rem" onclick="cvLoaded=false;loadContestView()">再試行</button>`;
+      <button class="cv-fetch-btn" style="margin-top:.7rem" id="cvRetryBtn">再試行</button>`;
+    document.getElementById('cvRetryBtn')?.addEventListener('click',()=>{cvLoaded=false;loadContestView()});
     return;
   }
 
@@ -2381,6 +2498,40 @@ document.getElementById('contestView').addEventListener('mouseout',e=>{
   });
   observer.observe(document.getElementById('backdrop'),{attributes:true,attributeFilter:['class']});
 })();
+
+/* ════ CODE FONT SIZE ═══════════════════════════════ */
+(()=>{
+  const SIZES=[10,11,12,13,14,15,16,18,20];
+  let _si=SIZES.indexOf(12);
+  try{const s=localStorage.getItem('atcoder-code-fs');if(s){const i=SIZES.indexOf(Number(s));if(i>=0)_si=i}}catch(_){}
+  function applyCodeSize(){
+    const px=SIZES[_si];
+    document.documentElement.style.setProperty('--code-fs',px+'px');
+    document.documentElement.style.setProperty('--code-lh', px<=11?'1.9': px<=13?'1.8':'1.7');
+    document.getElementById('codeSizeLbl').textContent=px;
+    try{localStorage.setItem('atcoder-code-fs',px)}catch(_){}
+  }
+  applyCodeSize();
+  document.getElementById('codeSizeDec').addEventListener('click',()=>{if(_si>0){_si--;applyCodeSize()}});
+  document.getElementById('codeSizeInc').addEventListener('click',()=>{if(_si<SIZES.length-1){_si++;applyCodeSize()}});
+})();
+
+/* ════ EXPOSE PUBLIC API (for HTML onclick= attributes) ══ */
+Object.assign(window,{
+  // theme & drawer
+  toggleDark,openDrawer,closeDrawer,
+  // views
+  showView,filterToContest,
+  // archive
+  toggleFavFilter,openFileFromHome,
+  // progress
+  setPgView,
+  // contest view
+  openCVDrawer,closeCVDrawer,
+  fetchAllUsers,cvClearCache,loadContestView,
+  // guide
+  switchGuideLang,showGuide,toggleGuideDropdown,openGuideFile,
+});
 
 init();
 </script>
